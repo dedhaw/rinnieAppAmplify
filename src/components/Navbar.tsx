@@ -72,15 +72,12 @@ const Navbar: React.FC<NavbarProps> = ({ pageType }) => {
       <div className="nav-buttons">
         {pageType === "land" && (
           <>
-            <button className="login-button" onClick={() => navigate("/login")}>
+            <button className="login-button">
+              {" "}
+              {/*onClick={() => navigate("/login")}> */}
               Login
             </button>
-            <button
-              className="get-started-button"
-              onClick={() => navigate("/signup")}
-            >
-              Get Started
-            </button>
+            <button className="get-started-button">Get Started</button>
           </>
         )}
         {pageType === "protected" && (
@@ -92,17 +89,14 @@ const Navbar: React.FC<NavbarProps> = ({ pageType }) => {
         )}
         {pageType === "login" && (
           <>
-            <button
-              className="login-button"
-              onClick={() => navigate("/signup")}
-            >
-              Sign up
-            </button>
+            <button className="login-button">Sign up</button>
           </>
         )}
         {pageType === "signup" && (
           <>
-            <button className="login-button" onClick={() => navigate("/login")}>
+            <button className="login-button">
+              {" "}
+              {/*onClick={() => navigate("/login")}> */}
               Login
             </button>
           </>
@@ -151,20 +145,15 @@ const Navbar: React.FC<NavbarProps> = ({ pageType }) => {
           {pageType === "land" && (
             <>
               <li>
-                <button
-                  className="login-button"
-                  onClick={() => navigate("/login")}
-                >
+                <button className="login-button">
+                  {" "}
+                  {/*onClick={() => navigate("/login")}
+                   */}
                   Login
                 </button>
               </li>
               <li>
-                <button
-                  className="get-started-button"
-                  onClick={() => navigate("/signup")}
-                >
-                  Get Started
-                </button>
+                <button className="get-started-button">Get Started</button>
               </li>
             </>
           )}
@@ -183,21 +172,16 @@ const Navbar: React.FC<NavbarProps> = ({ pageType }) => {
           {pageType === "login" && (
             <>
               <li>
-                <button
-                  className="login-button"
-                  onClick={() => navigate("/signup")}
-                >
-                  Sign up
-                </button>
+                <button className="login-button">Sign up</button>
               </li>
             </>
           )}
           {pageType === "signup" && (
             <>
-              <button
-                className="login-button"
-                onClick={() => navigate("/login")}
-              >
+              <button className="login-button">
+                {" "}
+                {/*onClick={() => navigate("/login")}
+                 */}
                 Login
               </button>
             </>

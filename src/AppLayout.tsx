@@ -10,8 +10,6 @@ import EmailForm from "./views/EmailForm";
 import DisplayForm from "./views/DisplayForm";
 
 import Landing from "./views/LandingPage";
-import Login from "./views/Login";
-import Signup from "./views/Signup";
 import GenerateForm from "./views/FillFormPage";
 import FormSent from "./views/FormSent";
 import Redirect from "./components/LandingRedirect";
@@ -115,8 +113,6 @@ function App() {
             </>
           )}
 
-          <Route path="/login" element={<Login />} />
-          <Route path="/signup" element={<Signup />} />
           <Route path="/fill-form" element={<GenerateForm />} />
           <Route path="/form-completed" element={<FormSent />} />
 
