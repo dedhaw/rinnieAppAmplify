@@ -12,7 +12,6 @@ import DisplayForm from "./views/DisplayForm";
 import Landing from "./views/LandingPage";
 import Login from "./views/Login";
 import Signup from "./views/Signup";
-import Logout from "./components/HandleLogout";
 import GenerateForm from "./views/FillFormPage";
 import FormSent from "./views/FormSent";
 import Redirect from "./components/LandingRedirect";
@@ -39,7 +38,7 @@ import awsExports from "./aws-exports";
 // Imports the Quiz component from Quiz.js for use in this file.
 //import Quiz from './Quiz';
 
-import { fetchAuthSession, signOut } from "@aws-amplify/auth";
+import { fetchAuthSession } from "@aws-amplify/auth";
 
 // Configures the Amplify library with the settings from aws-exports.js, which includes all the AWS service configurations for this project.
 Amplify.configure(awsExports);
