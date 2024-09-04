@@ -1,6 +1,8 @@
 import { useEffect, useState } from "react";
 import Navbar from "../components/Navbar";
-import { props } from "../utils/supabase";
+interface props {
+  session: any;
+}
 
 function Profile({ session }: props) {
   const [user, setUserData] = useState<any>(null);

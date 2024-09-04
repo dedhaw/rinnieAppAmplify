@@ -5,7 +5,9 @@ import Navbar from "../components/Navbar";
 
 import { MdEmail } from "react-icons/md";
 import "../styles/forms.css";
-import { props } from "../utils/supabase";
+interface props {
+  session: any;
+}
 
 function EmailForm({ session }: props) {
   session;

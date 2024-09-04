@@ -4,7 +4,9 @@ import Navbar from "../components/Navbar";
 import "../styles/forms.css";
 import DocViewer, { DocViewerRenderers } from "@cyntler/react-doc-viewer";
 import "@cyntler/react-doc-viewer/dist/index.css";
-import { props } from "../utils/supabase";
+interface props {
+  session: any;
+}
 import { checkUserDocAccess } from "../utils/Secure";
 
 function DisplayForm({ session }: props) {

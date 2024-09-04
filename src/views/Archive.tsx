@@ -3,7 +3,9 @@ import Navbar from "../components/Navbar";
 import "../styles/home.css";
 import { FaCheck } from "react-icons/fa6";
 import { FaRegTrashAlt } from "react-icons/fa";
-import { props } from "../utils/supabase";
+interface props {
+  session: any;
+}
 import { useNavigate } from "react-router-dom";
 
 function Archive({ session }: props) {

@@ -4,9 +4,12 @@ import Navbar from "../components/Navbar";
 import styled from "styled-components";
 import "../styles/forms.css";
 import { useLoadScript, StandaloneSearchBox } from "@react-google-maps/api";
-import { props } from "../utils/supabase";
 
 const libraries: any = ["places", "localContext"];
+
+interface props {
+  session: any;
+}
 
 const Slider = styled.input.attrs({
   type: "range",
