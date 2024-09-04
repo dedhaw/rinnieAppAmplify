@@ -1,0 +1,22 @@
+.icon_button, .icon_button_alt, .icon_button_delete{
+    border: none;
+    width: 50px
+}
+
+.icon_button_alt:hover {
+    color: #92CBF7;
+    border: none;
+}
+
+.icon_button_delete:hover {
+    color: red;
+    border: none;
+}
+
+.icon_button:hover {
+    border: none;
+}
+
+.completed {
+    margin-bottom: 0;
+}

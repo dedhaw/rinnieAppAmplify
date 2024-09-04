@@ -1,0 +1,186 @@
+import React, {
+  useRef,
+  useState,
+  useImperativeHandle,
+  useEffect,
+  forwardRef,
+} from "react";
+import "../styles/signaturebox.css";
+
+const SignatureBox = forwardRef<HTMLCanvasElement>((_, ref) => {
+  const [viewportWidth, setViewportWidth] = useState(window.innerWidth);
+
+  useEffect(() => {
+    const handleResize = () => {
+      setViewportWidth(window.innerWidth);
+    };
+
+    window.addEventListener("resize", handleResize);
+
+    return () => {
+      window.removeEventListener("resize", handleResize);
+    };
+  }, []);
+
+  const canvasRef = useRef<HTMLCanvasElement | any>(null);
+  const [strokes, setStrokes] = useState<Array<{ x: number; y: number }[]>>([]);
+  const [redoStack, setRedoStack] = useState<Array<{ x: number; y: number }[]>>(
+    []
+  );
+  const [isDrawing, setIsDrawing] = useState(false);
+
+  useImperativeHandle(ref, () => canvasRef.current);
+
+  const startDrawing = (e: React.MouseEvent) => {
+    const { offsetX, offsetY } = e.nativeEvent;
+    setStrokes([...strokes, [{ x: offsetX, y: offsetY }]]);
+    setIsDrawing(true);
+  };
+
+  const draw = (e: React.MouseEvent) => {
+    if (!isDrawing) return;
+    const { offsetX, offsetY } = e.nativeEvent;
+    const newStrokes = [...strokes];
+    const currentStroke = newStrokes.pop();
+    if (currentStroke) {
+      currentStroke.push({ x: offsetX, y: offsetY });
+      setStrokes([...newStrokes, currentStroke]);
+    }
+  };
+
+  const stopDrawing = () => {
+    setIsDrawing(false);
+    setRedoStack([]);
+  };
+
+  const undo = () => {
+    if (strokes.length > 0) {
+      const newStrokes = [...strokes];
+      const lastStroke = newStrokes.pop();
+      if (lastStroke) {
+        setRedoStack([...redoStack, lastStroke]);
+        setStrokes(newStrokes);
+      }
+    }
+  };
+
+  const redo = () => {
+    if (redoStack.length > 0) {
+      const newRedoStack = [...redoStack];
+      const lastUndoStroke = newRedoStack.pop();
+      if (lastUndoStroke) {
+        setStrokes([...strokes, lastUndoStroke]);
+        setRedoStack(newRedoStack);
+      }
+    }
+  };
+
+  // const clearCanvas = () => {
+  //   setStrokes([]);
+  //   setRedoStack([]);
+  // };
+
+  const drawStrokes = () => {
+    const canvas = canvasRef.current;
+    if (canvas) {
+      const context = canvas.getContext("2d");
+      if (context) {
+        context.clearRect(0, 0, canvas.width, canvas.height);
+        context.lineWidth = 4; // Thicker lines
+        context.lineCap = "round"; // Smoother lines
+        context.lineJoin = "round"; // Smoother lines
+        context.strokeStyle = "#000";
+
+        strokes.forEach((stroke) => {
+          context.beginPath();
+          context.moveTo(stroke[0].x, stroke[0].y);
+          stroke.forEach((point) => {
+            context.lineTo(point.x, point.y);
+          });
+          context.stroke();
+        });
+      }
+    }
+  };
+
+  React.useEffect(() => {
+    drawStrokes();
+  }, [strokes]);
+
+  return (
+    <div className="signature-container no-border">
+      {viewportWidth > 767 && (
+        <canvas
+          ref={canvasRef}
+          onMouseDown={startDrawing}
+          onMouseMove={draw}
+          onMouseUp={stopDrawing}
+          onMouseLeave={stopDrawing}
+          width={500}
+          height={100}
+          className="signature-canvas"
+        />
+      )}
+      {viewportWidth < 767 && (
+        <canvas
+          ref={canvasRef}
+          onMouseDown={startDrawing}
+          onMouseMove={draw}
+          onMouseUp={stopDrawing}
+          onMouseLeave={stopDrawing}
+          width={300}
+          height={100}
+          className="signature-canvas"
+        />
+      )}
+      <div className="no-border">
+        <button
+          className="undo-button"
+          onClick={undo}
+          disabled={strokes.length === 0}
+          style={{ margin: "10px", padding: "5px" }}
+        >
+          <svg
+            width="24"
+            height="24"
+            viewBox="0 0 24 24"
+            fill="none"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <path
+              d="M14 19l-7-7 7-7"
+              stroke="currentColor"
+              strokeWidth="2"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+            />
+          </svg>
+        </button>
+        <button
+          className="redo-button"
+          onClick={redo}
+          disabled={redoStack.length === 0}
+          style={{ margin: "10px", padding: "5px" }}
+        >
+          <svg
+            width="24"
+            height="24"
+            viewBox="0 0 24 24"
+            fill="none"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <path
+              d="M10 5l7 7-7 7"
+              stroke="currentColor"
+              strokeWidth="2"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+            />
+          </svg>
+        </button>
+      </div>
+    </div>
+  );
+});
+
+export default SignatureBox;

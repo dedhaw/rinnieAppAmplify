@@ -1,0 +1,93 @@
+@keyframes typewriter {
+    from {
+      width: 0;
+    }
+    to {
+      width: 100%;
+    }
+  }
+  
+  @keyframes blink {
+    0% {
+      border-color: transparent;
+    }
+    50% {
+      border-color: black;
+    }
+    100% {
+      border-color: transparent;
+    }
+  }
+  
+  @keyframes cursorFadeOut {
+    from {
+      border-color: black;
+    }
+    to {
+      border-color: transparent;
+    }
+  }
+  
+  .hero-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 55vh;
+    text-align: center;
+    position: relative;
+    width: 600px;
+    margin-left: auto;
+    margin-right: auto;
+  }
+  
+  .hero-container h1 {
+    font-family: "Poppins", sans-serif;
+    font-weight: 400;
+    font-size: 72px;
+    margin: 0;
+    position: relative;
+    white-space: nowrap;
+    overflow: hidden;
+    border-right: 4px solid black;
+    width: 0;
+    animation: typewriter 4s steps(30, end) 1s 1 normal both, blink 0.75s step-end infinite;
+  }
+  
+  .hero-container h1.done {
+    animation: typewriter 4s steps(30, end) 1s 1 normal both, cursorFadeOut 1s 1.5s forwards;
+    width: auto; 
+  }
+  
+
+.subtext-container {
+    width: 800px;
+    text-align: center;
+    margin-right: auto;
+    margin-left: auto;
+    margin-top: -150px;
+}
+
+.subtext-container p {
+    font-size: 25px;
+    color: #767F81;
+}
+
+@media screen and (max-width: 767px) {
+    .container h1 {
+        margin-top: 250px;
+        z-index: -100;
+    }
+    .fade-in-container {
+        opacity: 0;
+        animation: fadeIn 2s ease-in forwards;
+      }
+      
+      @keyframes fadeIn {
+        from {
+          opacity: 0;
+        }
+        to {
+          opacity: 1;
+        }
+      }
+  }

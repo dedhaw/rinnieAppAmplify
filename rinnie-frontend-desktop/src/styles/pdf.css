@@ -1,0 +1,55 @@
+#pdf-download, #pdf-zoom-reset, #pdf-toggle-pagination, #header-bar{
+    display: none;
+}
+#pdf-controls {
+    display: flex;
+    justify-content: center;
+    position: relative;
+    margin: 0px;
+    padding: 0px;
+    box-shadow: none;
+    position: sticky;
+}
+
+
+  @media screen and (min-width: 800px) {
+    #pdf-download, #pdf-zoom-out, #pdf-zoom-in, #pdf-zoom-reset, #pdf-toggle-pagination, #header-bar{
+        display: none;
+    }
+    
+    #pdf-controls {
+        display: flex;
+        justify-content: center;
+        position: relative;
+        margin: 0px;
+        padding: 0px;
+        padding-top: 50px;
+        box-shadow: none;
+    }
+    
+    #pdf-renderer {
+        display: flex;
+        justify-content: center;
+        margin-right: auto;
+        margin-left: auto;
+    }
+    
+    #pdf-page-wrapper {
+        display: flex;
+        justify-content: center;
+        margin-right: auto;
+        margin-left: auto;
+    }
+    
+    .react-pdf__Page__canvas {
+        width: 620px !important;
+        height: auto !important;
+      }
+    
+    .doc-container {
+        justify-content: center;
+        display: flex;
+        margin-top: 20px;
+        border-radius: 8px;
+    }
+  }

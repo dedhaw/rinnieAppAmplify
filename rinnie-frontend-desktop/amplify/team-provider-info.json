@@ -1,0 +1,20 @@
+{
+  "dev": {
+    "awscloudformation": {
+      "AuthRoleName": "amplify-rinnieappamplify-dev-53a39-authRole",
+      "UnauthRoleArn": "arn:aws:iam::116981773763:role/amplify-rinnieappamplify-dev-53a39-unauthRole",
+      "AuthRoleArn": "arn:aws:iam::116981773763:role/amplify-rinnieappamplify-dev-53a39-authRole",
+      "Region": "us-east-1",
+      "DeploymentBucketName": "amplify-rinnieappamplify-dev-53a39-deployment",
+      "UnauthRoleName": "amplify-rinnieappamplify-dev-53a39-unauthRole",
+      "StackName": "amplify-rinnieappamplify-dev-53a39",
+      "StackId": "arn:aws:cloudformation:us-east-1:116981773763:stack/amplify-rinnieappamplify-dev-53a39/d5e290f0-6a83-11ef-90bf-0affe1d5f163",
+      "AmplifyAppId": "d1ef5iqqeamapv"
+    },
+    "categories": {
+      "auth": {
+        "rinnieappamplify1cd7ee44": {}
+      }
+    }
+  }
+}

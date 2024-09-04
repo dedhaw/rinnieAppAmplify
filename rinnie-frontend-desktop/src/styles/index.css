@@ -1,0 +1,183 @@
+@import "@fontsource/lato";
+@import "@fontsource/raleway";
+@import "@fontsource/merriweather-sans";
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+@import "@fontsource/poppins";
+
+
+body {
+  font-family: "lato", sans-serif;
+}
+
+h1 {
+  font-family: "poppins", sans-serif;
+  font-weight: 400;
+  font-size: 48px;
+  text-align: center;
+  color: #333333;
+}
+
+h2 {
+  font-family: "poppins", sans-serif;
+  text-align: center;
+  color: #333333;
+}
+
+.textLayer {
+  z-index: -100;
+}
+
+button {
+  font-family: "lato", sans-serif;
+  font-size: 18px;
+}
+
+p {
+  font-size: 18px;
+  color: #333333;
+}
+
+input {
+  font-family: "lato";
+}
+
+section {
+  border: 2px solid #ebebeb;
+  border-radius: 8px;
+  padding: 30px;
+  width: 80vw;
+  height: auto;
+  margin-left: auto;
+  margin-right: auto;
+  margin-bottom: 20px;
+}
+
+section div {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 20px;
+  margin-left: 40px;
+  margin-right: 40px;
+}
+
+section div button {
+  padding: 10px 20px;
+  border-radius: 5px;
+  background-color: rgb(0, 0, 0, 0);
+  color: #333333;
+  border: solid 2px #bdbdbd;
+  width: auto;
+  margin: auto 10px;
+}
+
+section div button:hover {
+  color: #ff7a29;
+  border: solid 2px #ff7a29;
+}
+
+section div p {
+  width: 270px;
+}
+
+.none {
+  display: inline;
+}
+
+div p {
+  text-align: center;
+}
+
+.button-div {
+  justify-content: space-between;
+  display: flex;
+  width: 800px;
+  margin: 0 auto;
+}
+
+#file-name {
+  display: none;
+}
+
+.header {
+  width: 50vw;
+  text-align: center;
+  margin: 0 auto;
+}
+
+.loading {
+  width: 50px;
+  height: auto;
+  padding: 50px;
+}
+
+@media screen and (max-width: 767px) {
+  h1 {
+    font-size: 36px;
+  }
+
+  h2 {
+    max-width: 80vw;
+    font-size: 20px;
+  }
+
+  .center-text {
+    text-align: left;
+    margin: 0px;
+    padding: 0px;
+  }
+
+  section {
+    width: 80vw;
+    padding: 20px;
+    margin: 0 auto;
+  }
+
+  section div {
+    flex-direction: column;
+    margin-left: 20px;
+    margin-right: 20px;
+    border: 2px solid #ebebeb;
+    padding: 0 20px;
+    text-align: center;
+  }
+
+  section div button {
+    width: 80%;
+    margin-bottom: 10px;
+    margin: 5px auto;
+  }
+
+  section div p {
+    width: 100%;
+    margin-bottom: 10px;
+  }
+
+  .button-div {
+    width: 100%;
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .header {
+    width: 80vw;
+  }
+
+  .no-border {
+    border: none;
+  }
+
+  .centered {
+    margin-top: 150px;
+    width: 80vw;
+    margin-right: auto;
+    margin-left: auto;
+  }
+
+  body, html {
+    margin: 0;
+    padding: 0;
+    overflow-x: hidden;
+    width: 100%;
+  }
+
+}

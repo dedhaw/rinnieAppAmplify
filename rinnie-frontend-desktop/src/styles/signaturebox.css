@@ -1,0 +1,44 @@
+.signature-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+  
+  .signature-canvas {
+    border: 2px solid #ddd;
+    border-radius: 8px;
+    margin-top: 20px;
+    background-color: #fff;
+  }
+  
+  .button-group {
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+    max-width: 500px;
+    margin: 10px;
+  }
+  
+  .clear-button {
+    background-color: #ff914b;
+    color: #fff;
+    border: 2px solid #ff914b;
+    border-radius: 8px;
+    padding: 5px 10px;
+    cursor: pointer;
+    margin-right: auto;
+    margin-left: 30px;
+  }
+  
+  .undo-button, .redo-button {
+    background-color: #fff;
+    color: #ff914b;
+    border: 2px solid #ff914b;
+    border-radius: 8px;
+    padding: 10px 20px;
+    cursor: pointer;
+  }
+  .redo-button {
+    margin-left: 10px;
+  }
+  
