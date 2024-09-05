@@ -2,8 +2,6 @@ import { useState, useEffect, useRef } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import "../styles/navbar.css";
 
-import { signOut } from "@aws-amplify/auth";
-
 import { GiHamburgerMenu } from "react-icons/gi";
 
 interface NavbarProps {
@@ -72,31 +70,40 @@ const Navbar: React.FC<NavbarProps> = ({ pageType }) => {
       <div className="nav-buttons">
         {pageType === "land" && (
           <>
-            <button className="login-button">
-              {" "}
-              {/*onClick={() => navigate("/login")}> */}
+            <button className="login-button" onClick={() => navigate("/login")}>
               Login
             </button>
-            <button className="get-started-button">Get Started</button>
+            <button
+              className="get-started-button"
+              onClick={() => navigate("/signup")}
+            >
+              Get Started
+            </button>
           </>
         )}
         {pageType === "protected" && (
           <>
-            <button className="get-started-button" onClick={() => signOut()}>
+            <button
+              className="get-started-button"
+              onClick={() => navigate("/logout")}
+            >
               Log Out
             </button>
           </>
         )}
         {pageType === "login" && (
           <>
-            <button className="login-button">Sign up</button>
+            <button
+              className="login-button"
+              onClick={() => navigate("/signup")}
+            >
+              Sign up
+            </button>
           </>
         )}
         {pageType === "signup" && (
           <>
-            <button className="login-button">
-              {" "}
-              {/*onClick={() => navigate("/login")}> */}
+            <button className="login-button" onClick={() => navigate("/login")}>
               Login
             </button>
           </>
@@ -145,15 +152,20 @@ const Navbar: React.FC<NavbarProps> = ({ pageType }) => {
           {pageType === "land" && (
             <>
               <li>
-                <button className="login-button">
-                  {" "}
-                  {/*onClick={() => navigate("/login")}
-                   */}
+                <button
+                  className="login-button"
+                  onClick={() => navigate("/login")}
+                >
                   Login
                 </button>
               </li>
               <li>
-                <button className="get-started-button">Get Started</button>
+                <button
+                  className="get-started-button"
+                  onClick={() => navigate("/signup")}
+                >
+                  Get Started
+                </button>
               </li>
             </>
           )}
@@ -162,7 +174,7 @@ const Navbar: React.FC<NavbarProps> = ({ pageType }) => {
               <li>
                 <button
                   className="get-started-button"
-                  onClick={() => signOut()}
+                  onClick={() => navigate("/logout")}
                 >
                   Log Out
                 </button>
@@ -172,16 +184,21 @@ const Navbar: React.FC<NavbarProps> = ({ pageType }) => {
           {pageType === "login" && (
             <>
               <li>
-                <button className="login-button">Sign up</button>
+                <button
+                  className="login-button"
+                  onClick={() => navigate("/signup")}
+                >
+                  Sign up
+                </button>
               </li>
             </>
           )}
           {pageType === "signup" && (
             <>
-              <button className="login-button">
-                {" "}
-                {/*onClick={() => navigate("/login")}
-                 */}
+              <button
+                className="login-button"
+                onClick={() => navigate("/login")}
+              >
                 Login
               </button>
             </>

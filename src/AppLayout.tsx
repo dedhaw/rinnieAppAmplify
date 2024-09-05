@@ -1,6 +1,5 @@
 import { useState, useEffect } from "react";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
-// import { Session } from "@supabase/supabase-js";
 
 import Home from "./views/Home";
 import CreateForm from "./views/CreateForm";
@@ -8,6 +7,8 @@ import Archive from "./views/Archive";
 import Profile from "./views/Profile";
 import EmailForm from "./views/EmailForm";
 import DisplayForm from "./views/DisplayForm";
+
+import LoginForm from "./views/Login";
 
 import Landing from "./views/LandingPage";
 import GenerateForm from "./views/FillFormPage";
@@ -25,7 +26,7 @@ import { Amplify } from "aws-amplify";
 // Imports the Authenticator and withAuthenticator components from '@aws-amplify/ui-react'.
 // Authenticator is a React component that provides a ready-to-use sign-in and sign-up UI.
 // withAuthenticator is a higher-order component that wraps your app component to enforce authentication.
-import { Authenticator, withAuthenticator } from "@aws-amplify/ui-react";
+// import { Authenticator, withAuthenticator } from "@aws-amplify/ui-react";
 
 // Imports the default styles for the Amplify UI components. This line ensures that the authenticator looks nice out of the box.
 import "@aws-amplify/ui-react/styles.css";
@@ -37,12 +38,13 @@ import awsExports from "./aws-exports";
 //import Quiz from './Quiz';
 
 import { fetchAuthSession } from "@aws-amplify/auth";
+import Loggout from "./components/HandleLogout";
 
 // Configures the Amplify library with the settings from aws-exports.js, which includes all the AWS service configurations for this project.
 Amplify.configure(awsExports);
 
 function App() {
-  const [session, setSession] = useState<any>(null);
+  const [session, setSession] = useState<any>(" ");
   const getIdToken = async (): Promise<void> => {
     try {
       console.log("Before getting session");
@@ -54,11 +56,8 @@ function App() {
       const idToken = cognitoSession.tokens?.idToken || " ";
       const email = cognitoSession.tokens?.idToken?.payload.email;
 
-      console.log("idToken: ", idToken);
-      console.log("idToken to string ", idToken.toString());
       const idTokenString: string = idToken.toString();
-      console.log("idToken JWT String: ", idTokenString);
-      console.log("idToken email: ", email);
+      idTokenString;
       setSession(email);
 
       // const response = await fetch('https://c1zbjfmjpk.execute-api.us-east-1.amazonaws.com/qa', {
@@ -76,7 +75,7 @@ function App() {
       //   console.error("Failed to archive form");
       // }
     } catch (error) {
-      console.error("Error getting ID token:", error);
+      setSession(null);
     }
   };
 
@@ -85,42 +84,43 @@ function App() {
   }, []);
 
   return (
-    <Authenticator>
-      <Router>
-        <Routes>
-          {!session && (
-            <>
-              <Route path="/" element={<Landing />} />
-              <Route path="/landing" element={<Redirect />} />
-            </>
-          )}
+    <Router>
+      <Routes>
+        {!session && (
+          <>
+            <Route path="/" element={<Landing />} />
+            <Route path="/landing/" element={<Redirect />} />
+          </>
+        )}
 
-          {session && (
-            <>
-              <Route path="/" element={<Home session={session} />} />
-              <Route
-                path="/create-form"
-                element={<CreateForm session={session} />}
-              />
-              <Route path="/archive" element={<Archive session={session} />} />
-              <Route path="/profile" element={<Profile session={session} />} />
-              <Route
-                path="/email-form"
-                element={<EmailForm session={session} />}
-              />
-              <Route path="/form" element={<DisplayForm session={session} />} />
-              <Route path="/landing" element={<Landing />} />
-            </>
-          )}
+        {session && (
+          <>
+            <Route path="/" element={<Home session={session} />} />
+            <Route
+              path="/create-form/"
+              element={<CreateForm session={session} />}
+            />
+            <Route path="/archive/" element={<Archive session={session} />} />
+            <Route path="/profile/" element={<Profile session={session} />} />
+            <Route
+              path="/email-form/"
+              element={<EmailForm session={session} />}
+            />
+            <Route path="/form/" element={<DisplayForm session={session} />} />
+            <Route path="/landing/" element={<Landing />} />
+          </>
+        )}
 
-          <Route path="/fill-form" element={<GenerateForm />} />
-          <Route path="/form-completed" element={<FormSent />} />
+        <Route path="/login/" element={<LoginForm setSession={setSession} />} />
+        <Route path="/logout/" element={<Loggout setSession={setSession} />} />
 
-          <Route path="/*" element={<PNF />} />
-        </Routes>
-      </Router>
-    </Authenticator>
+        <Route path="/fill-form/" element={<GenerateForm />} />
+        <Route path="/form-completed/" element={<FormSent />} />
+
+        <Route path="/*" element={<PNF />} />
+      </Routes>
+    </Router>
   );
 }
 
-export default withAuthenticator(App);
+export default App;
