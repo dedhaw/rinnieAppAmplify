@@ -31,15 +31,27 @@ const SignatureBox = forwardRef<HTMLCanvasElement>((_, ref) => {
 
   useImperativeHandle(ref, () => canvasRef.current);
 
-  const startDrawing = (e: React.MouseEvent) => {
-    const { offsetX, offsetY } = e.nativeEvent;
+  const getTouchPos = (e: TouchEvent) => {
+    const canvas = canvasRef.current;
+    const rect = canvas.getBoundingClientRect();
+    const touch = e.touches[0]; // Get the first touch
+    return {
+      x: touch.clientX - rect.left,
+      y: touch.clientY - rect.top,
+    };
+  };
+
+  const startDrawing = (e: React.MouseEvent | React.TouchEvent) => {
+    const { offsetX, offsetY } =
+      "nativeEvent" in e ? e.nativeEvent : getTouchPos(e);
     setStrokes([...strokes, [{ x: offsetX, y: offsetY }]]);
     setIsDrawing(true);
   };
 
-  const draw = (e: React.MouseEvent) => {
+  const draw = (e: React.MouseEvent | React.TouchEvent) => {
     if (!isDrawing) return;
-    const { offsetX, offsetY } = e.nativeEvent;
+    const { offsetX, offsetY } =
+      "nativeEvent" in e ? e.nativeEvent : getTouchPos(e);
     const newStrokes = [...strokes];
     const currentStroke = newStrokes.pop();
     if (currentStroke) {
@@ -75,11 +87,6 @@ const SignatureBox = forwardRef<HTMLCanvasElement>((_, ref) => {
     }
   };
 
-  // const clearCanvas = () => {
-  //   setStrokes([]);
-  //   setRedoStack([]);
-  // };
-
   const drawStrokes = () => {
     const canvas = canvasRef.current;
     if (canvas) {
@@ -107,32 +114,36 @@ const SignatureBox = forwardRef<HTMLCanvasElement>((_, ref) => {
     drawStrokes();
   }, [strokes]);
 
+  // Adding touch event listeners
+  useEffect(() => {
+    const canvas = canvasRef.current;
+    if (canvas) {
+      canvas.addEventListener("touchstart", startDrawing);
+      canvas.addEventListener("touchmove", draw);
+      canvas.addEventListener("touchend", stopDrawing);
+      canvas.addEventListener("touchcancel", stopDrawing); // If touch is canceled
+
+      return () => {
+        canvas.removeEventListener("touchstart", startDrawing);
+        canvas.removeEventListener("touchmove", draw);
+        canvas.removeEventListener("touchend", stopDrawing);
+        canvas.removeEventListener("touchcancel", stopDrawing);
+      };
+    }
+  }, [strokes, isDrawing]);
+
   return (
     <div className="signature-container no-border">
-      {viewportWidth > 767 && (
-        <canvas
-          ref={canvasRef}
-          onMouseDown={startDrawing}
-          onMouseMove={draw}
-          onMouseUp={stopDrawing}
-          onMouseLeave={stopDrawing}
-          width={500}
-          height={100}
-          className="signature-canvas"
-        />
-      )}
-      {viewportWidth < 767 && (
-        <canvas
-          ref={canvasRef}
-          onMouseDown={startDrawing}
-          onMouseMove={draw}
-          onMouseUp={stopDrawing}
-          onMouseLeave={stopDrawing}
-          width={300}
-          height={100}
-          className="signature-canvas"
-        />
-      )}
+      <canvas
+        ref={canvasRef}
+        onMouseDown={startDrawing}
+        onMouseMove={draw}
+        onMouseUp={stopDrawing}
+        onMouseLeave={stopDrawing}
+        width={viewportWidth > 767 ? 400 : 300} // Dynamic width
+        height={100}
+        className="signature-canvas"
+      />
       <div className="no-border">
         <button
           className="undo-button"

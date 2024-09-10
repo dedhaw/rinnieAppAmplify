@@ -92,6 +92,7 @@
     justify-content: space-between;
     margin-top: 20px;
     margin-bottom: 0;
+    width: auto !important;
   }
   
   .radio-group {
