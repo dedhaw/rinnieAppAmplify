@@ -42,6 +42,7 @@ const SignatureBox = forwardRef<HTMLCanvasElement>((_, ref) => {
   };
 
   const startDrawing = (e: React.MouseEvent | React.TouchEvent) => {
+    e.preventDefault(); // Prevent scrolling
     let coords;
     if ("touches" in e) {
       coords = getTouchCoords(e);
@@ -73,7 +74,8 @@ const SignatureBox = forwardRef<HTMLCanvasElement>((_, ref) => {
     }
   };
 
-  const stopDrawing = () => {
+  const stopDrawing = (e: React.MouseEvent | React.TouchEvent) => {
+    e.preventDefault();
     setIsDrawing(false);
     setRedoStack([]);
   };
