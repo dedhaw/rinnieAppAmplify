@@ -7,184 +7,189 @@ import React, {
 } from "react";
 import "../styles/signaturebox.css";
 
-interface Point {
-  x: number;
-  y: number;
-}
+const SignatureBox = forwardRef<HTMLCanvasElement>((_, ref) => {
+  const [viewportWidth, setViewportWidth] = useState(window.innerWidth);
 
-interface SignatureBoxProps {
-  containerWidth?: number;
-  containerHeight?: number;
-}
-
-const SignatureBox = forwardRef<HTMLCanvasElement, SignatureBoxProps>(
-  ({ containerWidth = 300, containerHeight = 150 }, ref) => {
-    const canvasRef = useRef<HTMLCanvasElement>(null);
-    const [strokes, setStrokes] = useState<Point[][]>([]);
-    const [redoStack, setRedoStack] = useState<Point[][]>([]);
-    const [isDrawing, setIsDrawing] = useState(false);
-
-    useImperativeHandle(ref, () => canvasRef.current as HTMLCanvasElement);
-
-    const getPointerPosition = (
-      e: React.TouchEvent | React.MouseEvent
-    ): Point => {
-      const canvas = canvasRef.current;
-      if (!canvas) return { x: 0, y: 0 };
-
-      const rect = canvas.getBoundingClientRect();
-      const scaleX = canvas.width / rect.width;
-      const scaleY = canvas.height / rect.height;
-
-      if (e.nativeEvent instanceof TouchEvent) {
-        const touch = e.nativeEvent.touches[0];
-        return {
-          x: (touch.clientX - rect.left) * scaleX,
-          y: (touch.clientY - rect.top) * scaleY,
-        };
-      } else {
-        return {
-          x: (e.nativeEvent.clientX - rect.left) * scaleX,
-          y: (e.nativeEvent.clientY - rect.top) * scaleY,
-        };
-      }
+  useEffect(() => {
+    const handleResize = () => {
+      setViewportWidth(window.innerWidth);
     };
 
-    const startDrawing = (e: React.TouchEvent | React.MouseEvent) => {
-      const point = getPointerPosition(e);
-      setStrokes([...strokes, [point]]);
-      setIsDrawing(true);
+    window.addEventListener("resize", handleResize);
+
+    return () => {
+      window.removeEventListener("resize", handleResize);
     };
+  }, []);
 
-    const draw = (e: React.TouchEvent | React.MouseEvent) => {
-      if (!isDrawing) return;
+  const canvasRef = useRef<HTMLCanvasElement | null>(null);
+  const [strokes, setStrokes] = useState<Array<{ x: number; y: number }[]>>([]);
+  const [redoStack, setRedoStack] = useState<Array<{ x: number; y: number }[]>>(
+    []
+  );
+  const [isDrawing, setIsDrawing] = useState(false);
 
-      const point = getPointerPosition(e);
+  // Ensure we only assign a non-null canvas element
+  useImperativeHandle(ref, () => canvasRef.current as HTMLCanvasElement);
+
+  const getTouchCoords = (e: React.TouchEvent) => {
+    const touch = e.touches[0];
+    const rect = canvasRef.current?.getBoundingClientRect();
+    return {
+      x: touch.clientX - (rect?.left || 0),
+      y: touch.clientY - (rect?.top || 0),
+    };
+  };
+
+  const startDrawing = (e: React.MouseEvent | React.TouchEvent) => {
+    let coords;
+    if ("touches" in e) {
+      coords = getTouchCoords(e);
+    } else {
+      const { offsetX, offsetY } = e.nativeEvent;
+      coords = { x: offsetX, y: offsetY };
+    }
+
+    setStrokes([...strokes, [coords]]);
+    setIsDrawing(true);
+  };
+
+  const draw = (e: React.MouseEvent | React.TouchEvent) => {
+    if (!isDrawing) return;
+
+    let coords;
+    if ("touches" in e) {
+      coords = getTouchCoords(e);
+    } else {
+      const { offsetX, offsetY } = e.nativeEvent;
+      coords = { x: offsetX, y: offsetY };
+    }
+
+    const newStrokes = [...strokes];
+    const currentStroke = newStrokes.pop();
+    if (currentStroke) {
+      currentStroke.push(coords);
+      setStrokes([...newStrokes, currentStroke]);
+    }
+  };
+
+  const stopDrawing = () => {
+    setIsDrawing(false);
+    setRedoStack([]);
+  };
+
+  const undo = () => {
+    if (strokes.length > 0) {
       const newStrokes = [...strokes];
-      const currentStroke = newStrokes[newStrokes.length - 1];
-      currentStroke.push(point);
-      setStrokes(newStrokes);
-    };
-
-    const stopDrawing = () => {
-      setIsDrawing(false);
-      setRedoStack([]);
-    };
-
-    const undo = () => {
-      if (strokes.length > 0) {
-        const newStrokes = [...strokes];
-        const lastStroke = newStrokes.pop();
-        if (lastStroke) {
-          setRedoStack([...redoStack, lastStroke]);
-          setStrokes(newStrokes);
-        }
+      const lastStroke = newStrokes.pop();
+      if (lastStroke) {
+        setRedoStack([...redoStack, lastStroke]);
+        setStrokes(newStrokes);
       }
-    };
+    }
+  };
 
-    const redo = () => {
-      if (redoStack.length > 0) {
-        const newRedoStack = [...redoStack];
-        const lastUndoStroke = newRedoStack.pop();
-        if (lastUndoStroke) {
-          setStrokes([...strokes, lastUndoStroke]);
-          setRedoStack(newRedoStack);
-        }
+  const redo = () => {
+    if (redoStack.length > 0) {
+      const newRedoStack = [...redoStack];
+      const lastUndoStroke = newRedoStack.pop();
+      if (lastUndoStroke) {
+        setStrokes([...strokes, lastUndoStroke]);
+        setRedoStack(newRedoStack);
       }
-    };
+    }
+  };
 
-    const drawStrokes = () => {
-      const canvas = canvasRef.current;
-      if (canvas) {
-        const context = canvas.getContext("2d");
-        if (context) {
-          context.clearRect(0, 0, canvas.width, canvas.height);
-          context.lineWidth = 2;
-          context.lineCap = "round";
-          context.lineJoin = "round";
-          context.strokeStyle = "#000";
+  const drawStrokes = () => {
+    const canvas = canvasRef.current;
+    if (canvas) {
+      const context = canvas.getContext("2d");
+      if (context) {
+        context.clearRect(0, 0, canvas.width, canvas.height);
+        context.lineWidth = 4;
+        context.lineCap = "round";
+        context.lineJoin = "round";
+        context.strokeStyle = "#000";
 
-          strokes.forEach((stroke) => {
-            context.beginPath();
-            context.moveTo(stroke[0].x, stroke[0].y);
-            stroke.forEach((point) => {
-              context.lineTo(point.x, point.y);
-            });
-            context.stroke();
+        strokes.forEach((stroke) => {
+          context.beginPath();
+          context.moveTo(stroke[0].x, stroke[0].y);
+          stroke.forEach((point) => {
+            context.lineTo(point.x, point.y);
           });
-        }
-      }
-    };
-
-    useEffect(() => {
-      drawStrokes();
-    }, [strokes]);
-
-    useEffect(() => {
-      const canvas = canvasRef.current;
-      if (canvas) {
-        const handleTouchStart = (e: TouchEvent) => {
-          e.preventDefault();
-          startDrawing(e as unknown as React.TouchEvent);
-        };
-        const handleTouchMove = (e: TouchEvent) => {
-          e.preventDefault();
-          draw(e as unknown as React.TouchEvent);
-        };
-        const handleTouchEnd = () => stopDrawing();
-
-        canvas.addEventListener("touchstart", handleTouchStart, {
-          passive: false,
+          context.stroke();
         });
-        canvas.addEventListener("touchmove", handleTouchMove, {
-          passive: false,
-        });
-        canvas.addEventListener("touchend", handleTouchEnd);
-        canvas.addEventListener("touchcancel", handleTouchEnd);
-
-        return () => {
-          canvas.removeEventListener("touchstart", handleTouchStart);
-          canvas.removeEventListener("touchmove", handleTouchMove);
-          canvas.removeEventListener("touchend", handleTouchEnd);
-          canvas.removeEventListener("touchcancel", handleTouchEnd);
-        };
       }
-    }, [isDrawing]);
+    }
+  };
 
-    return (
-      <div
-        className="signature-container"
-        style={{ width: containerWidth, height: containerHeight }}
-      >
-        <canvas
-          ref={canvasRef}
-          width={containerWidth}
-          height={containerHeight}
-          className="signature-canvas"
-          onMouseDown={startDrawing}
-          onMouseMove={draw}
-          onMouseUp={stopDrawing}
-          onMouseLeave={stopDrawing}
-        />
-        <div className="signature-controls">
-          <button
-            className="undo-button"
-            onClick={undo}
-            disabled={strokes.length === 0}
+  useEffect(() => {
+    drawStrokes();
+  }, [strokes]);
+
+  return (
+    <div className="signature-container no-border">
+      <canvas
+        ref={canvasRef}
+        onMouseDown={startDrawing}
+        onMouseMove={draw}
+        onMouseUp={stopDrawing}
+        onMouseLeave={stopDrawing}
+        onTouchStart={startDrawing}
+        onTouchMove={draw}
+        onTouchEnd={stopDrawing}
+        width={viewportWidth > 767 ? 400 : 300}
+        height={100}
+        className="signature-canvas"
+      />
+      <div className="no-border">
+        <button
+          className="undo-button"
+          onClick={undo}
+          disabled={strokes.length === 0}
+          style={{ margin: "10px", padding: "5px" }}
+        >
+          <svg
+            width="24"
+            height="24"
+            viewBox="0 0 24 24"
+            fill="none"
+            xmlns="http://www.w3.org/2000/svg"
           >
-            Undo
-          </button>
-          <button
-            className="redo-button"
-            onClick={redo}
-            disabled={redoStack.length === 0}
+            <path
+              d="M14 19l-7-7 7-7"
+              stroke="currentColor"
+              strokeWidth="2"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+            />
+          </svg>
+        </button>
+        <button
+          className="redo-button"
+          onClick={redo}
+          disabled={redoStack.length === 0}
+          style={{ margin: "10px", padding: "5px" }}
+        >
+          <svg
+            width="24"
+            height="24"
+            viewBox="0 0 24 24"
+            fill="none"
+            xmlns="http://www.w3.org/2000/svg"
           >
-            Redo
-          </button>
-        </div>
+            <path
+              d="M10 5l7 7-7 7"
+              stroke="currentColor"
+              strokeWidth="2"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+            />
+          </svg>
+        </button>
       </div>
-    );
-  }
-);
+    </div>
+  );
+});
 
 export default SignatureBox;
