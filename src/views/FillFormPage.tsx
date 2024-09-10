@@ -99,7 +99,7 @@ function GenerateForm() {
     try {
       isLoading(true);
       const response = await fetch(
-        `${import.meta.env.VITE_API_URL}/docs/add-signatures/`,
+        `https://ali5u9l6fk.execute-api.us-east-1.amazonaws.com/prod/docs/add-signatures/`,
         {
           method: "POST",
           headers: {
@@ -130,11 +130,12 @@ function GenerateForm() {
     if (buyerCount == 1) {
       try {
         const response = await fetch(
-          `${import.meta.env.VITE_API_URL}/docs/generate/`,
+          `https://ali5u9l6fk.execute-api.us-east-1.amazonaws.com/prod/docs/generate/`,
           {
             method: "POST",
             headers: {
               "Content-Type": "application/json",
+              'Accept': "application/pdf", // prettier-ignore
             },
             body: JSON.stringify({
               form_id: id,
@@ -171,11 +172,12 @@ function GenerateForm() {
     } else {
       try {
         const response = await fetch(
-          `${import.meta.env.VITE_API_URL}/docs/generate/`,
+          `https://ali5u9l6fk.execute-api.us-east-1.amazonaws.com/prod/docs/generate/`,
           {
             method: "POST",
             headers: {
               "Content-Type": "application/json",
+              'Accept': "application/pdf", // prettier-ignore
             },
             body: JSON.stringify({
               form_id: id,

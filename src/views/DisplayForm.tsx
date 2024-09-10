@@ -24,7 +24,7 @@ function DisplayForm({ session }: props) {
   const archive = async (id: string) => {
     try {
       const response = await fetch(
-        `${import.meta.env.VITE_API_URL}/docs/archive/`,
+        `https://ali5u9l6fk.execute-api.us-east-1.amazonaws.com/prod/docs/archive/`,
         {
           method: "POST",
           headers: {
@@ -56,13 +56,17 @@ function DisplayForm({ session }: props) {
         if (check == false) {
           navigate("/page-not-found");
         }
-        const response = await fetch(`${import.meta.env.VITE_API_URL}/doc/`, {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({ id: id }),
-        });
+        const response = await fetch(
+          `https://ali5u9l6fk.execute-api.us-east-1.amazonaws.com/prod/doc/`,
+          {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+              'Accept': "application/pdf", // prettier-ignore
+            },
+            body: JSON.stringify({ id: id }),
+          }
+        );
 
         if (response.ok) {
           const data = await response.blob();
@@ -89,7 +93,7 @@ function DisplayForm({ session }: props) {
 
     // const getPDF = async () => {
     //   try {
-    //     const response = await fetch(`${import.meta.env.VITE_API_URL}/doc/`, {
+    //     const response = await fetch(`https://ali5u9l6fk.execute-api.us-east-1.amazonaws.com/prod/doc/`, {
     //       method: "POST",
     //       headers: {
     //         "Content-Type": "application/json",

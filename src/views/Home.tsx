@@ -31,7 +31,7 @@ function Home({ session }: props) {
     isLoading(!loading);
     try {
       const response = await fetch(
-        `${import.meta.env.VITE_API_URL}/docs/archive/`,
+        `https://ali5u9l6fk.execute-api.us-east-1.amazonaws.com/prod/docs/archive/`,
         {
           method: "POST",
           headers: {
@@ -64,13 +64,16 @@ function Home({ session }: props) {
   useEffect(() => {
     const fetchUserData = async () => {
       try {
-        const response = await fetch(`${import.meta.env.VITE_API_URL}/user/`, {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({ email: session }),
-        });
+        const response = await fetch(
+          `https://ali5u9l6fk.execute-api.us-east-1.amazonaws.com/prod/user/`,
+          {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify({ email: session }),
+          }
+        );
 
         if (response.ok) {
           const data = await response.json();
@@ -85,13 +88,16 @@ function Home({ session }: props) {
 
     const fetchData = async () => {
       try {
-        const response = await fetch(`${import.meta.env.VITE_API_URL}/docs/`, {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({ email: session }),
-        });
+        const response = await fetch(
+          `https://ali5u9l6fk.execute-api.us-east-1.amazonaws.com/prod/docs/`,
+          {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify({ email: session }),
+          }
+        );
 
         if (response.ok) {
           const data = await response.json();

@@ -29,7 +29,7 @@ const SignupForm: React.FC = () => {
   const createUser = async () => {
     try {
       const response = await fetch(
-        `${import.meta.env.VITE_API_URL}/user/create/`,
+        `https://ali5u9l6fk.execute-api.us-east-1.amazonaws.com/prod/user/create/`,
         {
           method: "POST",
           headers: {

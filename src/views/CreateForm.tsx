@@ -87,7 +87,7 @@ function CreateForm({ session }: props) {
     var percentString: string = percent.toString();
     try {
       const response = await fetch(
-        `${import.meta.env.VITE_API_URL}/docs/create/`,
+        `https://ali5u9l6fk.execute-api.us-east-1.amazonaws.com/prod/docs/create/`,
         {
           method: "POST",
           headers: {

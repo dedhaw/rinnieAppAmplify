@@ -21,7 +21,7 @@ function Archive({ session }: props) {
     isLoading(!loading);
     try {
       const response = await fetch(
-        `${import.meta.env.VITE_API_URL}/docs/delete/`,
+        `https://ali5u9l6fk.execute-api.us-east-1.amazonaws.com/prod/docs/delete/`,
         {
           method: "POST",
           headers: {
@@ -47,7 +47,7 @@ function Archive({ session }: props) {
     isLoading(!loading);
     try {
       const response = await fetch(
-        `${import.meta.env.VITE_API_URL}/docs/unarchive/`,
+        `https://ali5u9l6fk.execute-api.us-east-1.amazonaws.com/prod/docs/unarchive/`,
         {
           method: "POST",
           headers: {
@@ -81,7 +81,7 @@ function Archive({ session }: props) {
     const fetchData = async () => {
       try {
         const response = await fetch(
-          `${import.meta.env.VITE_API_URL}/docs/archives/`,
+          `https://ali5u9l6fk.execute-api.us-east-1.amazonaws.com/prod/docs/archives/`,
           {
             method: "POST",
             headers: {
@@ -147,6 +147,7 @@ function Archive({ session }: props) {
       <h1>
         Archive <FaRegTrashAlt color="#ff7a29" />
       </h1>
+      {console.log("EMail: ", session)}
       {data !== null && loading === false && (
         <>
           {data.length > 0 && <section>{renderData()}</section>}
