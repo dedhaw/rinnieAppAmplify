@@ -89,6 +89,12 @@ function GenerateForm() {
     image2: any = null,
     in2: any = null
   ) => {
+    var name2 = null;
+    var email = null;
+    if (buyerCount == 2) {
+      name2 = firstName2 + " " + lastName2;
+      email = email2;
+    }
     try {
       isLoading(true);
       const response = await fetch(
@@ -104,6 +110,10 @@ function GenerateForm() {
             initials1: in1,
             signature2: image2,
             initials2: in2,
+            buyer1_name: firstName1 + " " + lastName1,
+            buyer1_email: email1,
+            buyer2_name: name2,
+            buyer2_email: email,
           }),
         }
       );
