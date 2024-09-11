@@ -541,13 +541,13 @@ function GenerateForm() {
                 {buyerCount === 2 && (
                   <>
                     <h2>
-                      {firstName2} {lastName2} Signature:
-                    </h2>
-                    <SignatureBox ref={signatureRef2} />
-                    <h2>
                       {firstName2} {lastName2} Initials:
                     </h2>
                     <InitialBox ref={initialRef2} />
+                    <h2>
+                      {firstName2} {lastName2} Signature:
+                    </h2>
+                    <SignatureBox ref={signatureRef2} />
                   </>
                 )}
                 <button
