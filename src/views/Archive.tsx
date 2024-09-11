@@ -3,13 +3,15 @@ import Navbar from "../components/Navbar";
 import "../styles/home.css";
 import { FaCheck } from "react-icons/fa6";
 import { FaRegTrashAlt } from "react-icons/fa";
-interface props {
-  session: any;
-}
+import { useCookies } from "react-cookie";
 import { useNavigate } from "react-router-dom";
 
-function Archive({ session }: props) {
+function Archive() {
   const navigate = useNavigate();
+
+  const [session] = useCookies(["session"]);
+  const [email] = useCookies(["email"]);
+
   const [data, setData] = useState<any>(null);
   const [loading, isLoading] = useState(false);
 
@@ -26,6 +28,7 @@ function Archive({ session }: props) {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
+            "Authorization": "Bearer " + session.session, // prettier-ignore
           },
           body: JSON.stringify({ id: id }),
         }
@@ -52,6 +55,7 @@ function Archive({ session }: props) {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
+            "Authorization": "Bearer " + session.session, // prettier-ignore
           },
           body: JSON.stringify({ id: id }),
         }
@@ -86,8 +90,9 @@ function Archive({ session }: props) {
             method: "POST",
             headers: {
               "Content-Type": "application/json",
+              "Authorization": "Bearer " + session.session, // prettier-ignore
             },
-            body: JSON.stringify({ email: session }),
+            body: JSON.stringify({ email: email.email }),
           }
         );
 
@@ -147,7 +152,6 @@ function Archive({ session }: props) {
       <h1>
         Archive <FaRegTrashAlt color="#ff7a29" />
       </h1>
-      {console.log("EMail: ", session)}
       {data !== null && loading === false && (
         <>
           {data.length > 0 && <section>{renderData()}</section>}

@@ -4,6 +4,7 @@ import { useNavigate, useLocation } from "react-router-dom";
 import Navbar from "../components/Navbar";
 import Modal from "../components/Modal";
 import SignatureBox from "../components/SignatureBox";
+import InitialBox from "../components/InitialsBox";
 import { checkDocEditable } from "../utils/Secure";
 import "../styles/forms.css";
 
@@ -35,16 +36,16 @@ function GenerateForm() {
   const [lastName1, set1LastName] = useState("");
   const [email1, set1Email] = useState("");
   const [phone1, set1Phone] = useState("");
-  const [initials1, set1Initials] = useState("");
 
   const [firstName2, set2FirstName] = useState("");
   const [lastName2, set2LastName] = useState("");
   const [email2, set2Email] = useState("");
   const [phone2, set2Phone] = useState("");
-  const [initials2, set2Initials] = useState("");
 
   const signatureRef1 = useRef<HTMLCanvasElement>(null);
+  const initialRef1 = useRef<HTMLCanvasElement>(null);
   const signatureRef2 = useRef<HTMLCanvasElement>(null);
+  const initialRef2 = useRef<HTMLCanvasElement>(null);
 
   const [viewportWidth, setViewportWidth] = useState(window.innerWidth);
 
@@ -69,20 +70,6 @@ function GenerateForm() {
     };
   }, []);
 
-  useEffect(() => {
-    const newInitials = `${firstName1.charAt(0) || ""}${
-      lastName1.charAt(0) || ""
-    }`.toUpperCase();
-    set1Initials(newInitials);
-  }, [firstName1, lastName1]);
-
-  useEffect(() => {
-    const newInitials = `${firstName2.charAt(0) || ""}${
-      lastName2.charAt(0) || ""
-    }`.toUpperCase();
-    set2Initials(newInitials);
-  }, [firstName2, lastName2]);
-
   const handleBuyerCount = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.value == "One") {
       setBuyers(1);
@@ -95,11 +82,17 @@ function GenerateForm() {
     setStep("signature");
   };
 
-  const addBuyerSigs = async (id: string, image1: any, image2: any = null) => {
+  const addBuyerSigs = async (
+    id: string,
+    image1: any,
+    in1: any,
+    image2: any = null,
+    in2: any = null
+  ) => {
     try {
       isLoading(true);
       const response = await fetch(
-        `https://ali5u9l6fk.execute-api.us-east-1.amazonaws.com/prod/docs/add-signatures/`,
+        `https://rxqpvy2fyd.execute-api.us-east-1.amazonaws.com/prod/docs/add-signatures/`,
         {
           method: "POST",
           headers: {
@@ -108,7 +101,9 @@ function GenerateForm() {
           body: JSON.stringify({
             document_id: id,
             signature1: image1,
+            initials1: in1,
             signature2: image2,
+            initials2: in2,
           }),
         }
       );
@@ -130,7 +125,7 @@ function GenerateForm() {
     if (buyerCount == 1) {
       try {
         const response = await fetch(
-          `https://ali5u9l6fk.execute-api.us-east-1.amazonaws.com/prod/docs/generate/`,
+          `https://rxqpvy2fyd.execute-api.us-east-1.amazonaws.com/prod/docs/generate/`,
           {
             method: "POST",
             headers: {
@@ -141,7 +136,6 @@ function GenerateForm() {
               form_id: id,
               first_name_b1: firstName1,
               last_name_b1: lastName1,
-              initials_b1: initials1,
               email_b1: email1,
               cell_b1: phone1,
             }),
@@ -172,7 +166,7 @@ function GenerateForm() {
     } else {
       try {
         const response = await fetch(
-          `https://ali5u9l6fk.execute-api.us-east-1.amazonaws.com/prod/docs/generate/`,
+          `https://rxqpvy2fyd.execute-api.us-east-1.amazonaws.com/prod/docs/generate/`,
           {
             method: "POST",
             headers: {
@@ -183,12 +177,10 @@ function GenerateForm() {
               form_id: id,
               first_name_b1: firstName1,
               last_name_b1: lastName1,
-              initials_b1: initials1,
               email_b1: email1,
               cell_b1: phone1,
               first_name_b2: firstName2,
               last_name_b2: lastName2,
-              initials_b2: initials2,
               email_b2: email2,
               cell_b2: phone2,
             }),
@@ -225,7 +217,7 @@ function GenerateForm() {
 
   const handleSubmit = (id: string) => {
     isLoading(true);
-    if (signatureRef1.current) {
+    if (signatureRef1.current && initialRef1.current) {
       const canvas = signatureRef1.current;
       const signatureImage1 = canvas.toDataURL("image/png");
 
@@ -233,13 +225,26 @@ function GenerateForm() {
       blankCanvas.width = canvas.width;
       blankCanvas.height = canvas.height;
       const blankImage = blankCanvas.toDataURL("image/png");
+
+      const canvasI = initialRef1.current;
+      const initialsImage1 = canvasI.toDataURL("image/png");
+
+      const blankCanvasI = document.createElement("canvas");
+      blankCanvasI.width = canvasI.width;
+      blankCanvasI.height = canvasI.height;
+      const blankImageI = blankCanvas.toDataURL("image/png");
       var cont = true;
+
       var signatureImage2;
+      var initialsImage2;
       if (buyerCount == 2) {
-        if (signatureRef2.current) {
+        if (signatureRef2.current && initialRef2.current) {
           const canvas2 = signatureRef2.current;
+          const canvasI2 = initialRef2.current;
+
           signatureImage2 = canvas2.toDataURL("image/png");
-          if (signatureImage2 == blankImage) {
+          initialsImage2 = canvasI2.toDataURL("image/png");
+          if (signatureImage2 == blankImage || initialsImage2 == blankImageI) {
             alert("Please fill out all signatures.");
             cont = false;
           }
@@ -247,27 +252,30 @@ function GenerateForm() {
       }
 
       if (cont == true) {
-        if (signatureImage1 == blankImage) {
+        if (signatureImage1 == blankImage || initialsImage1 == blankImageI) {
           alert("Please fill out all signatures.");
         } else {
           console.log("buyers: ", buyerCount);
           if (buyerCount == 1) {
-            addBuyerSigs(id, signatureImage1);
+            addBuyerSigs(id, signatureImage1, initialsImage1);
             console.log("fname: ", firstName1);
             console.log("lname: ", lastName1);
-            console.log("initials: ", initials1);
             console.log("email: ", email1);
             console.log("phone: ", phone1);
           } else if (buyerCount == 2) {
-            addBuyerSigs(id, signatureImage1, signatureImage2);
+            addBuyerSigs(
+              id,
+              signatureImage1,
+              initialsImage1,
+              signatureImage2,
+              initialsImage2
+            );
             console.log("fname: ", firstName1);
             console.log("lname: ", lastName1);
-            console.log("initials: ", initials1);
             console.log("email: ", email1);
             console.log("phone: ", phone1);
             console.log("fname: ", firstName2);
             console.log("lname: ", lastName2);
-            console.log("initials: ", initials2);
             console.log("email: ", email2);
             console.log("phone: ", phone2);
           }
@@ -364,14 +372,6 @@ function GenerateForm() {
                 placeholder="Last Name"
                 required
               />
-              <input
-                type="text"
-                id="initials1"
-                value={initials1}
-                onChange={(e) => set1Initials(e.target.value)}
-                placeholder="Initials"
-                required
-              />
             </div>
             <div className="form-group">
               <input
@@ -413,14 +413,6 @@ function GenerateForm() {
                     value={lastName2}
                     onChange={(e) => set2LastName(e.target.value)}
                     placeholder="Last Name"
-                    required
-                  />
-                  <input
-                    type="text"
-                    id="initials2"
-                    value={initials2}
-                    onChange={(e) => set2Initials(e.target.value)}
-                    placeholder="Initials"
                     required
                   />
                 </div>
@@ -539,6 +531,10 @@ function GenerateForm() {
             {loading === false && (
               <>
                 <h2>
+                  {firstName1} {lastName1} Initials:
+                </h2>
+                <InitialBox ref={initialRef1} />
+                <h2>
                   {firstName1} {lastName1} Signature:
                 </h2>
                 <SignatureBox ref={signatureRef1} />
@@ -548,6 +544,10 @@ function GenerateForm() {
                       {firstName2} {lastName2} Signature:
                     </h2>
                     <SignatureBox ref={signatureRef2} />
+                    <h2>
+                      {firstName2} {lastName2} Initials:
+                    </h2>
+                    <InitialBox ref={initialRef2} />
                   </>
                 )}
                 <button

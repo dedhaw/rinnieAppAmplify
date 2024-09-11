@@ -3,7 +3,9 @@ import { useState, useRef } from "react";
 import "../styles/forms.css";
 import ConfettiAnimation from "../components/ConfettiAnimation";
 import SignatureBox from "../components/SignatureBox";
-import { signUp } from "@aws-amplify/auth";
+import { signUp, confirmSignUp } from "@aws-amplify/auth";
+
+import VerificationInput from "../components/VerificationInput";
 
 const SignupForm: React.FC = () => {
   const [step, setStep] = useState("user");
@@ -23,50 +25,88 @@ const SignupForm: React.FC = () => {
   const [confirmPassword, setConfirmPassword] = useState("");
   const [showConfetti, setShowConfetti] = useState(false);
 
+  const [verificationCode, setVerificationCode] = useState<string>("");
+
+  const handleCodeChange = (code: string) => {
+    setVerificationCode(code);
+    console.log("Verification Code: ", code);
+  };
+
   const [error, setError] = useState<boolean>(false);
   const [successMessage, setSuccessMessage] = useState<string | null>(null);
 
   const createUser = async () => {
     try {
-      const response = await fetch(
-        `https://ali5u9l6fk.execute-api.us-east-1.amazonaws.com/prod/user/create/`,
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({
-            first_name: firstName,
-            last_name: lastName,
-            email: email,
-            cell: phone,
-            license: licenseNum,
-            signature: signatureData,
-            brokerage_name: brokerage,
-            brokerage_license: brokerageNum,
-          }),
-        }
-      );
+      const response = await fetch(`http://127.0.0.1:8000/user/create/`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          first_name: firstName,
+          last_name: lastName,
+          email: email,
+          cell: phone,
+          license: licenseNum,
+          signature: signatureData,
+          brokerage_name: brokerage,
+          brokerage_license: brokerageNum,
+        }),
+      });
 
       if (response.ok) {
         console.log("Broker Created");
+        setError(false);
       } else {
         console.error("Failed to create broker");
+        setStep("error");
+        setSuccessMessage("This user has already signed up!");
+        setError(true);
       }
     } catch (error) {
       console.error("Error fetching data:", error);
+      setStep("error");
+      setSuccessMessage("An unexpected error occurred. Please try again.");
+      setError(true);
     }
   };
 
   const handleSignUp = async () => {
     try {
-      await signUp({
+      const response = await signUp({
         username: email,
         password: password,
       });
+
+      if (response.nextStep.signUpStep == "CONFIRM_SIGN_UP") {
+        setStep("verify");
+      } else {
+        setStep("success");
+        setSuccessMessage(
+          "Sign-up successful! Please check your email for a confirmation link."
+        );
+      }
     } catch (error) {
       setError(true);
+      console.log("AWS ERROR ", error);
+      setStep("error");
       setSuccessMessage("An unexpected error occurred. Please try again.");
+    }
+  };
+
+  const handleVerification = async () => {
+    try {
+      await confirmSignUp({
+        username: email,
+        confirmationCode: verificationCode,
+      });
+      setSuccessMessage("Sign-up successful! You can now log in.");
+      setStep("success");
+      triggerConfetti();
+    } catch (error) {
+      setError(true);
+      console.log("Confirmation error: ", error);
+      setSuccessMessage("Invalid code. Please try again.");
     }
   };
 
@@ -109,15 +149,11 @@ const SignupForm: React.FC = () => {
 
           console.log(signatureData);
 
-          handleSignUp();
-
-          if (error == true) {
-            alert(successMessage);
-          } else if (error == false) {
-            createUser();
-            console.log(error);
-            setStep("success");
-            triggerConfetti();
+          createUser();
+          if (error == false) {
+            handleSignUp();
+          } else {
+            console.log("error");
           }
         } else {
           alert("Passwords did not match");
@@ -125,13 +161,15 @@ const SignupForm: React.FC = () => {
       } else {
         alert("Please fill out all fields.");
       }
+    } else if (step === "verify") {
+      handleVerification();
     }
   };
 
   const prevStep = () => {
-    if (step === "agent") {
+    if (step === "agent" || step === "verify") {
       setStep("user");
-    } else {
+    } else if (step === "password") {
       setStep("agent");
     }
   };
@@ -262,10 +300,6 @@ const SignupForm: React.FC = () => {
                   required
                 />
               </div>
-              {/* <div>
-                <img src={signatureData} />
-                {console.log(signatureData)}
-              </div> */}
               <div className="button-container">
                 <button
                   type="button"
@@ -280,10 +314,34 @@ const SignupForm: React.FC = () => {
               </div>
             </>
           )}
+          {step === "verify" && (
+            <>
+              <div>
+                <h2>Enter Verification Code</h2>
+                <p>
+                  An email was sent to you containing a six digit code. Please
+                  Enter it below!
+                </p>
+                <VerificationInput onChangeCode={handleCodeChange} />
+                <div className="button-container">
+                  <button type="submit" className="submit-button">
+                    Submit
+                  </button>
+                </div>
+              </div>
+            </>
+          )}
           {step === "success" && (
             <>
               <ConfettiAnimation run={showConfetti} />
               <p style={{ textAlign: "center" }}>{successMessage}</p>
+            </>
+          )}
+          {step === "error" && (
+            <>
+              <p style={{ textAlign: "center", color: "red" }}>
+                {successMessage}
+              </p>
             </>
           )}
         </form>

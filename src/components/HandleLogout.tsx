@@ -1,15 +1,19 @@
 import { useEffect } from "react";
 import { Navigate } from "react-router-dom";
 import { signOut } from "@aws-amplify/auth";
+import { useCookies } from "react-cookie";
 
-interface props {
-  setSession: (session: any) => void;
-}
-
-function Loggout({ setSession }: props) {
+function Loggout() {
+  const [session, setSession, removeSession] = useCookies(["session"]);
+  const [email, setEmail, removeEmail] = useCookies(["email"]);
+  session;
+  email;
+  setSession;
+  setEmail;
   async function signOutUser(): Promise<void> {
     await signOut();
-    setSession(null);
+    removeSession("session");
+    removeEmail("email");
     console.log("User signed out successfully");
   }
 

@@ -1,10 +1,11 @@
 import { useEffect, useState } from "react";
 import Navbar from "../components/Navbar";
-interface props {
-  session: any;
-}
+import { useCookies } from "react-cookie";
 
-function Profile({ session }: props) {
+function Profile() {
+  const [session] = useCookies(["session"]);
+  const [email] = useCookies(["email"]);
+
   const [user, setUserData] = useState<any>(null);
 
   useEffect(() => {
@@ -16,8 +17,9 @@ function Profile({ session }: props) {
             method: "POST",
             headers: {
               "Content-Type": "application/json",
+              "Authorization": "Bearer " + session.session, // prettier-ignore
             },
-            body: JSON.stringify({ email: session }),
+            body: JSON.stringify({ email: email.email }),
           }
         );
 

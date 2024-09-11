@@ -1,5 +1,5 @@
-import { useState, useEffect } from "react";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import { useCookies } from "react-cookie";
 
 import Home from "./views/Home";
 import CreateForm from "./views/CreateForm";
@@ -22,25 +22,36 @@ import awsExports from "./aws-exports";
 // import { fetchAuthSession } from "@aws-amplify/auth";
 import Loggout from "./components/HandleLogout";
 import SignupForm from "./views/Signup";
+
 Amplify.configure(awsExports);
 
 function App() {
-  const [session, setSession] = useState<any>(() => {
-    const savedSession = localStorage.getItem("session");
-    return savedSession ? JSON.parse(savedSession) : null;
-  });
+  // const [session, setSession] = useState<AuthSession | null>(() => {
+  //   const savedSession = localStorage.getItem("session");
+  //   return savedSession ? JSON.parse(savedSession) : null;
+  // });
 
-  useEffect(() => {
-    if (session) {
-      localStorage.setItem("session", JSON.stringify(session));
-    } else {
-      localStorage.removeItem("session");
-    }
-  }, [session]);
+  // useEffect(() => {
+  //   if (session) {
+  //     localStorage.setItem("session", JSON.stringify(session));
+  //   } else {
+  //     localStorage.removeItem("session");
+  //   }
+  // }, [session]);
 
-  const handleSetSession = (newSession: any) => {
-    setSession(newSession);
-  };
+  // const handleSetSession = (newSession: AuthSession | null) => {
+  //   setSession(newSession);
+  // };
+
+  // async function getUser() {
+  //   const cognitoSession = await fetchAuthSession();
+  //   handleSetSession(cognitoSession);
+  // }
+
+  // getUser();
+
+  const [cookies] = useCookies(["session"]);
+  const session = cookies.session || null;
 
   return (
     <Router>
@@ -54,30 +65,18 @@ function App() {
 
         {session && (
           <>
-            <Route path="/" element={<Home session={session} />} />
-            <Route
-              path="/create-form/"
-              element={<CreateForm session={session} />}
-            />
-            <Route path="/archive/" element={<Archive session={session} />} />
-            <Route path="/profile/" element={<Profile session={session} />} />
-            <Route
-              path="/email-form/"
-              element={<EmailForm session={session} />}
-            />
-            <Route path="/form/" element={<DisplayForm session={session} />} />
+            <Route path="/" element={<Home />} />
+            <Route path="/create-form/" element={<CreateForm />} />
+            <Route path="/archive/" element={<Archive />} />
+            <Route path="/profile/" element={<Profile />} />
+            <Route path="/email-form/" element={<EmailForm />} />
+            <Route path="/form/" element={<DisplayForm />} />
             <Route path="/landing/" element={<Landing />} />
           </>
         )}
 
-        <Route
-          path="/login/"
-          element={<LoginForm setSession={handleSetSession} />}
-        />
-        <Route
-          path="/logout/"
-          element={<Loggout setSession={handleSetSession} />}
-        />
+        <Route path="/login/" element={<LoginForm />} />
+        <Route path="/logout/" element={<Loggout />} />
         <Route path="/signup/" element={<SignupForm />} />
 
         <Route path="/fill-form/" element={<GenerateForm />} />

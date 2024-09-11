@@ -4,13 +4,14 @@ import Navbar from "../components/Navbar";
 import "../styles/home.css";
 import { PiHandWavingBold } from "react-icons/pi";
 import { IoClose } from "react-icons/io5";
+import { useCookies } from "react-cookie";
 
-interface props {
-  session: any;
-}
-
-function Home({ session }: props) {
+function Home() {
   const navigate = useNavigate();
+
+  const [session] = useCookies(["session"]);
+  const [email] = useCookies(["email"]);
+
   const [userData, setUserData] = useState<any>(null);
   const [data, setData] = useState<any>(null);
   const [loading, isLoading] = useState(false);
@@ -36,6 +37,7 @@ function Home({ session }: props) {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
+            "Authorization": "Bearer " + session.session, // prettier-ignore
           },
           body: JSON.stringify({ id: id }),
         }
@@ -70,8 +72,11 @@ function Home({ session }: props) {
             method: "POST",
             headers: {
               "Content-Type": "application/json",
+              "Authorization": "Bearer " + session.session, // prettier-ignore
             },
-            body: JSON.stringify({ email: session }),
+            body: JSON.stringify({
+              email: email.email,
+            }),
           }
         );
 
@@ -94,8 +99,11 @@ function Home({ session }: props) {
             method: "POST",
             headers: {
               "Content-Type": "application/json",
+              "Authorization": "Bearer " + session.session, // prettier-ignore
             },
-            body: JSON.stringify({ email: session }),
+            body: JSON.stringify({
+              email: email.email,
+            }),
           }
         );
 
@@ -133,7 +141,6 @@ function Home({ session }: props) {
         title += item[4];
       }
 
-      console.log(item[3]);
       if (item[3] == false) {
         if (item[2] == false) {
           return (

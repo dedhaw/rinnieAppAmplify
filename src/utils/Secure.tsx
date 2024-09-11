@@ -1,7 +1,7 @@
-export const checkUserDocAccess = async (email: any, doc_id: string) => {
+export const checkUserDocAccess = async (email: string, doc_id: string) => {
   try {
     const response = await fetch(
-      `${import.meta.env.VITE_API_URL}/secure/check-user-access/`,
+      `https://ali5u9l6fk.execute-api.us-east-1.amazonaws.com/prod/secure/check-user-access/`,
       {
         method: "POST",
         headers: {
@@ -25,7 +25,7 @@ export const checkUserDocAccess = async (email: any, doc_id: string) => {
 export const checkDocEditable = async (doc_id: string) => {
   try {
     const response = await fetch(
-      `${import.meta.env.VITE_API_URL}/secure/check-doc-edit/`,
+      `https://rxqpvy2fyd.execute-api.us-east-1.amazonaws.com/prod/secure/check-doc-edit/`,
       {
         method: "POST",
         headers: {

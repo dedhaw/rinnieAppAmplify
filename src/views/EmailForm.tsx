@@ -1,16 +1,10 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-
 import Navbar from "../components/Navbar";
-
 import { MdEmail } from "react-icons/md";
 import "../styles/forms.css";
-interface props {
-  session: any;
-}
 
-function EmailForm({ session }: props) {
-  session;
+function EmailForm() {
   const navigate = useNavigate();
   const [email, setEmail] = useState("");
   const [submited, setSubmit] = useState(false);

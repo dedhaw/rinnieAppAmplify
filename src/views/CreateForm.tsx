@@ -4,12 +4,9 @@ import Navbar from "../components/Navbar";
 import styled from "styled-components";
 import "../styles/forms.css";
 import { useLoadScript, StandaloneSearchBox } from "@react-google-maps/api";
+import { useCookies } from "react-cookie";
 
 const libraries: any = ["places", "localContext"];
-
-interface props {
-  session: any;
-}
 
 const Slider = styled.input.attrs({
   type: "range",
@@ -36,8 +33,12 @@ const Slider = styled.input.attrs({
   }
 `;
 
-function CreateForm({ session }: props) {
+function CreateForm() {
   const navigate = useNavigate();
+
+  const [session] = useCookies(["session"]);
+  const [email] = useCookies(["email"]);
+
   const [loading, isLoading] = useState(false);
 
   const [name, setName] = useState("");
@@ -92,9 +93,10 @@ function CreateForm({ session }: props) {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
+            "Authorization": "Bearer " + session.session, // prettier-ignore
           },
           body: JSON.stringify({
-            email: session,
+            email: email.email,
             doc_type: "Form 41",
             doc_name: name,
             area: area,

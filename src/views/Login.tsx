@@ -4,16 +4,17 @@ import { useNavigate } from "react-router-dom";
 import "../styles/forms.css";
 import { signIn } from "@aws-amplify/auth";
 import { fetchAuthSession } from "@aws-amplify/auth";
+import { useCookies } from "react-cookie";
 
-interface props {
-  setSession: (session: any) => void;
-}
-
-const LoginForm: React.FC<props> = ({ setSession }) => {
+const LoginForm: React.FC = () => {
   const navigate = useNavigate();
+  const [session, setSession] = useCookies(["session"]);
+  const [cEmail, setCEmail] = useCookies(["email"]);
   const [loading, isLoading] = useState(false);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  session;
+  cEmail;
 
   async function signInUser(email: string, password: string) {
     isLoading(true);
@@ -23,12 +24,19 @@ const LoginForm: React.FC<props> = ({ setSession }) => {
 
     console.log("After getting session");
 
-    const idToken = cognitoSession.tokens?.idToken || " ";
-    const payloadEmail = cognitoSession.tokens?.idToken?.payload.email;
+    // const idToken = cognitoSession.tokens?.idToken || " ";
+    // const payloadEmail = cognitoSession.tokens?.idToken?.payload.email;
 
-    const idTokenString: string = idToken.toString();
-    idTokenString;
-    setSession(payloadEmail);
+    // const idTokenString: string = idToken.toString();
+    // idTokenString;
+    setSession("session", cognitoSession.tokens?.idToken?.toString(), {
+      path: "/",
+      maxAge: 3600,
+    });
+    setCEmail("email", cognitoSession.tokens?.idToken?.payload.email, {
+      path: "/",
+      maxAge: 3600,
+    });
   }
 
   const handleSubmit = (e: React.FormEvent) => {

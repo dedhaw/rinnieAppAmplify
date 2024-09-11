@@ -4,13 +4,15 @@ import Navbar from "../components/Navbar";
 import "../styles/forms.css";
 import DocViewer, { DocViewerRenderers } from "@cyntler/react-doc-viewer";
 import "@cyntler/react-doc-viewer/dist/index.css";
-interface props {
-  session: any;
-}
+import { useCookies } from "react-cookie";
 import { checkUserDocAccess } from "../utils/Secure";
 
-function DisplayForm({ session }: props) {
+function DisplayForm() {
   const navigate = useNavigate();
+
+  const [session] = useCookies(["session"]);
+  const [email] = useCookies(["email"]);
+
   const location = useLocation();
   const queryParams = new URLSearchParams(location.search);
   const id = queryParams.get("id") || "";
@@ -29,6 +31,7 @@ function DisplayForm({ session }: props) {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
+            "Authorization": "Bearer " + session.session, // prettier-ignore
           },
           body: JSON.stringify({ id: id }),
         }
@@ -52,7 +55,7 @@ function DisplayForm({ session }: props) {
 
     const fetchData = async () => {
       try {
-        const check = await checkUserDocAccess(session, id);
+        const check = await checkUserDocAccess(email.email, id);
         if (check == false) {
           navigate("/page-not-found");
         }
@@ -62,6 +65,7 @@ function DisplayForm({ session }: props) {
             method: "POST",
             headers: {
               "Content-Type": "application/json",
+              "Authorization": "Bearer " + session.session, // prettier-ignore
               'Accept': "application/pdf", // prettier-ignore
             },
             body: JSON.stringify({ id: id }),
@@ -97,6 +101,7 @@ function DisplayForm({ session }: props) {
     //       method: "POST",
     //       headers: {
     //         "Content-Type": "application/json",
+    //         "Authorization": "Bearer " + session.session, // prettier-ignore
     //       },
     //       body: JSON.stringify({ id: id }),
     //     });
