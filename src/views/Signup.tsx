@@ -37,22 +37,25 @@ const SignupForm: React.FC = () => {
 
   const createUser = async () => {
     try {
-      const response = await fetch(`http://127.0.0.1:8000/user/create/`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          first_name: firstName,
-          last_name: lastName,
-          email: email,
-          cell: phone,
-          license: licenseNum,
-          signature: signatureData,
-          brokerage_name: brokerage,
-          brokerage_license: brokerageNum,
-        }),
-      });
+      const response = await fetch(
+        `https://l9cdcbusi1.execute-api.us-east-1.amazonaws.com/prod/user/create/`,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            first_name: firstName,
+            last_name: lastName,
+            email: email,
+            cell: phone,
+            license: licenseNum,
+            signature: signatureData,
+            brokerage_name: brokerage,
+            brokerage_license: brokerageNum,
+          }),
+        }
+      );
 
       if (response.ok) {
         console.log("Broker Created");

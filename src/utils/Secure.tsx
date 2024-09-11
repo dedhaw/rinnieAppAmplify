@@ -25,7 +25,7 @@ export const checkUserDocAccess = async (email: string, doc_id: string) => {
 export const checkDocEditable = async (doc_id: string) => {
   try {
     const response = await fetch(
-      `https://rxqpvy2fyd.execute-api.us-east-1.amazonaws.com/prod/secure/check-doc-edit/`,
+      `https://l9cdcbusi1.execute-api.us-east-1.amazonaws.com/prod/secure/check-doc-edit/`,
       {
         method: "POST",
         headers: {

@@ -98,7 +98,7 @@ function GenerateForm() {
     try {
       isLoading(true);
       const response = await fetch(
-        `https://rxqpvy2fyd.execute-api.us-east-1.amazonaws.com/prod/docs/add-signatures/`,
+        `https://l9cdcbusi1.execute-api.us-east-1.amazonaws.com/prod/docs/add-signatures/`,
         {
           method: "POST",
           headers: {
@@ -135,7 +135,7 @@ function GenerateForm() {
     if (buyerCount == 1) {
       try {
         const response = await fetch(
-          `https://rxqpvy2fyd.execute-api.us-east-1.amazonaws.com/prod/docs/generate/`,
+          `https://l9cdcbusi1.execute-api.us-east-1.amazonaws.com/prod/docs/generate/`,
           {
             method: "POST",
             headers: {
@@ -176,7 +176,7 @@ function GenerateForm() {
     } else {
       try {
         const response = await fetch(
-          `https://rxqpvy2fyd.execute-api.us-east-1.amazonaws.com/prod/docs/generate/`,
+          `https://l9cdcbusi1.execute-api.us-east-1.amazonaws.com/prod/docs/generate/`,
           {
             method: "POST",
             headers: {
