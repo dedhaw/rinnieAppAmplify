@@ -493,6 +493,7 @@ function GenerateForm() {
                     </p>
                     <div className="doc-container no-border ">
                       <DocViewer
+                        key={Math.random()}
                         documents={docs}
                         pluginRenderers={DocViewerRenderers}
                         theme={{
@@ -595,6 +596,7 @@ function GenerateForm() {
           >
             {loading == false && (
               <DocViewer
+                key={Math.random()}
                 documents={docs}
                 pluginRenderers={DocViewerRenderers}
                 theme={{
