@@ -19,7 +19,7 @@ const LoginForm: React.FC = () => {
   async function signInUser(email: string, password: string) {
     isLoading(true);
     const login = await signIn({ username: email, password: password });
-    console.log("login token", login);
+    login;
     const cognitoSession = await fetchAuthSession();
 
     console.log("After getting session");

@@ -10,7 +10,9 @@ import "../styles/forms.css";
 
 import DocViewer, { DocViewerRenderers } from "@cyntler/react-doc-viewer";
 
+import { useCookies } from "react-cookie";
 function GenerateForm() {
+  const [session] = useCookies(["session"]);
   const navigate = useNavigate();
   const location = useLocation();
   const queryParams = new URLSearchParams(location.search);
@@ -141,6 +143,7 @@ function GenerateForm() {
             headers: {
               "Content-Type": "application/json",
               'Accept': "application/pdf", // prettier-ignore
+              "Authorization": "Bearer " + session.session, // prettier-ignore
             },
             body: JSON.stringify({
               form_id: id,
