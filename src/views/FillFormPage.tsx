@@ -337,7 +337,7 @@ function GenerateForm() {
   return (
     <>
       <Navbar pageType="none" />
-      <h1>Buyer Disclosure Form</h1>
+      <h1>Buyer Brokerage Agreement</h1>
       <section style={{ margin: "0px, auto", textAlign: "center" }}>
         {step === "info" && (
           <>

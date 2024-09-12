@@ -169,6 +169,11 @@ function Home() {
       if (form == "Form 41") {
         title = "Buyer Brokerage Agreement";
       }
+      if (item[4] != "") {
+        title += " | ";
+        title += item[4];
+      }
+
       if (item[3] == false) {
         if (item[2] == true) {
           return (
