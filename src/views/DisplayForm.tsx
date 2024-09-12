@@ -199,7 +199,6 @@ function DisplayForm() {
           }}
         >
           <DocViewer
-            key={Math.random()}
             documents={docs}
             pluginRenderers={DocViewerRenderers}
             theme={{
