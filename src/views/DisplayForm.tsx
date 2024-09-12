@@ -195,7 +195,12 @@ function DisplayForm() {
               )}
               {isIpad() && (
                 <iframe
-                  src={url + "#toolbar=0"}
+                  src={
+                    "http://docs.google.com/gview?" +
+                    url +
+                    "&embedded=true" +
+                    "#toolbar=0&navpanes=0&scrollbar=0"
+                  }
                   title="PDF Viewer"
                   width="80%"
                   height="600px"
@@ -241,7 +246,12 @@ function DisplayForm() {
           )}
           {isIpad() && (
             <iframe
-              src={url + "#toolbar=0"}
+              src={
+                "http://docs.google.com/gview?" +
+                url +
+                "&embedded=true" +
+                "#toolbar=0&navpanes=0&scrollbar=0"
+              }
               title="PDF Viewer"
               width="80%"
               height="600px"
