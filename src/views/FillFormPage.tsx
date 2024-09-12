@@ -7,6 +7,7 @@ import SignatureBox from "../components/SignatureBox";
 import InitialBox from "../components/InitialsBox";
 import { checkDocEditable } from "../utils/Secure";
 import "../styles/forms.css";
+import "../styles/pdf.css";
 
 import DocViewer, { DocViewerRenderers } from "@cyntler/react-doc-viewer";
 
@@ -322,18 +323,6 @@ function GenerateForm() {
     return () => clearInterval(interval);
   }, []);
 
-  /* @vite-ignore */
-  function useRouteCss(route: string, cssFile: string) {
-    const location = useLocation();
-    React.useEffect(() => {
-      if (location.pathname === route) {
-        import(cssFile /* @vite-ignore */);
-      }
-    }, [location, route, cssFile]);
-  }
-
-  useRouteCss("/fill-form/", "../styles/pdf.css");
-
   return (
     <>
       <Navbar pageType="none" />
@@ -491,7 +480,7 @@ function GenerateForm() {
                       Please navigate to the last page of the document to
                       proceed.
                     </p>
-                    <div className="doc-container no-border ">
+                    <div className="doc-container no-border fill ">
                       <DocViewer
                         documents={docs}
                         pluginRenderers={DocViewerRenderers}
@@ -597,6 +586,7 @@ function GenerateForm() {
               <DocViewer
                 documents={docs}
                 pluginRenderers={DocViewerRenderers}
+                className="fill"
                 theme={{
                   primary: "#ffd5bb",
                   secondary: "#ffd5bb",

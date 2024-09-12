@@ -1,7 +1,7 @@
-#pdf-download, #pdf-zoom-reset, #pdf-toggle-pagination, #header-bar{
+.fill #pdf-download, .fill #pdf-zoom-reset, .fill #pdf-toggle-pagination, .fill #header-bar{
     display: none;
 }
-#pdf-controls {
+.fill #pdf-controls {
     display: flex;
     justify-content: center;
     position: relative;
@@ -13,11 +13,11 @@
 
 
   @media screen and (min-width: 800px) {
-    #pdf-download, #pdf-zoom-out, #pdf-zoom-in, #pdf-zoom-reset, #pdf-toggle-pagination, #header-bar{
+    .fill #pdf-download, .fill #pdf-zoom-out, .fill #pdf-zoom-in, .fill #pdf-zoom-reset, .fill #pdf-toggle-pagination, .fill #header-bar{
         display: none;
     }
     
-    #pdf-controls {
+    .fill #pdf-controls {
         display: flex;
         justify-content: center;
         position: relative;
@@ -27,26 +27,26 @@
         box-shadow: none;
     }
     
-    #pdf-renderer {
+    .fill #pdf-renderer {
         display: flex;
         justify-content: center;
         margin-right: auto;
         margin-left: auto;
     }
     
-    #pdf-page-wrapper {
+    .fill #pdf-page-wrapper {
         display: flex;
         justify-content: center;
         margin-right: auto;
         margin-left: auto;
     }
     
-    .react-pdf__Page__canvas {
+    .fill .react-pdf__Page__canvas {
         width: 620px !important;
         height: auto !important;
       }
     
-    .doc-container {
+    .fill .doc-container {
         justify-content: center;
         display: flex;
         margin-top: 20px;
