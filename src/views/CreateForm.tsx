@@ -59,7 +59,7 @@ function CreateForm() {
 
   // @ts-ignore
   const { isLoaded } = useLoadScript({
-    googleMapsApiKey: import.meta.env.VITE_APP_GOOGLE_API_KEY,
+    googleMapsApiKey: "AIzaSyCqdjoH_TIE8gJou9QTabYVKDxFjW-MuY0",
     libraries,
   });
 

@@ -1,4 +1,7 @@
+import { useCookies } from "react-cookie";
+
 export const checkUserDocAccess = async (email: string, doc_id: string) => {
+  const [session] = useCookies(["session"]);
   try {
     const response = await fetch(
       `https://ali5u9l6fk.execute-api.us-east-1.amazonaws.com/prod/secure/check-user-access/`,
@@ -6,6 +9,7 @@ export const checkUserDocAccess = async (email: string, doc_id: string) => {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
+          "Authorization": "Bearer " + session.session, // prettier-ignore
         },
         body: JSON.stringify({ email: email, id: doc_id }),
       }
