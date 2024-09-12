@@ -52,13 +52,15 @@ function DisplayForm() {
     const handleResize = () => {
       setViewportWidth(window.innerWidth);
     };
+    const check = async () => {
+      const data = await checkUserDocAccess(email.email, id);
+      if (data == false) {
+        navigate("/page-not-found");
+      }
+    };
 
     const fetchData = async () => {
       try {
-        const check = await checkUserDocAccess(email.email, id);
-        if (check == false) {
-          navigate("/page-not-found");
-        }
         const response = await fetch(
           `https://ali5u9l6fk.execute-api.us-east-1.amazonaws.com/prod/doc/`,
           {
@@ -93,6 +95,7 @@ function DisplayForm() {
       }
     };
 
+    check();
     fetchData();
 
     // const getPDF = async () => {
