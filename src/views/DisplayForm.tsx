@@ -149,7 +149,6 @@ function DisplayForm() {
 
   return (
     <>
-      {console.log("Is Ipad ", isIpad())}
       <Navbar pageType="protected" />
       <div className="header">
         <h1>Buyer Brokerage Services Agreement</h1>
@@ -196,9 +195,7 @@ function DisplayForm() {
               {isIpad() && (
                 <iframe
                   src={
-                    "http://docs.google.com/gview?" +
-                    url +
-                    "&embedded=true" +
+                    `http://docs.google.com/gview?url=${url}&embedded=true` +
                     "#toolbar=0&navpanes=0&scrollbar=0"
                   }
                   title="PDF Viewer"
@@ -247,9 +244,7 @@ function DisplayForm() {
           {isIpad() && (
             <iframe
               src={
-                "http://docs.google.com/gview?" +
-                url +
-                "&embedded=true" +
+                `http://docs.google.com/gview?url=${url}&embedded=true` +
                 "#toolbar=0&navpanes=0&scrollbar=0"
               }
               title="PDF Viewer"
