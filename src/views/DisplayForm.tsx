@@ -109,37 +109,6 @@ function DisplayForm() {
     check();
     fetchData();
 
-    // const getPDF = async () => {
-    //   try {
-    //     const response = await fetch(`https://ali5u9l6fk.execute-api.us-east-1.amazonaws.com/prod/doc/`, {
-    //       method: "POST",
-    //       headers: {
-    //         "Content-Type": "application/json",
-    //         "Authorization": "Bearer " + session.session, // prettier-ignore
-    //       },
-    //       body: JSON.stringify({ id: id }),
-    //     });
-
-    //     if (response.ok) {
-    //       const data = await response.blob();
-    //       console.log(data);
-    //       const url = URL.createObjectURL(data);
-    //       console.log(url);
-    //       const docObject = {
-    //         uri: url,
-    //         fileType: "pdf",
-    //         fileName: "your-document-name.pdf",
-    //       };
-
-    //       setDocs([docObject]);
-    //     }
-    //   } catch (error) {
-    //     console.error("Error:", error);
-    //   }
-    // };
-
-    // getPDF();
-
     window.addEventListener("resize", handleResize);
 
     return () => {
@@ -176,7 +145,7 @@ function DisplayForm() {
         >
           {docs.length > 0 && (
             <>
-              {!isIpad() && (
+              {isIpad() && (
                 <DocViewer
                   documents={docs}
                   pluginRenderers={DocViewerRenderers}
@@ -192,17 +161,25 @@ function DisplayForm() {
                   style={{ width: 1000, height: 1000 }}
                 />
               )}
-              {isIpad() && (
-                <iframe
-                  src={
-                    `http://docs.google.com/gview?url=${url}&embedded=true` +
-                    "#toolbar=0&navpanes=0&scrollbar=0"
-                  }
-                  title="PDF Viewer"
+              {!isIpad() && (
+                // <iframe
+                //   src={
+                //     `http://docs.google.com/gview?url=${url}&embedded=true` +
+                //     "#toolbar=0&navpanes=0&scrollbar=0"
+                //   }
+                //   title="PDF Viewer"
+                //   width="80%"
+                //   height="600px"
+                //   style={{ border: "none" }}
+                // />
+                <object
+                  data={url + "#toolbar=0&navpanes=0&scrollbar=0"}
+                  type="application/pdf"
                   width="80%"
                   height="600px"
-                  style={{ border: "none" }}
-                />
+                >
+                  <a href={url}>Download file.pdf</a>
+                </object>
               )}
             </>
           )}
@@ -242,16 +219,24 @@ function DisplayForm() {
             />
           )}
           {isIpad() && (
-            <iframe
-              src={
-                `http://docs.google.com/gview?url=${url}&embedded=true` +
-                "#toolbar=0&navpanes=0&scrollbar=0"
-              }
-              title="PDF Viewer"
+            // <iframe
+            //   src={
+            //     `http://docs.google.com/gview?url=${url}&embedded=true` +
+            //     "#toolbar=0&navpanes=0&scrollbar=0"
+            //   }
+            //   title="PDF Viewer"
+            //   width="80%"
+            //   height="600px"
+            //   style={{ border: "none" }}
+            // />
+            <object
+              data={url + "#toolbar=0&navpanes=0&scrollbar=0"}
+              type="application/pdf"
               width="80%"
               height="600px"
-              style={{ border: "none" }}
-            />
+            >
+              <a href={url}>Download file.pdf</a>
+            </object>
           )}
         </div>
       )}
