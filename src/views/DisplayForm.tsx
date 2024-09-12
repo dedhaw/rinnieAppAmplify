@@ -27,7 +27,6 @@ function DisplayForm() {
   function isIpad() {
     const userAgent = navigator.userAgent;
 
-    // Check for iPad in userAgent or for iPadOS (which reports itself as Mac)
     return (
       /iPad/.test(userAgent) ||
       (navigator.maxTouchPoints > 1 && /Macintosh/.test(userAgent))
@@ -196,7 +195,7 @@ function DisplayForm() {
               )}
               {isIpad() && (
                 <iframe
-                  src={url + "#toolbar=0&navpanes=0&scrollbar=0"}
+                  src={url + "#toolbar=0"}
                   title="PDF Viewer"
                   width="80%"
                   height="600px"
@@ -242,7 +241,7 @@ function DisplayForm() {
           )}
           {isIpad() && (
             <iframe
-              src={url + "#toolbar=0&navpanes=0&scrollbar=0"}
+              src={url + "#toolbar=0"}
               title="PDF Viewer"
               width="80%"
               height="600px"
