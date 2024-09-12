@@ -144,6 +144,7 @@ function DisplayForm() {
 
   return (
     <>
+      {console.log("Is Ipad ", isIpad())}
       <Navbar pageType="protected" />
       <div className="header">
         <h1>Buyer Brokerage Services Agreement</h1>
