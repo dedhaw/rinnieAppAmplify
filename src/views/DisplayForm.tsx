@@ -25,7 +25,13 @@ function DisplayForm() {
   const [url, setUrl] = useState<any>(null);
 
   function isIpad() {
-    return /iPad/.test(navigator.userAgent);
+    const userAgent = navigator.userAgent;
+
+    // Check for iPad in userAgent or for iPadOS (which reports itself as Mac)
+    return (
+      /iPad/.test(userAgent) ||
+      (navigator.maxTouchPoints > 1 && /Macintosh/.test(userAgent))
+    );
   }
 
   const archive = async (id: string) => {
