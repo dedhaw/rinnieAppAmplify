@@ -22,6 +22,11 @@ function DisplayForm() {
 
   const [viewportWidth, setViewportWidth] = useState(window.innerWidth);
   const [docs, setDocs] = useState<any[]>([]);
+  const [url, setUrl] = useState<any>(null);
+
+  function isIpad() {
+    return /iPad/.test(navigator.userAgent);
+  }
 
   const archive = async (id: string) => {
     try {
@@ -86,6 +91,7 @@ function DisplayForm() {
             fileName: "your-document-name.pdf",
           };
 
+          setUrl(url);
           setDocs([docObject]);
         } else {
           console.error("Failed to fetch data");
@@ -164,20 +170,33 @@ function DisplayForm() {
           }}
         >
           {docs.length > 0 && (
-            <DocViewer
-              documents={docs}
-              pluginRenderers={DocViewerRenderers}
-              theme={{
-                primary: "#ffd5bb",
-                secondary: "#ffd5bb",
-                tertiary: "#fff",
-                textPrimary: "#333333",
-                textSecondary: "#333333",
-                textTertiary: "#333333",
-                disableThemeScrollbar: false,
-              }}
-              style={{ width: 1000, height: 1000 }}
-            />
+            <>
+              {!isIpad() && (
+                <DocViewer
+                  documents={docs}
+                  pluginRenderers={DocViewerRenderers}
+                  theme={{
+                    primary: "#ffd5bb",
+                    secondary: "#ffd5bb",
+                    tertiary: "#fff",
+                    textPrimary: "#333333",
+                    textSecondary: "#333333",
+                    textTertiary: "#333333",
+                    disableThemeScrollbar: false,
+                  }}
+                  style={{ width: 1000, height: 1000 }}
+                />
+              )}
+              {isIpad() && (
+                <iframe
+                  src={url + "#toolbar=0&navpanes=0&scrollbar=0"}
+                  title="PDF Viewer"
+                  width="80%"
+                  height="600px"
+                  style={{ border: "none" }}
+                />
+              )}
+            </>
           )}
           {docs.length <= 0 && (
             <div style={{ margin: "10px auto", textAlign: "center" }}>
@@ -198,20 +217,31 @@ function DisplayForm() {
             marginLeft: "auto",
           }}
         >
-          <DocViewer
-            documents={docs}
-            pluginRenderers={DocViewerRenderers}
-            theme={{
-              primary: "#ffd5bb",
-              secondary: "#ffd5bb",
-              tertiary: "#fff",
-              textPrimary: "#333333",
-              textSecondary: "#333333",
-              textTertiary: "#333333",
-              disableThemeScrollbar: false,
-            }}
-            style={{ width: 1000, height: 500 }}
-          />
+          {!isIpad() && (
+            <DocViewer
+              documents={docs}
+              pluginRenderers={DocViewerRenderers}
+              theme={{
+                primary: "#ffd5bb",
+                secondary: "#ffd5bb",
+                tertiary: "#fff",
+                textPrimary: "#333333",
+                textSecondary: "#333333",
+                textTertiary: "#333333",
+                disableThemeScrollbar: false,
+              }}
+              style={{ width: 1000, height: 500 }}
+            />
+          )}
+          {isIpad() && (
+            <iframe
+              src={url + "#toolbar=0&navpanes=0&scrollbar=0"}
+              title="PDF Viewer"
+              width="80%"
+              height="600px"
+              style={{ border: "none" }}
+            />
+          )}
         </div>
       )}
     </>
