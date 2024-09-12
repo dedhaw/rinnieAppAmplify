@@ -332,7 +332,7 @@ function GenerateForm() {
     }, [location, route, cssFile]);
   }
 
-  useRouteCss("/fill-form", "../styles/pdf.css");
+  useRouteCss("/fill-form/", "../styles/pdf.css");
 
   return (
     <>
