@@ -145,7 +145,7 @@ function DisplayForm() {
         >
           {docs.length > 0 && (
             <>
-              {isIpad() && (
+              {!isIpad() && (
                 <DocViewer
                   documents={docs}
                   pluginRenderers={DocViewerRenderers}
@@ -161,7 +161,7 @@ function DisplayForm() {
                   style={{ width: 1000, height: 1000 }}
                 />
               )}
-              {!isIpad() && (
+              {isIpad() && (
                 // <iframe
                 //   src={
                 //     `http://docs.google.com/gview?url=${url}&embedded=true` +
