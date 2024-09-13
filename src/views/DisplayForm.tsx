@@ -145,7 +145,7 @@ function DisplayForm() {
         >
           {docs.length > 0 && (
             <>
-              {!isIpad() && (
+              {isIpad() && (
                 <DocViewer
                   documents={docs}
                   pluginRenderers={DocViewerRenderers}
@@ -161,25 +161,22 @@ function DisplayForm() {
                   style={{ width: 1000, height: 1000 }}
                 />
               )}
-              {isIpad() && (
-                // <iframe
-                //   src={
-                //     `http://docs.google.com/gview?url=${url}&embedded=true` +
-                //     "#toolbar=0&navpanes=0&scrollbar=0"
-                //   }
-                //   title="PDF Viewer"
-                //   width="80%"
-                //   height="600px"
-                //   style={{ border: "none" }}
-                // />
-                <object
-                  data={url + "#toolbar=0&navpanes=0&scrollbar=0"}
-                  type="application/pdf"
+              {!isIpad() && (
+                <iframe
+                  src={url + "#toolbar=0&navpanes=0&scrollbar=0"}
+                  title="PDF Viewer"
                   width="80%"
-                  height="600px"
-                >
-                  <a href={url}>Download file.pdf</a>
-                </object>
+                  height="900px"
+                  style={{ border: "none" }}
+                />
+                // <object
+                //   data={url + "#toolbar=0&navpanes=0&scrollbar=0"}
+                //   type="application/pdf"
+                //   width="80%"
+                //   height="900px"
+                // >
+                //   <a href={url}>Download file.pdf</a>
+                // </object>
               )}
             </>
           )}
@@ -219,24 +216,21 @@ function DisplayForm() {
             />
           )}
           {isIpad() && (
-            // <iframe
-            //   src={
-            //     `http://docs.google.com/gview?url=${url}&embedded=true` +
-            //     "#toolbar=0&navpanes=0&scrollbar=0"
-            //   }
-            //   title="PDF Viewer"
-            //   width="80%"
-            //   height="600px"
-            //   style={{ border: "none" }}
-            // />
-            <object
-              data={url + "#toolbar=0&navpanes=0&scrollbar=0"}
-              type="application/pdf"
+            <iframe
+              src={url + "#toolbar=0&navpanes=0&scrollbar=0"}
+              title="PDF Viewer"
               width="80%"
-              height="600px"
-            >
-              <a href={url}>Download file.pdf</a>
-            </object>
+              height="900px"
+              style={{ border: "none" }}
+            />
+            // <object
+            //   data={url + "#toolbar=0&navpanes=0&scrollbar=0"}
+            //   type="application/pdf"
+            //   width="80%"
+            //   height="900px"
+            // >
+            //   <a href={url}>Download file.pdf</a>
+            // </object>
           )}
         </div>
       )}
