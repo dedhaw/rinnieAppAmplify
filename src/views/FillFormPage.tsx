@@ -651,14 +651,33 @@ function GenerateForm() {
                         style={{ display: "block", marginBottom: "10px" }}
                       />
                     ))}
+                    <div
+                      className="no-border"
+                      style={{ justifyContent: "center" }}
+                    >
+                      <button className="next-button" onClick={handleAccept}>
+                        Accept
+                      </button>
+                    </div>
                   </>
                 )}
               </>
             )}
             {loading === true && (
-              <div style={{ margin: "10px auto", textAlign: "center" }}>
-                <img className="loading" src="/loading.gif" alt="loading..." />
-              </div>
+              <>
+                <div style={{ margin: "10px auto", textAlign: "center" }}>
+                  <img
+                    className="loading"
+                    src="/loading.gif"
+                    alt="loading..."
+                  />
+                </div>
+                <div className="no-border" style={{ justifyContent: "center" }}>
+                  <button className="next-button" onClick={handleAccept}>
+                    Accept
+                  </button>
+                </div>
+              </>
             )}
           </div>
           <section>
