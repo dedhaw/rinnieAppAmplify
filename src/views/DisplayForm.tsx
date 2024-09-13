@@ -22,7 +22,7 @@ function DisplayForm() {
 
   const [viewportWidth, setViewportWidth] = useState(window.innerWidth);
   const [docs, setDocs] = useState<any[]>([]);
-  const [url, setUrl] = useState<any>(null);
+  const [images, setImages] = useState([]);
 
   function isIpad() {
     const userAgent = navigator.userAgent;
@@ -80,24 +80,27 @@ function DisplayForm() {
               "Authorization": "Bearer " + session.session, // prettier-ignore
               'Accept': "application/pdf", // prettier-ignore
             },
-            body: JSON.stringify({ id: id }),
+            body: JSON.stringify({ id: id, is_ipad: isIpad() }),
           }
         );
 
         if (response.ok) {
-          const data = await response.blob();
-          const url = URL.createObjectURL(data);
-          console.log(data);
-          console.log(url);
+          if (!isIpad()) {
+            const data = await response.blob();
+            const url = URL.createObjectURL(data);
 
-          const docObject = {
-            uri: url,
-            fileType: "pdf",
-            fileName: "your-document-name.pdf",
-          };
+            const docObject = {
+              uri: url,
+              fileType: "pdf",
+              fileName: "your-document-name.pdf",
+            };
 
-          setUrl(url);
-          setDocs([docObject]);
+            setDocs([docObject]);
+          } else {
+            const data = await response.json();
+            setImages(data.images);
+            setDocs(["docObject"]);
+          }
         } else {
           console.error("Failed to fetch data");
         }
@@ -162,21 +165,17 @@ function DisplayForm() {
                 />
               )}
               {isIpad() && (
-                <iframe
-                  src={url + "#toolbar=0&navpanes=0&scrollbar=0"}
-                  title="PDF Viewer"
-                  width="80%"
-                  height="900px"
-                  style={{ border: "none" }}
-                />
-                // <object
-                //   data={url + "#toolbar=0&navpanes=0&scrollbar=0"}
-                //   type="application/pdf"
-                //   width="80%"
-                //   height="900px"
-                // >
-                //   <a href={url}>Download file.pdf</a>
-                // </object>
+                <>
+                  <div className="stack-images">
+                    {images.map((img, index) => (
+                      <img
+                        key={index}
+                        src={`data:image/png;base64,${img}`}
+                        alt={`Page ${index + 1}`}
+                      />
+                    ))}
+                  </div>
+                </>
               )}
             </>
           )}
@@ -216,21 +215,16 @@ function DisplayForm() {
             />
           )}
           {isIpad() && (
-            <iframe
-              src={url + "#toolbar=0&navpanes=0&scrollbar=0"}
-              title="PDF Viewer"
-              width="80%"
-              height="900px"
-              style={{ border: "none" }}
-            />
-            // <object
-            //   data={url + "#toolbar=0&navpanes=0&scrollbar=0"}
-            //   type="application/pdf"
-            //   width="80%"
-            //   height="900px"
-            // >
-            //   <a href={url}>Download file.pdf</a>
-            // </object>
+            <>
+              {images.map((img, index) => (
+                <img
+                  key={index}
+                  src={`data:image/png;base64,${img}`}
+                  alt={`Page ${index + 1}`}
+                  style={{ display: "block", marginBottom: "10px" }}
+                />
+              ))}
+            </>
           )}
         </div>
       )}
