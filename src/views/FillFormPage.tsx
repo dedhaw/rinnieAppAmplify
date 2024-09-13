@@ -537,17 +537,10 @@ function GenerateForm() {
                       this contract.
                     </p>
                     <br />
-                    {currentPage === 3 && (
-                      <>
-                        <button
-                          className="accept-button"
-                          onClick={handleAccept}
-                        >
-                          Accept
-                        </button>
-                        <br />
-                      </>
-                    )}
+                    <button className="accept-button" onClick={handleAccept}>
+                      Accept
+                    </button>
+                    <br />
                   </>
                 )}
                 {loading === true && (
