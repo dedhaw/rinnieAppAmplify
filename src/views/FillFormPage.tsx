@@ -23,6 +23,15 @@ function GenerateForm() {
     navigate("/page-not-found");
   }
 
+  function isIpad() {
+    const userAgent = navigator.userAgent;
+
+    return (
+      /iPad/.test(userAgent) ||
+      (navigator.maxTouchPoints > 1 && /Macintosh/.test(userAgent))
+    );
+  }
+
   const [step, setStep] = useState("info");
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [loading, isLoading] = useState(false);
@@ -34,6 +43,7 @@ function GenerateForm() {
 
   const [buyerCount, setBuyers] = useState(1);
   const [docs, setDocs] = useState<any[]>([]);
+  const [images, setImages] = useState([]);
 
   const [firstName1, set1FirstName] = useState("");
   const [lastName1, set1LastName] = useState("");
@@ -152,24 +162,30 @@ function GenerateForm() {
               last_name_b1: lastName1,
               email_b1: email1,
               cell_b1: phone1,
+              is_ipad: isIpad(),
             }),
           }
         );
 
         if (response.ok) {
           console.log("Form generated");
-          const data = await response.blob();
-          const url = URL.createObjectURL(data);
-          console.log(data);
-          console.log(url);
+          if (!isIpad()) {
+            const data = await response.blob();
+            const url = URL.createObjectURL(data);
+            console.log(data);
+            console.log(url);
 
-          const docObject = {
-            uri: url,
-            fileType: "pdf",
-            fileName: "your-document-name.pdf",
-          };
+            const docObject = {
+              uri: url,
+              fileType: "pdf",
+              fileName: "your-document-name.pdf",
+            };
 
-          setDocs([docObject]);
+            setDocs([docObject]);
+          } else {
+            const data = await response.json();
+            setImages(data.images);
+          }
           isLoading(false);
         } else {
           console.error("Failed to generate form");
@@ -197,24 +213,30 @@ function GenerateForm() {
               last_name_b2: lastName2,
               email_b2: email2,
               cell_b2: phone2,
+              is_ipad: isIpad(),
             }),
           }
         );
 
         if (response.ok) {
           console.log("Form generated");
-          const data = await response.blob();
-          const url = URL.createObjectURL(data);
-          console.log(data);
-          console.log(url);
+          if (!isIpad()) {
+            const data = await response.blob();
+            const url = URL.createObjectURL(data);
+            console.log(data);
+            console.log(url);
 
-          const docObject = {
-            uri: url,
-            fileType: "pdf",
-            fileName: "your-document-name.pdf",
-          };
+            const docObject = {
+              uri: url,
+              fileType: "pdf",
+              fileName: "your-document-name.pdf",
+            };
 
-          setDocs([docObject]);
+            setDocs([docObject]);
+          } else {
+            const data = await response.json();
+            setImages(data.images);
+          }
           isLoading(false);
         } else {
           console.error("Failed to generate form");
@@ -480,22 +502,36 @@ function GenerateForm() {
                       Please navigate to the last page of the document to
                       proceed.
                     </p>
-                    <div className="doc-container no-border fill ">
-                      <DocViewer
-                        documents={docs}
-                        pluginRenderers={DocViewerRenderers}
-                        theme={{
-                          primary: "#ffd5bb",
-                          secondary: "#ffd5bb",
-                          tertiary: "#fff",
-                          textPrimary: "#333333",
-                          textSecondary: "#333333",
-                          textTertiary: "#333333",
-                          disableThemeScrollbar: false,
-                        }}
-                        style={{ width: 1000 }}
-                      />
-                    </div>
+                    {!isIpad() && (
+                      <div className="doc-container no-border fill ">
+                        <DocViewer
+                          documents={docs}
+                          pluginRenderers={DocViewerRenderers}
+                          theme={{
+                            primary: "#ffd5bb",
+                            secondary: "#ffd5bb",
+                            tertiary: "#fff",
+                            textPrimary: "#333333",
+                            textSecondary: "#333333",
+                            textTertiary: "#333333",
+                            disableThemeScrollbar: false,
+                          }}
+                          style={{ width: 1000 }}
+                        />
+                      </div>
+                    )}
+                    {isIpad() && (
+                      <>
+                        {images.map((img, index) => (
+                          <img
+                            key={index}
+                            src={`data:image/png;base64,${img}`}
+                            alt={`Page ${index + 1}`}
+                            style={{ display: "block", marginBottom: "10px" }}
+                          />
+                        ))}
+                      </>
+                    )}
                     <p>
                       I acknowledge that I have read and understand the terms of
                       this contract.
@@ -582,22 +618,42 @@ function GenerateForm() {
               borderRadius: "8px",
             }}
           >
-            {loading == false && (
-              <DocViewer
-                documents={docs}
-                pluginRenderers={DocViewerRenderers}
-                className="fill"
-                theme={{
-                  primary: "#ffd5bb",
-                  secondary: "#ffd5bb",
-                  tertiary: "#fff",
-                  textPrimary: "#333333",
-                  textSecondary: "#333333",
-                  textTertiary: "#333333",
-                  disableThemeScrollbar: false,
-                }}
-                style={{ width: 1000 }}
-              />
+            {!isIpad() && (
+              <>
+                {loading == false && (
+                  <DocViewer
+                    documents={docs}
+                    pluginRenderers={DocViewerRenderers}
+                    className="fill"
+                    theme={{
+                      primary: "#ffd5bb",
+                      secondary: "#ffd5bb",
+                      tertiary: "#fff",
+                      textPrimary: "#333333",
+                      textSecondary: "#333333",
+                      textTertiary: "#333333",
+                      disableThemeScrollbar: false,
+                    }}
+                    style={{ width: 1000 }}
+                  />
+                )}
+              </>
+            )}
+            {isIpad() && (
+              <>
+                {loading == false && (
+                  <>
+                    {images.map((img, index) => (
+                      <img
+                        key={index}
+                        src={`data:image/png;base64,${img}`}
+                        alt={`Page ${index + 1}`}
+                        style={{ display: "block", marginBottom: "10px" }}
+                      />
+                    ))}
+                  </>
+                )}
+              </>
             )}
             {loading === true && (
               <div style={{ margin: "10px auto", textAlign: "center" }}>
