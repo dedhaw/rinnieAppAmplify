@@ -5,6 +5,9 @@ function Contact() {
   return (
     <>
       <Navbar pageType="land" />
+      <div>
+        <h1>Contact Us</h1>
+      </div>
       <iframe
         src="https://calendly.com/devdhawan2004/30min"
         style={{
