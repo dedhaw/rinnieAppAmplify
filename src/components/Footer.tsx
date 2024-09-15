@@ -1,0 +1,60 @@
+import { Link, useNavigate } from "react-router-dom";
+import { scrollToSection } from "../utils/ScrollToSection";
+import "../styles/footer.css";
+
+function Footer() {
+  const navigate = useNavigate();
+  return (
+    <footer className="footer">
+      <div className="top">
+        <div className="content">
+          <img
+            src="/logo.png"
+            alt="Logo"
+            className="footer-logo"
+            onClick={() => navigate("/")}
+          />
+          <p style={{ textAlign: "left" }}>
+            Rinnie Ai helps agents streamline their workflow by making form
+            creation and management easy and simple.
+          </p>
+        </div>
+        <div className="content">
+          <h2>Links</h2>
+          <a href="http://dev-dhawan.com/">About</a>
+          <p onClick={() => scrollToSection("pricing")}>Pricing</p>
+          <Link to="/contact/">Contact</Link>
+        </div>
+        <div className="content">
+          <h2>Contact</h2>
+          <a href="tel:+14252405586">(425) 240-5586</a>
+          <a href="mailto:devdhawan2004@gmail.com">Email us</a>
+        </div>
+      </div>
+      <div className="bottom">
+        <div className="content">
+          <p>&copy; {new Date().getFullYear()} Denovia. All rights reserved.</p>
+          <a href="/privacy-policy">Privacy Policy</a>
+          <a href="/terms-of-service">Terms of Service</a>
+          <a href="/cookies">Cookie Policy</a>
+          <div className="social">
+            <a href="https://www.instagram.com/rinnie.ai/" target="_blank">
+              <img
+                src="iicon.webp"
+                alt=""
+                style={{ width: "20px", height: "auto" }}
+              />
+            </a>
+            <img
+              src="licon.png"
+              alt=""
+              style={{ width: "20px", height: "auto" }}
+            />
+          </div>
+        </div>
+      </div>
+    </footer>
+  );
+}
+
+export default Footer;

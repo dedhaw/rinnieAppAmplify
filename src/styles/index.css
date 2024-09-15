@@ -17,7 +17,7 @@ h1 {
   color: #333333;
 }
 
-h2 {
+h2, h3 {
   font-family: "poppins", sans-serif;
   text-align: center;
   color: #333333;
@@ -71,8 +71,8 @@ section div button {
 }
 
 section div button:hover {
-  color: #ff7a29;
-  border: solid 2px #ff7a29;
+  color: #ff914c;
+  border: solid 2px #ff914c;
 }
 
 section div p {
@@ -112,7 +112,19 @@ div p {
 
 .stack-images img {
   display: block;
-  margin-bottom: 10px; /* Adjust spacing between images */
+  margin-bottom: 10px;
+}
+
+.col-container {
+  display: flex;
+  width: 80vw;
+  margin: auto;
+}
+
+.column {
+  flex: 1;
+  margin: 0px;
+  justify-content: center;
 }
 
 @media screen and (max-width: 767px) {

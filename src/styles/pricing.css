@@ -1,0 +1,117 @@
+.pricing-container {
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    gap: 20px;
+    margin: 40px auto;
+    width: 80vw;
+  }
+  
+  .pricing-card {
+    background-color: #ebebeb;
+    color: #333;
+    padding: 20px;
+    width: 500px;
+    border-radius: 8px;
+    text-align: center;
+    border: #dcdcdc solid 2px;
+    min-height: 530px;
+  }
+  
+  .middle-card {
+    background-color: #ff914b;
+    margin-top: -20px;
+    transform: translateY(-10px);
+    border: none;
+    min-height: 620px;
+  }
+  
+  .features {
+    list-style-type: none;
+    padding: 0 10px;
+    margin: 0;
+    font-size: 16px;
+    text-align: left;
+  }
+  
+  .features li {
+    margin-bottom: 10px;
+  }
+  
+  .bottom-line {
+    border-bottom: 1px solid #333;
+  }
+  
+  .price-button {
+    background-color: #333;
+    color: white !important;
+  }
+  
+  .price-button:hover {
+    background-color: #ebebeb;
+    color: #333 !important;
+  }
+  
+  @media (max-width: 1050px) {
+    .pricing-container {
+        display: flex;
+        justify-content: flex-start;
+        align-items: flex-start;
+        gap: 20px;
+        margin: 40px auto;
+        width: 100vw;
+        overflow-x: auto;
+        scroll-snap-type: x mandatory;
+        padding: 0 20px; /* Optional: adds padding to the sides */
+      }
+      
+      .pricing-card {
+        background-color: #ebebeb;
+        color: #333;
+        padding: 20px;
+        width: 300px;
+        border-radius: 8px;
+        text-align: center;
+        border: #dcdcdc solid 2px;
+        min-height: 530px;
+        scroll-snap-align: center;
+      }
+      
+      .features {
+        list-style-type: none;
+        padding: 0 10px;
+        margin: 0;
+        font-size: 16px;
+        text-align: left;
+      }
+      
+      .features li {
+        margin-bottom: 10px;
+      }
+      
+      .bottom-line {
+        border-bottom: 1px solid #333;
+      }
+      
+      .price-button {
+        background-color: #333;
+        color: white !important;
+      }
+      
+      .price-button:hover {
+        background-color: #ebebeb;
+        color: #333 !important;
+      }
+      
+    .pricing-container {
+      width: 100vw; /* Full viewport width */
+      overflow-x: auto;
+      gap: 20px;
+    }
+  
+    .pricing-card {
+      flex: 0 0 auto;
+    }
+  }
+  
+  

@@ -1,5 +1,7 @@
-import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import { Routes, Route } from "react-router-dom";
 import { useCookies } from "react-cookie";
+import { useEffect } from "react";
+import { useLocation } from "react-router-dom";
 
 import Home from "./views/Home";
 import CreateForm from "./views/CreateForm";
@@ -13,7 +15,7 @@ import LoginForm from "./views/Login";
 import Landing from "./views/LandingPage";
 import GenerateForm from "./views/FillFormPage";
 import FormSent from "./views/FormSent";
-import Redirect from "./components/LandingRedirect";
+import Redirect from "./components/Landing/LandingRedirect";
 
 import PNF from "./views/PageNotFound";
 import { Amplify } from "aws-amplify";
@@ -22,6 +24,7 @@ import awsExports from "./aws-exports";
 // import { fetchAuthSession } from "@aws-amplify/auth";
 import Loggout from "./components/HandleLogout";
 import SignupForm from "./views/Signup";
+import Contact from "./views/Calendar";
 
 Amplify.configure(awsExports);
 
@@ -53,38 +56,43 @@ function App() {
   const [cookies] = useCookies(["session"]);
   const session = cookies.session || null;
 
+  const location = useLocation();
+
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, [location]);
+
   return (
-    <Router>
-      <Routes>
-        {!session && (
-          <>
-            <Route path="/" element={<Landing />} />
-            <Route path="/landing/" element={<Redirect />} />
-          </>
-        )}
+    <Routes>
+      {!session && (
+        <>
+          <Route path="/" element={<Landing />} />
+          <Route path="/landing/" element={<Redirect />} />
+        </>
+      )}
 
-        {session && (
-          <>
-            <Route path="/" element={<Home />} />
-            <Route path="/create-form/" element={<CreateForm />} />
-            <Route path="/archive/" element={<Archive />} />
-            <Route path="/profile/" element={<Profile />} />
-            <Route path="/email-form/" element={<EmailForm />} />
-            <Route path="/form/" element={<DisplayForm />} />
-            <Route path="/landing/" element={<Landing />} />
-          </>
-        )}
+      {session && (
+        <>
+          <Route path="/" element={<Home />} />
+          <Route path="/create-form/" element={<CreateForm />} />
+          <Route path="/archive/" element={<Archive />} />
+          <Route path="/profile/" element={<Profile />} />
+          <Route path="/email-form/" element={<EmailForm />} />
+          <Route path="/form/" element={<DisplayForm />} />
+          <Route path="/landing/" element={<Landing />} />
+        </>
+      )}
 
-        <Route path="/login/" element={<LoginForm />} />
-        <Route path="/logout/" element={<Loggout />} />
-        <Route path="/signup/" element={<SignupForm />} />
+      <Route path="/login/" element={<LoginForm />} />
+      <Route path="/logout/" element={<Loggout />} />
+      <Route path="/signup/" element={<SignupForm />} />
 
-        <Route path="/fill-form/" element={<GenerateForm />} />
-        <Route path="/form-completed/" element={<FormSent />} />
+      <Route path="/contact/" element={<Contact />} />
+      <Route path="/fill-form/" element={<GenerateForm />} />
+      <Route path="/form-completed/" element={<FormSent />} />
 
-        <Route path="/*" element={<PNF />} />
-      </Routes>
-    </Router>
+      <Route path="/*" element={<PNF />} />
+    </Routes>
   );
 }
 
