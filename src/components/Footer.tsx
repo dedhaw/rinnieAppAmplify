@@ -1,9 +1,24 @@
 import { Link, useNavigate } from "react-router-dom";
+import { useState, useEffect } from "react";
 import { scrollToSection } from "../utils/ScrollToSection";
 import "../styles/footer.css";
 
 function Footer() {
   const navigate = useNavigate();
+  const [viewportWidth, setViewportWidth] = useState(window.innerWidth);
+
+  useEffect(() => {
+    const handleResize = () => {
+      setViewportWidth(window.innerWidth);
+    };
+
+    window.addEventListener("resize", handleResize);
+
+    return () => {
+      window.removeEventListener("resize", handleResize);
+    };
+  }, []);
+
   return (
     <footer className="footer">
       <div className="top">
@@ -40,12 +55,38 @@ function Footer() {
         </p>
       </div>
       <div className="bottom">
-        <div className="content">
-          <p>&copy; {new Date().getFullYear()} Denovia. All rights reserved.</p>
-          <a href="/privacy-policy">Privacy Policy</a>
-          <a href="/terms-of-service">Terms of Service</a>
-          <a href="/cookies">Cookie Policy</a>
-          <div className="social">
+        {viewportWidth > 767 && (
+          <div className="content">
+            <p>
+              &copy; {new Date().getFullYear()} Denovia. All rights reserved.
+            </p>
+            <a href="/privacy-policy">Privacy Policy</a>
+            <a href="/terms-of-service">Terms of Service</a>
+            <a href="/cookies">Cookie Policy</a>
+            <div className="social">
+              <a href="https://www.instagram.com/rinnie.ai/" target="_blank">
+                <img
+                  src="iicon.webp"
+                  alt=""
+                  style={{ width: "20px", height: "auto" }}
+                />
+              </a>
+              <img
+                src="licon.png"
+                alt=""
+                style={{ width: "20px", height: "auto" }}
+              />
+            </div>
+          </div>
+        )}
+        {viewportWidth <= 767 && (
+          <div className="content">
+            <p>
+              &copy; {new Date().getFullYear()} Denovia. All rights reserved.
+            </p>
+            <a href="/privacy-policy">Privacy Policy</a>
+            <a href="/terms-of-service">Terms of Service</a>
+            <a href="/cookies">Cookie Policy</a>
             <a href="https://www.instagram.com/rinnie.ai/" target="_blank">
               <img
                 src="iicon.webp"
@@ -59,7 +100,7 @@ function Footer() {
               style={{ width: "20px", height: "auto" }}
             />
           </div>
-        </div>
+        )}
       </div>
     </footer>
   );
