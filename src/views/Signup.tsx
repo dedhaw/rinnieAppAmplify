@@ -38,7 +38,7 @@ const SignupForm: React.FC = () => {
   const createUser = async () => {
     try {
       const response = await fetch(
-        `https://l9cdcbusi1.execute-api.us-east-1.amazonaws.com/prod/user/create/`,
+        `${import.meta.env.VITE_APP_HOST_OPEN}/user/create/`,
         {
           method: "POST",
           headers: {

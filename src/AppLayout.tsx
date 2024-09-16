@@ -20,13 +20,24 @@ import Redirect from "./components/Landing/LandingRedirect";
 import PNF from "./views/PageNotFound";
 import { Amplify } from "aws-amplify";
 import "@aws-amplify/ui-react/styles.css";
-import awsExports from "./aws-exports";
 // import { fetchAuthSession } from "@aws-amplify/auth";
 import Loggout from "./components/HandleLogout";
 import SignupForm from "./views/Signup";
 import Contact from "./views/Calendar";
 
-Amplify.configure(awsExports);
+async function configureAmplify() {
+  let awsExports: any;
+
+  if (import.meta.env.VITE_APP_MODE === "DEV") {
+    awsExports = (await import("./aws-exports-dev")).default;
+  } else if (import.meta.env.VITE_APP_MODE === "PROD") {
+    awsExports = (await import("./aws-exports")).default;
+  }
+
+  Amplify.configure(awsExports);
+}
+
+configureAmplify();
 
 function App() {
   // const [session, setSession] = useState<AuthSession | null>(() => {

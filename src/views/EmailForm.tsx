@@ -35,7 +35,7 @@ function EmailForm() {
   const sendLink = async (id: string) => {
     try {
       const response = await fetch(
-        `https://ali5u9l6fk.execute-api.us-east-1.amazonaws.com/prod/send-email/`,
+        `${import.meta.env.VITE_APP_HOST}/send-email/`,
         {
           method: "POST",
           headers: {

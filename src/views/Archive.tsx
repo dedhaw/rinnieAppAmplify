@@ -23,7 +23,7 @@ function Archive() {
     isLoading(!loading);
     try {
       const response = await fetch(
-        `https://ali5u9l6fk.execute-api.us-east-1.amazonaws.com/prod/docs/delete/`,
+        `${import.meta.env.VITE_APP_HOST}/docs/delete/`,
         {
           method: "POST",
           headers: {
@@ -50,7 +50,7 @@ function Archive() {
     isLoading(!loading);
     try {
       const response = await fetch(
-        `https://ali5u9l6fk.execute-api.us-east-1.amazonaws.com/prod/docs/unarchive/`,
+        `${import.meta.env.VITE_APP_HOST}/docs/unarchive/`,
         {
           method: "POST",
           headers: {
@@ -85,7 +85,7 @@ function Archive() {
     const fetchData = async () => {
       try {
         const response = await fetch(
-          `https://ali5u9l6fk.execute-api.us-east-1.amazonaws.com/prod/docs/archives/`,
+          `${import.meta.env.VITE_APP_HOST}/docs/archives/`,
           {
             method: "POST",
             headers: {
