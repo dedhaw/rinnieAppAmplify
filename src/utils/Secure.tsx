@@ -4,7 +4,7 @@ export const checkUserDocAccess = async (email: string, doc_id: string) => {
   const [session] = useCookies(["session"]);
   try {
     const response = await fetch(
-      `https://ali5u9l6fk.execute-api.us-east-1.amazonaws.com/prod/secure/check-user-access/`,
+      `${import.meta.env.VITE_APP_HOST}/secure/check-user-access/`,
       {
         method: "POST",
         headers: {
@@ -29,7 +29,7 @@ export const checkUserDocAccess = async (email: string, doc_id: string) => {
 export const checkDocEditable = async (doc_id: string) => {
   try {
     const response = await fetch(
-      `https://l9cdcbusi1.execute-api.us-east-1.amazonaws.com/prod/secure/check-doc-edit/`,
+      `${import.meta.env.VITE_APP_HOST_OPEN}/secure/check-doc-edit/`,
       {
         method: "POST",
         headers: {

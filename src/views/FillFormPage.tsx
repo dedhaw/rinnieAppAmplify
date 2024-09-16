@@ -111,7 +111,7 @@ function GenerateForm() {
     try {
       isLoading(true);
       const response = await fetch(
-        `https://l9cdcbusi1.execute-api.us-east-1.amazonaws.com/prod/docs/add-signatures/`,
+        `${import.meta.env.VITE_APP_HOST_OPEN}/docs/add-signatures/`,
         {
           method: "POST",
           headers: {
@@ -148,7 +148,7 @@ function GenerateForm() {
     if (buyerCount == 1) {
       try {
         const response = await fetch(
-          `https://l9cdcbusi1.execute-api.us-east-1.amazonaws.com/prod/docs/generate/`,
+          `${import.meta.env.VITE_APP_HOST_OPEN}/docs/generate/`,
           {
             method: "POST",
             headers: {
@@ -196,7 +196,7 @@ function GenerateForm() {
     } else {
       try {
         const response = await fetch(
-          `https://l9cdcbusi1.execute-api.us-east-1.amazonaws.com/prod/docs/generate/`,
+          `${import.meta.env.VITE_APP_HOST_OPEN}/docs/generate/`,
           {
             method: "POST",
             headers: {
