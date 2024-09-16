@@ -1,8 +1,11 @@
-import "../styles/hero.css";
+import "../../styles/hero.css";
 import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { PiHandWavingBold } from "react-icons/pi";
+import { scrollToSection } from "../../utils/ScrollToSection";
 
 function Hero() {
+  const navigate = useNavigate();
   const [isDone, setIsDone] = useState(false);
 
   useEffect(() => {
@@ -31,7 +34,7 @@ function Hero() {
   }, []);
 
   return (
-    <>
+    <div className="hero-section">
       {viewportWidth > 767 && (
         <>
           <div className="hero-container">
@@ -54,7 +57,18 @@ function Hero() {
           </div>
         </>
       )}
-    </>
+      <div className="buttons">
+        <button className="main-button" onClick={() => navigate("/signup/")}>
+          Get Started
+        </button>
+        <button
+          className="alt-button"
+          onClick={() => scrollToSection("howitworks")}
+        >
+          How it works
+        </button>
+      </div>
+    </div>
   );
 }
 

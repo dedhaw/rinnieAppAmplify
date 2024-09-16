@@ -1,4 +1,5 @@
 import { useState, useEffect, useRef } from "react";
+import { scrollToSection } from "../utils/ScrollToSection";
 import { Link, useNavigate } from "react-router-dom";
 import "../styles/navbar.css";
 
@@ -43,7 +44,6 @@ const Navbar: React.FC<NavbarProps> = ({ pageType }) => {
       document.removeEventListener("mousedown", handleClickOutside);
     }
 
-    // Cleanup the event listener on component unmount
     return () => {
       document.removeEventListener("mousedown", handleClickOutside);
     };
@@ -51,12 +51,13 @@ const Navbar: React.FC<NavbarProps> = ({ pageType }) => {
 
   return (
     <nav>
-      <img src="/logo.jpg" alt="Logo" onClick={goHome} />
+      <img src="/logo.png" alt="Logo" onClick={goHome} />
       <div className="nav-links">
         {pageType === "land" && (
           <>
-            <Link to="/about">About</Link>
-            <Link to="/contact">Contact</Link>
+            <a href="http://dev-dhawan.com/">About</a>
+            <p onClick={() => scrollToSection("pricing")}>Pricing</p>
+            <Link to="/contact/">Contact</Link>
           </>
         )}
         {pageType === "protected" && (
@@ -122,11 +123,13 @@ const Navbar: React.FC<NavbarProps> = ({ pageType }) => {
           {pageType === "land" && (
             <>
               <li>
-                <Link to="/about">About</Link>
+                <a href="http://dev-dhawan.com/">About</a>
               </li>
-
               <li>
-                <Link to="/contact">Contact</Link>
+                <a onClick={() => scrollToSection("pricing")}>Pricing</a>
+              </li>
+              <li>
+                <Link to="/contact/">Contact</Link>
               </li>
             </>
           )}

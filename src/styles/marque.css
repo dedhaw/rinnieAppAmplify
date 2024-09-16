@@ -1,0 +1,30 @@
+.marque-container {
+    background-color: #ebebeb;
+    min-height: 150px;
+    text-align: center;
+  }
+
+.marque-text {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.logo {
+    width: 400px;
+    height: auto;
+    margin: -30px;
+}
+
+@media screen and (max-width: 767px) {
+    .logo {
+        width: 250px;
+        height: auto;
+        margin: -30px;
+    }
+    .marque-text {
+        width: 90vw;
+        margin: auto;
+        font-size: 10px;
+    }
+}
