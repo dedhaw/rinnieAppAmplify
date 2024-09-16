@@ -113,10 +113,18 @@
     }
     
     .footer .top, .footer .bottom, .disclaimer {
-        width: 100vw !important;
+        width: 95vw !important;
+        margin: auto;
     }
 
     .footer .social {
         display: flex;
+    }
+    .footer {
+        margin: 0px;
+        padding: 10px 0px;
+    }
+    .bottom .content img {
+        margin: 5px;
     }
 }
