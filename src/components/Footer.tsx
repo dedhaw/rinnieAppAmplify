@@ -65,17 +65,9 @@ function Footer() {
             <a href="/cookies">Cookie Policy</a>
             <div className="social">
               <a href="https://www.instagram.com/rinnie.ai/" target="_blank">
-                <img
-                  src="iicon.webp"
-                  alt=""
-                  style={{ width: "20px", height: "auto" }}
-                />
+                <img src="/iicon.webp" alt="" />
               </a>
-              <img
-                src="licon.png"
-                alt=""
-                style={{ width: "20px", height: "auto" }}
-              />
+              <img src="/licon.png" alt="" />
             </div>
           </div>
         )}
@@ -88,17 +80,9 @@ function Footer() {
             <a href="/terms-of-service">Terms of Service</a>
             <a href="/cookies">Cookie Policy</a>
             <a href="https://www.instagram.com/rinnie.ai/" target="_blank">
-              <img
-                src="iicon.webp"
-                alt=""
-                style={{ width: "20px", height: "auto" }}
-              />
+              <img src="iicon.webp" alt="" />
             </a>
-            <img
-              src="licon.png"
-              alt=""
-              style={{ width: "20px", height: "auto" }}
-            />
+            <img src="licon.png" alt="" />
           </div>
         )}
       </div>

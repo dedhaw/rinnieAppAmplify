@@ -22,4 +22,9 @@
         height: auto;
         margin: -30px;
     }
+    .marque-text {
+        width: 90vw;
+        margin: auto;
+        font-size: 10px;
+    }
 }

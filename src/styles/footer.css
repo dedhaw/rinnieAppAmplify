@@ -59,6 +59,8 @@
   }
 
   .social img {
+    width: 20px !important;
+    height: auto !important;
     margin: auto 10px;
   }
 
@@ -115,16 +117,18 @@
     .footer .top, .footer .bottom, .disclaimer {
         width: 95vw !important;
         margin: auto;
+        text-align: center !important;
     }
 
-    .footer .social {
-        display: flex;
+    .bottom .content img {
+      width: 20px !important;
+      height: auto !important;
+      display: flex;
+      align-items: center;
     }
+
     .footer {
         margin: 0px;
         padding: 10px 0px;
-    }
-    .bottom .content img {
-        margin: 5px;
     }
 }
