@@ -88,7 +88,7 @@ function CreateForm() {
     var percentString: string = percent.toString();
     try {
       const response = await fetch(
-        `https://ali5u9l6fk.execute-api.us-east-1.amazonaws.com/prod/docs/create/`,
+        `${import.meta.env.VITE_APP_HOST}/docs/create/`,
         {
           method: "POST",
           headers: {

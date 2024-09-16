@@ -32,7 +32,7 @@ function Home() {
     isLoading(!loading);
     try {
       const response = await fetch(
-        `https://ali5u9l6fk.execute-api.us-east-1.amazonaws.com/prod/docs/archive/`,
+        `${import.meta.env.VITE_APP_HOST}/docs/archive/`,
         {
           method: "POST",
           headers: {
@@ -66,19 +66,16 @@ function Home() {
   useEffect(() => {
     const fetchUserData = async () => {
       try {
-        const response = await fetch(
-          `https://ali5u9l6fk.execute-api.us-east-1.amazonaws.com/prod/user/`,
-          {
-            method: "POST",
-            headers: {
-              "Content-Type": "application/json",
-              "Authorization": "Bearer " + session.session, // prettier-ignore
-            },
-            body: JSON.stringify({
-              email: email.email,
-            }),
-          }
-        );
+        const response = await fetch(`${import.meta.env.VITE_APP_HOST}/user/`, {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            "Authorization": "Bearer " + session.session, // prettier-ignore
+          },
+          body: JSON.stringify({
+            email: email.email,
+          }),
+        });
 
         if (response.ok) {
           const data = await response.json();
@@ -93,19 +90,16 @@ function Home() {
 
     const fetchData = async () => {
       try {
-        const response = await fetch(
-          `https://ali5u9l6fk.execute-api.us-east-1.amazonaws.com/prod/docs/`,
-          {
-            method: "POST",
-            headers: {
-              "Content-Type": "application/json",
-              "Authorization": "Bearer " + session.session, // prettier-ignore
-            },
-            body: JSON.stringify({
-              email: email.email,
-            }),
-          }
-        );
+        const response = await fetch(`${import.meta.env.VITE_APP_HOST}/docs/`, {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            "Authorization": "Bearer " + session.session, // prettier-ignore
+          },
+          body: JSON.stringify({
+            email: email.email,
+          }),
+        });
 
         if (response.ok) {
           const data = await response.json();
