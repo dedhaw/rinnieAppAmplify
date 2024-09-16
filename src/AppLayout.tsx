@@ -25,15 +25,19 @@ import Loggout from "./components/HandleLogout";
 import SignupForm from "./views/Signup";
 import Contact from "./views/Calendar";
 
-let awsExports: any;
+async function configureAmplify() {
+  let awsExports: any;
 
-if (import.meta.env.VITE_APP_MODE === "DEV") {
-  awsExports = (await import("./aws-exports-dev")).default;
-} else if (import.meta.env.VITE_APP_MODE === "PROD") {
-  awsExports = (await import("./aws-exports")).default;
+  if (import.meta.env.VITE_APP_MODE === "DEV") {
+    awsExports = (await import("./aws-exports-dev")).default;
+  } else if (import.meta.env.VITE_APP_MODE === "PROD") {
+    awsExports = (await import("./aws-exports")).default;
+  }
+
+  Amplify.configure(awsExports);
 }
 
-Amplify.configure(awsExports);
+configureAmplify();
 
 function App() {
   // const [session, setSession] = useState<AuthSession | null>(() => {
