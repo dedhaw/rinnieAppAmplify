@@ -1,0 +1,28 @@
+.form {
+    width: 650px;
+    height: auto;
+    padding: 20px;
+}
+
+.left p {
+    text-align: left !important;
+    font-size: 20px;
+}
+
+.signup-btn {
+    background-color: #ff914c;
+}
+
+.small {
+    padding: 0px !important;
+    width: 400px !important;
+    height: auto !important;
+}
+
+@media screen and (max-width: 767px) {
+    .form {
+        width: 400px;
+        height: auto;
+        margin-left: -10px;
+    }
+}
