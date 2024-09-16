@@ -5,9 +5,7 @@ function Marque() {
     <>
       <div className="marque-container">
         <div className="marque-text">
-          <p>
-            <strong>Built by experts from the world leading university</strong>
-          </p>
+          <p>Built by experts from the world leading university</p>
         </div>
         <img
           src="/uw-long.png"
