@@ -80,9 +80,9 @@ function Footer() {
             <a href="/terms-of-service">Terms of Service</a>
             <a href="/cookies">Cookie Policy</a>
             <a href="https://www.instagram.com/rinnie.ai/" target="_blank">
-              <img src="iicon.webp" alt="" />
+              <img src="/iicon.webp" alt="" />
             </a>
-            <img src="licon.png" alt="" />
+            <img src="/licon.png" alt="" />
           </div>
         )}
       </div>
