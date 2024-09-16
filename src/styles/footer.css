@@ -94,3 +94,29 @@
     font-size: 20px;
     margin: 10px;
   }
+
+  .disclaimer {
+    width: 70vw;
+    margin: auto;
+  }
+
+  .disclaimer p, .disclaimer a {
+    color: #8b8b8b;
+    text-align: left;
+    text-decoration: none;
+    font-size: small;
+  }
+
+@media screen and (max-width: 767px) {
+    .footer p, .footer a {
+        font-size: 10px !important;
+    }
+    
+    .footer .top, .footer .bottom, .disclaimer {
+        width: 100vw !important;
+    }
+
+    .footer .social {
+        display: flex;
+    }
+}

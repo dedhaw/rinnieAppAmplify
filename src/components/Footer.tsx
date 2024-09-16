@@ -31,6 +31,14 @@ function Footer() {
           <a href="mailto:devdhawan2004@gmail.com">Email us</a>
         </div>
       </div>
+      <div className="disclaimer">
+        <p>
+          Disclaimer: Rinnie ai is currently in beta testing and additional
+          features are coming. Thank you for visting our site and{" "}
+          <Link to={"/signup/"}>sign up</Link>. Rinnie ai is not responsible for
+          stroing forms during our beta phase.
+        </p>
+      </div>
       <div className="bottom">
         <div className="content">
           <p>&copy; {new Date().getFullYear()} Denovia. All rights reserved.</p>
