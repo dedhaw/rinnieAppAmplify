@@ -129,7 +129,7 @@ function CreateForm() {
       {loading === false && (
         <>
           <h1>Create Form</h1>
-          <section className="form">
+          <section>
             <form onSubmit={handleSubmit} className="create-form">
               <p>Select exclusivity:</p>
               <div className="radio-group">
