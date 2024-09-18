@@ -6,6 +6,8 @@ import Modal from "../components/Modal";
 import SignatureBox from "../components/SignatureBox";
 import InitialBox from "../components/InitialsBox";
 import { checkDocEditable } from "../utils/Secure";
+import { scrollToSection } from "../utils/ScrollToSection";
+
 import "../styles/forms.css";
 import "../styles/pdf.css";
 
@@ -145,6 +147,8 @@ function GenerateForm() {
   const fillForm = async (id: string) => {
     isLoading(true);
     setIsModalOpen(true);
+    scrollToSection("document-review");
+
     if (buyerCount == 1) {
       try {
         const response = await fetch(
@@ -600,7 +604,10 @@ function GenerateForm() {
       </section>
       {viewportWidth <= 800 && isModalOpen && step === "info" && (
         <>
-          <div style={{ margin: "10px auto", textAlign: "center" }}>
+          <div
+            id="document-review"
+            style={{ margin: "10px auto", textAlign: "center" }}
+          >
             <p>Please navigate to the last page of the document to proceed.</p>
           </div>
           <div
@@ -664,11 +671,6 @@ function GenerateForm() {
                     src="/loading.gif"
                     alt="loading..."
                   />
-                </div>
-                <div className="no-border" style={{ justifyContent: "center" }}>
-                  <button className="next-button" onClick={handleAccept}>
-                    Accept
-                  </button>
                 </div>
               </>
             )}
