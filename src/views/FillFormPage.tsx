@@ -6,6 +6,8 @@ import Modal from "../components/Modal";
 import SignatureBox from "../components/SignatureBox";
 import InitialBox from "../components/InitialsBox";
 import { checkDocEditable } from "../utils/Secure";
+import { scrollToSection } from "../utils/ScrollToSection";
+
 import "../styles/forms.css";
 import "../styles/pdf.css";
 
@@ -145,6 +147,8 @@ function GenerateForm() {
   const fillForm = async (id: string) => {
     isLoading(true);
     setIsModalOpen(true);
+    scrollToSection("document-review");
+
     if (buyerCount == 1) {
       try {
         const response = await fetch(
@@ -503,22 +507,36 @@ function GenerateForm() {
                       proceed.
                     </p>
                     {!isIpad() && (
-                      <div className="doc-container no-border fill ">
-                        <DocViewer
-                          documents={docs}
-                          pluginRenderers={DocViewerRenderers}
-                          theme={{
-                            primary: "#ffd5bb",
-                            secondary: "#ffd5bb",
-                            tertiary: "#fff",
-                            textPrimary: "#333333",
-                            textSecondary: "#333333",
-                            textTertiary: "#333333",
-                            disableThemeScrollbar: false,
-                          }}
-                          style={{ width: 1000 }}
-                        />
-                      </div>
+                      <>
+                        <div className="doc-container no-border fill ">
+                          <DocViewer
+                            documents={docs}
+                            pluginRenderers={DocViewerRenderers}
+                            theme={{
+                              primary: "#ffd5bb",
+                              secondary: "#ffd5bb",
+                              tertiary: "#fff",
+                              textPrimary: "#333333",
+                              textSecondary: "#333333",
+                              textTertiary: "#333333",
+                              disableThemeScrollbar: false,
+                            }}
+                            style={{ width: 1000 }}
+                          />
+                        </div>
+                        <p>
+                          I acknowledge that I have read and understand the
+                          terms of this contract.
+                        </p>
+                        {currentPage === 3 && (
+                          <button
+                            className="accept-button"
+                            onClick={handleAccept}
+                          >
+                            Accept
+                          </button>
+                        )}
+                      </>
                     )}
                     {isIpad() && (
                       <>
@@ -530,17 +548,20 @@ function GenerateForm() {
                             style={{ display: "block", marginBottom: "10px" }}
                           />
                         ))}
+                        <p>
+                          I acknowledge that I have read and understand the
+                          terms of this contract.
+                        </p>
+                        <br />
+                        <button
+                          className="accept-button"
+                          onClick={handleAccept}
+                        >
+                          Accept
+                        </button>
+                        <br />
                       </>
                     )}
-                    <p>
-                      I acknowledge that I have read and understand the terms of
-                      this contract.
-                    </p>
-                    <br />
-                    <button className="accept-button" onClick={handleAccept}>
-                      Accept
-                    </button>
-                    <br />
                   </>
                 )}
                 {loading === true && (
@@ -600,7 +621,10 @@ function GenerateForm() {
       </section>
       {viewportWidth <= 800 && isModalOpen && step === "info" && (
         <>
-          <div style={{ margin: "10px auto", textAlign: "center" }}>
+          <div
+            id="document-review"
+            style={{ margin: "10px auto", textAlign: "center" }}
+          >
             <p>Please navigate to the last page of the document to proceed.</p>
           </div>
           <div
@@ -664,11 +688,6 @@ function GenerateForm() {
                     src="/loading.gif"
                     alt="loading..."
                   />
-                </div>
-                <div className="no-border" style={{ justifyContent: "center" }}>
-                  <button className="next-button" onClick={handleAccept}>
-                    Accept
-                  </button>
                 </div>
               </>
             )}
