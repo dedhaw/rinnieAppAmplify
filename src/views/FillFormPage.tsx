@@ -507,22 +507,36 @@ function GenerateForm() {
                       proceed.
                     </p>
                     {!isIpad() && (
-                      <div className="doc-container no-border fill ">
-                        <DocViewer
-                          documents={docs}
-                          pluginRenderers={DocViewerRenderers}
-                          theme={{
-                            primary: "#ffd5bb",
-                            secondary: "#ffd5bb",
-                            tertiary: "#fff",
-                            textPrimary: "#333333",
-                            textSecondary: "#333333",
-                            textTertiary: "#333333",
-                            disableThemeScrollbar: false,
-                          }}
-                          style={{ width: 1000 }}
-                        />
-                      </div>
+                      <>
+                        <div className="doc-container no-border fill ">
+                          <DocViewer
+                            documents={docs}
+                            pluginRenderers={DocViewerRenderers}
+                            theme={{
+                              primary: "#ffd5bb",
+                              secondary: "#ffd5bb",
+                              tertiary: "#fff",
+                              textPrimary: "#333333",
+                              textSecondary: "#333333",
+                              textTertiary: "#333333",
+                              disableThemeScrollbar: false,
+                            }}
+                            style={{ width: 1000 }}
+                          />
+                        </div>
+                        <p>
+                          I acknowledge that I have read and understand the
+                          terms of this contract.
+                        </p>
+                        {currentPage === 3 && (
+                          <button
+                            className="accept-button"
+                            onClick={handleAccept}
+                          >
+                            Accept
+                          </button>
+                        )}
+                      </>
                     )}
                     {isIpad() && (
                       <>
@@ -534,17 +548,20 @@ function GenerateForm() {
                             style={{ display: "block", marginBottom: "10px" }}
                           />
                         ))}
+                        <p>
+                          I acknowledge that I have read and understand the
+                          terms of this contract.
+                        </p>
+                        <br />
+                        <button
+                          className="accept-button"
+                          onClick={handleAccept}
+                        >
+                          Accept
+                        </button>
+                        <br />
                       </>
                     )}
-                    <p>
-                      I acknowledge that I have read and understand the terms of
-                      this contract.
-                    </p>
-                    <br />
-                    <button className="accept-button" onClick={handleAccept}>
-                      Accept
-                    </button>
-                    <br />
                   </>
                 )}
                 {loading === true && (

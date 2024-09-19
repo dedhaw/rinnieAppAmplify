@@ -42,14 +42,16 @@ function CreateForm() {
   const [loading, isLoading] = useState(false);
 
   const [name, setName] = useState("");
-
   const [exclusive, setExclusive] = useState("Exclusive");
-
   const [areaA, setAreaA] = useState("EastSide Area");
   const [areaB, setAreaB] = useState("");
   const [area, setArea] = useState("EastSide Area");
-
   const [percent, setPercent] = useState<any>(1.5);
+  const [price, setPrice] = useState<any>(4999);
+  const [perOrPri, setPerOrPri] = useState("percent");
+  const [period, setPeriod] = useState<any>(60);
+  const [clause, SetClause] = useState<any>(null);
+  const [mode, setMode] = useState("create");
 
   const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
     if (e.key === "Enter") {
@@ -84,8 +86,27 @@ function CreateForm() {
     }
   };
 
+  const handleClauseSubmit = (cancel: boolean) => {
+    if (cancel) {
+      SetClause(null);
+    }
+    setMode("create");
+  };
+
+  const handleCommisionChange = (
+    event: React.ChangeEvent<HTMLInputElement>
+  ) => {
+    setPerOrPri(event.target.value);
+  };
+
   const sendForm = async () => {
-    var percentString: string = percent.toString();
+    var percentString: any = null;
+    var priceString: any = null;
+    if (perOrPri == "percent") {
+      percentString = percent.toString();
+    } else {
+      priceString = price.toString();
+    }
     try {
       const response = await fetch(
         `${import.meta.env.VITE_APP_HOST}/docs/create/`,
@@ -102,6 +123,9 @@ function CreateForm() {
             area: area,
             exclusive: exclusive,
             percent: percentString,
+            price: priceString,
+            period: period,
+            clause: clause,
           }),
         }
       );
@@ -129,128 +153,254 @@ function CreateForm() {
       {loading === false && (
         <>
           <h1>Create Form</h1>
-          <section>
-            <form onSubmit={handleSubmit} className="create-form">
-              <p>Select exclusivity:</p>
-              <div className="radio-group">
-                <label className="radio-label">
+          {mode === "create" && (
+            <section>
+              <form onSubmit={handleSubmit} className="create-form">
+                <div className="form-group">
                   <input
-                    type="radio"
-                    name="option"
-                    value="Exclusive"
-                    checked={exclusive === "Exclusive"}
-                    onChange={handleEXChange}
-                    className="radio-input"
-                  />
-                  <span className="radio-label-text">Exclusive</span>
-                </label>
-                <label className="radio-label">
-                  <input
-                    type="radio"
-                    name="option"
-                    value="Non-Exclusive"
-                    checked={exclusive === "Non-Exclusive"}
-                    onChange={handleEXChange}
-                    className="radio-input"
-                  />
-                  <span className="radio-label-text">Non-Exclusive</span>
-                </label>
-              </div>
-
-              <p>Select the area:</p>
-              <div className="radio-group">
-                <label className="radio-label">
-                  <input
-                    type="radio"
-                    name="area-option"
-                    value="EastSide Area"
-                    checked={areaA === "EastSide Area"}
-                    onChange={handleAreaChange}
-                    className="radio-input"
-                  />
-                  <span className="radio-label-text">EastSide</span>
-                </label>
-                <label className="radio-label">
-                  <input
-                    type="radio"
-                    name="area-option"
-                    value="Greater Seattle Area"
-                    checked={areaA === "Greater Seattle Area"}
-                    onChange={handleAreaChange}
-                    className="radio-input"
-                  />
-                  <span className="radio-label-text">Greater Seattle</span>
-                </label>
-                <label className="radio-label">
-                  <input
-                    type="radio"
-                    name="area-option"
-                    value="Other"
-                    checked={areaA === "Other"}
-                    onChange={handleAreaChange}
-                    className="radio-input"
-                  />
-                  <span className="radio-label-text">Other</span>
-                </label>
-              </div>
-              {areaA === "Other" && (
-                <StandaloneSearchBox
-                  onLoad={(ref) => (searchBoxRef.current = ref)}
-                  onPlacesChanged={() => onPlaceChanged()}
-                >
-                  <input
-                    className="area-input"
+                    className="name-input"
                     type="text"
-                    id="Area"
-                    value={areaB}
-                    onChange={(e) => {
-                      setArea(e.target.value);
-                      setAreaB(e.target.value);
+                    id="name"
+                    value={name}
+                    onChange={(e) => setName(e.target.value)}
+                    placeholder="Name your form (Optional)"
+                    style={{
+                      marginLeft: "auto",
+                      marginRight: "auto",
+                      textAlign: "center",
                     }}
-                    onKeyDown={handleKeyDown}
-                    placeholder="Enter the Address"
-                    required
                   />
-                </StandaloneSearchBox>
-              )}
-              <div
-                className="no-border"
-                style={{
-                  textAlign: "center",
-                  justifyContent: "center",
-                  display: "grid",
-                }}
-              >
-                <p>Commision Percentage:</p>
-                <Slider
-                  value={percent}
-                  onChange={(e) => setPercent(e.target.value)}
-                  className="slider"
-                />
-                <p>{percent}%</p>
-              </div>
-              <div className="form-group">
-                <input
-                  className="name-input"
-                  type="text"
-                  id="name"
-                  value={name}
-                  onChange={(e) => setName(e.target.value)}
-                  placeholder="Name your form (Optional)"
+                </div>
+                <p>Select exclusivity:</p>
+                <div className="radio-group">
+                  <label className="radio-label">
+                    <input
+                      type="radio"
+                      name="option"
+                      value="Exclusive"
+                      checked={exclusive === "Exclusive"}
+                      onChange={handleEXChange}
+                      className="radio-input"
+                    />
+                    <span className="radio-label-text">Exclusive</span>
+                  </label>
+                  <label className="radio-label">
+                    <input
+                      type="radio"
+                      name="option"
+                      value="Non-Exclusive"
+                      checked={exclusive === "Non-Exclusive"}
+                      onChange={handleEXChange}
+                      className="radio-input"
+                    />
+                    <span className="radio-label-text">Non-Exclusive</span>
+                  </label>
+                </div>
+
+                <p>Select the area:</p>
+                <div className="radio-group">
+                  <label className="radio-label">
+                    <input
+                      type="radio"
+                      name="area-option"
+                      value="EastSide Area"
+                      checked={areaA === "EastSide Area"}
+                      onChange={handleAreaChange}
+                      className="radio-input"
+                    />
+                    <span className="radio-label-text">EastSide</span>
+                  </label>
+                  <label className="radio-label">
+                    <input
+                      type="radio"
+                      name="area-option"
+                      value="Greater Seattle Area"
+                      checked={areaA === "Greater Seattle Area"}
+                      onChange={handleAreaChange}
+                      className="radio-input"
+                    />
+                    <span className="radio-label-text">Greater Seattle</span>
+                  </label>
+                  <label className="radio-label">
+                    <input
+                      type="radio"
+                      name="area-option"
+                      value="Other"
+                      checked={areaA === "Other"}
+                      onChange={handleAreaChange}
+                      className="radio-input"
+                    />
+                    <span className="radio-label-text">Other</span>
+                  </label>
+                </div>
+                {areaA === "Other" && (
+                  <StandaloneSearchBox
+                    onLoad={(ref) => (searchBoxRef.current = ref)}
+                    onPlacesChanged={() => onPlaceChanged()}
+                  >
+                    <input
+                      className="area-input"
+                      type="text"
+                      id="Area"
+                      value={areaB}
+                      onChange={(e) => {
+                        setArea(e.target.value);
+                        setAreaB(e.target.value);
+                      }}
+                      onKeyDown={handleKeyDown}
+                      placeholder="Enter the Address"
+                      required
+                    />
+                  </StandaloneSearchBox>
+                )}
+
+                <p>Select commission structure:</p>
+                <div className="radio-group" style={{ marginBottom: "0px" }}>
+                  <label className="radio-label">
+                    <input
+                      type="radio"
+                      name="commision"
+                      value="percent"
+                      checked={perOrPri == "percent"}
+                      onChange={handleCommisionChange}
+                      className="radio-input"
+                    />
+                    <span className="radio-label-text">Percent</span>
+                  </label>
+                  <label className="radio-label">
+                    <input
+                      type="radio"
+                      name="commision"
+                      value="price"
+                      checked={perOrPri == "price"}
+                      onChange={handleCommisionChange}
+                      className="radio-input"
+                    />
+                    <span className="radio-label-text">Flat Fee</span>
+                  </label>
+                </div>
+                <div
+                  className="no-border"
                   style={{
-                    marginLeft: "auto",
-                    marginRight: "auto",
+                    textAlign: "center",
+                    justifyContent: "center",
+                    display: "grid",
+                    marginBottom: "0px",
                   }}
-                />
+                >
+                  {perOrPri === "percent" && (
+                    <>
+                      <br />
+                      <Slider
+                        value={percent}
+                        onChange={(e) => setPercent(e.target.value)}
+                        className="slider"
+                      />
+                      <p>{percent}%</p>
+                    </>
+                  )}
+                  {perOrPri === "price" && (
+                    <>
+                      <div
+                        className="no-border form-group"
+                        style={{ marginBottom: "0px", paddingBottom: "0px" }}
+                      >
+                        <p style={{ marginBottom: "0px" }}>
+                          $
+                          <input
+                            type="text"
+                            style={{
+                              width: "100px",
+                              height: "30px",
+                              margin: "auto",
+                            }}
+                            id="price"
+                            value={price}
+                            onChange={(e) => setPrice(e.target.value)}
+                            inputMode="numeric"
+                            required
+                          />
+                        </p>
+                      </div>
+                    </>
+                  )}
+                </div>
+
+                <p style={{ marginBottom: "0px" }}>Select number of days:</p>
+                <div
+                  className="form-group"
+                  style={{
+                    width: "300px",
+                    margin: "auto",
+                  }}
+                >
+                  <p className="text-input">
+                    <input
+                      type="text"
+                      style={{ width: "60px", height: "30px", margin: "auto" }}
+                      id="period"
+                      value={period}
+                      onChange={(e) => setPeriod(e.target.value)}
+                      inputMode="numeric"
+                      required
+                    />{" "}
+                    Days
+                  </p>
+                </div>
+                <br />
+
+                <div
+                  className="no-border create-sub"
+                  style={{ justifyContent: "center" }}
+                >
+                  <button
+                    className="cancel-button"
+                    onClick={() => setMode("clause")}
+                  >
+                    Add Clauses
+                  </button>
+                  <button type="submit" className="submit-button">
+                    Submit
+                  </button>
+                </div>
+              </form>
+            </section>
+          )}
+          {mode === "clause" && (
+            <section>
+              <p>
+                Set additional clauses in your contract that will go under the
+                "other" section of the document.
+              </p>
+              <div className="form-group">
+                <textarea
+                  name="clause"
+                  id="clause"
+                  value={clause}
+                  onChange={(e) => SetClause(e.target.value)}
+                  placeholder="Add clause here..."
+                ></textarea>
               </div>
-              <br />
-              <div className="no-border" style={{ justifyContent: "center" }}>
-                <button type="submit" className="submit-button">
+              <div
+                className="no-border create-sub"
+                style={{ justifyContent: "center" }}
+              >
+                <button
+                  className="cancel-button"
+                  onClick={() => handleClauseSubmit(true)}
+                >
+                  Cancel
+                </button>
+                {/* <button className="cancel-button">Save</button> */}
+                <button
+                  className="submit-button"
+                  onClick={() => handleClauseSubmit(false)}
+                >
                   Submit
                 </button>
               </div>
-            </form>
-          </section>
+            </section>
+          )}
         </>
       )}
       {loading === true && (
