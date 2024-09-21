@@ -1,6 +1,6 @@
 import Navbar from "../components/Navbar";
 import React, { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
 import "../styles/forms.css";
 import { signIn } from "@aws-amplify/auth";
 import { fetchAuthSession } from "@aws-amplify/auth";
@@ -85,9 +85,12 @@ const LoginForm: React.FC = () => {
                 required
               />
             </div>
-            <button type="submit" className="submit-button">
-              Submit
-            </button>
+            <div className="login-button-sec">
+              <button type="submit" className="submit-button">
+                Submit
+              </button>
+              <Link to={"/login/forgot-password/"}>Forgot Password</Link>
+            </div>
           </form>
         </div>
       )}

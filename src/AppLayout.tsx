@@ -24,6 +24,7 @@ import "@aws-amplify/ui-react/styles.css";
 import Loggout from "./components/HandleLogout";
 import SignupForm from "./views/Signup";
 import Contact from "./views/Calendar";
+import FPP from "./views/ForgotPasswordPage";
 
 async function configureAmplify() {
   let awsExports: any;
@@ -97,6 +98,7 @@ function App() {
       <Route path="/login/" element={<LoginForm />} />
       <Route path="/logout/" element={<Loggout />} />
       <Route path="/signup/" element={<SignupForm />} />
+      <Route path="/login/forgot-password/" element={<FPP />} />
 
       <Route path="/contact/" element={<Contact />} />
       <Route path="/fill-form/" element={<GenerateForm />} />
