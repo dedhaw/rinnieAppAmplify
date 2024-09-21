@@ -1,5 +1,12 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
+import {
+  resetPassword,
+  type ResetPasswordOutput,
+  confirmResetPassword,
+  type ConfirmResetPasswordInput,
+} from "aws-amplify/auth";
+
 import Navbar from "../components/Navbar";
 import VerificationInput from "../components/VerificationInput";
 import "../styles/forms.css";
@@ -11,31 +18,73 @@ function FPP() {
   const [confirmPassword, setConfirmPassword] = useState("");
   const [verificationCode, setVerificationCode] = useState("");
 
+  async function handleResetPassword(username: string) {
+    try {
+      const output = await resetPassword({ username });
+      handleResetPasswordNextSteps(output);
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
+  function handleResetPasswordNextSteps(output: ResetPasswordOutput) {
+    const { nextStep } = output;
+    switch (nextStep.resetPasswordStep) {
+      case "CONFIRM_RESET_PASSWORD_WITH_CODE":
+        const codeDeliveryDetails = nextStep.codeDeliveryDetails;
+        console.log(
+          `Confirmation code was sent to ${codeDeliveryDetails.deliveryMedium}`
+        );
+        break;
+      case "DONE":
+        console.log("Successfully reset password.");
+        break;
+    }
+  }
+
+  async function handleConfirmResetPassword({
+    username,
+    confirmationCode,
+    newPassword,
+  }: ConfirmResetPasswordInput) {
+    try {
+      await confirmResetPassword({ username, confirmationCode, newPassword });
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
   const handleCodeChange = (code: string) => {
     setVerificationCode(code);
     console.log("Verification Code: ", code);
   };
 
   const prevStep = () => {
-    if (step == "verify") {
+    if (step == "password") {
       setStep("email");
-    } else if (step == "password") {
-      setStep("verify");
+    } else if (step == "verify") {
+      setStep("password");
     }
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (step == "email") {
-      setStep("verify");
-    } else if (step == "verify") {
       setStep("password");
-    } else {
+    } else if (step == "password") {
       if (confirmPassword == password) {
-        setStep("success");
+        handleResetPassword(email);
+        setStep("verify");
       } else {
         alert("Passwords did not match");
       }
+    } else {
+      handleConfirmResetPassword({
+        username: email,
+        confirmationCode: verificationCode,
+        newPassword: password,
+      });
+      setStep("success");
     }
   };
 

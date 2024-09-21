@@ -98,7 +98,7 @@ function App() {
       <Route path="/login/" element={<LoginForm />} />
       <Route path="/logout/" element={<Loggout />} />
       <Route path="/signup/" element={<SignupForm />} />
-      <Route path="/login/forgot-password" element={<FPP />} />
+      <Route path="/login/forgot-password/" element={<FPP />} />
 
       <Route path="/contact/" element={<Contact />} />
       <Route path="/fill-form/" element={<GenerateForm />} />
