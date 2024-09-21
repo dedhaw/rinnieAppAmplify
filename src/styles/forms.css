@@ -265,6 +265,17 @@
     width: 180px !important;
   }
 
+  .login-button-sec {
+    display: flex;
+    text-align: center;
+    justify-content: space-between;
+  }
+
+  .login-button-sec a, .click-l {
+    padding-top: 26px;
+    color: #959393;
+  }
+
   @media screen and (max-width: 950px) {
     .area-input, .name-input {
       margin-right: 130px !important;
