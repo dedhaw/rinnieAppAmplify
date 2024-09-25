@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import {
   resetPassword,
   type ResetPasswordOutput,
@@ -12,6 +12,7 @@ import VerificationInput from "../components/VerificationInput";
 import "../styles/forms.css";
 
 function FPP() {
+  const navigate = useNavigate();
   const [step, setStep] = useState("email");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -150,6 +151,15 @@ function FPP() {
                     type="button"
                     className="cancel-button"
                     onClick={() => prevStep()}
+                  >
+                    Back
+                  </button>
+                )}
+                {step === "email" && (
+                  <button
+                    type="button"
+                    className="cancel-button"
+                    onClick={() => navigate("/login/")}
                   >
                     Back
                   </button>
