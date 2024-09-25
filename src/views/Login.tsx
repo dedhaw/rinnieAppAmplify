@@ -2,19 +2,26 @@ import Navbar from "../components/Navbar";
 import React, { useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import "../styles/forms.css";
-import { signIn } from "@aws-amplify/auth";
+import { signIn, signOut } from "@aws-amplify/auth";
 import { fetchAuthSession } from "@aws-amplify/auth";
 import { useCookies } from "react-cookie";
 
 const LoginForm: React.FC = () => {
   const navigate = useNavigate();
-  const [session, setSession] = useCookies(["session"]);
-  const [cEmail, setCEmail] = useCookies(["email"]);
+  const [session, setSession, removeSession] = useCookies(["session"]);
+  const [cEmail, setCEmail, removeEmail] = useCookies(["email"]);
   const [loading, isLoading] = useState(false);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   session;
   cEmail;
+
+  async function signOutUser(): Promise<void> {
+    await signOut();
+    removeSession("session");
+    removeEmail("email");
+    console.log("User signed out successfully");
+  }
 
   async function signInUser(email: string, password: string) {
     isLoading(true);
@@ -24,11 +31,6 @@ const LoginForm: React.FC = () => {
 
     console.log("After getting session");
 
-    // const idToken = cognitoSession.tokens?.idToken || " ";
-    // const payloadEmail = cognitoSession.tokens?.idToken?.payload.email;
-
-    // const idTokenString: string = idToken.toString();
-    // idTokenString;
     setSession("session", cognitoSession.tokens?.idToken?.toString(), {
       path: "/",
       maxAge: 3600,
@@ -49,7 +51,22 @@ const LoginForm: React.FC = () => {
       .catch((error) => {
         console.error("Sign-in failed:", error.message);
         if (error.message == "There is already a signed in user.") {
-          navigate("/logout");
+          signOutUser()
+            .then(() => {
+              signInUser(email, password)
+                .then((response) => {
+                  console.log("Sign-in successful: ", response);
+                  navigate("/");
+                })
+                .catch((error) => {
+                  console.error(error);
+                  isLoading(false);
+                  alert("Your password or email is incorrect");
+                });
+            })
+            .catch((error) => {
+              console.error("Sign-out failed:", error.message);
+            });
         } else {
           isLoading(false);
           alert("Your password or email is incorrect");
