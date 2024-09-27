@@ -150,7 +150,7 @@ function Archive() {
     <>
       <Navbar pageType="protected" />
       <h1>
-        Archive <FaRegTrashAlt color="#ff7a29" />
+        Archive <FaRegTrashAlt color="#fe9052" />
       </h1>
       {data !== null && loading === false && (
         <>

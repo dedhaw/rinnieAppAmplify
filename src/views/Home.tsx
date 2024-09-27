@@ -191,7 +191,7 @@ function Home() {
       {userData !== null && data !== null && loading === false && (
         <>
           <h1>
-            Welcome {userData.first_name} <PiHandWavingBold color="#ff7a29" />
+            Welcome {userData.first_name} <PiHandWavingBold color="#fe9052" />
           </h1>
           {data.length > 0 && (
             <>
