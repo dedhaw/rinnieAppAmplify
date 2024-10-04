@@ -20,7 +20,6 @@ import Redirect from "./components/Landing/LandingRedirect";
 import PNF from "./views/PageNotFound";
 import { Amplify } from "aws-amplify";
 import "@aws-amplify/ui-react/styles.css";
-// import { fetchAuthSession } from "@aws-amplify/auth";
 import Loggout from "./components/HandleLogout";
 import SignupForm from "./views/Signup";
 import Contact from "./views/Calendar";
@@ -41,30 +40,6 @@ async function configureAmplify() {
 configureAmplify();
 
 function App() {
-  // const [session, setSession] = useState<AuthSession | null>(() => {
-  //   const savedSession = localStorage.getItem("session");
-  //   return savedSession ? JSON.parse(savedSession) : null;
-  // });
-
-  // useEffect(() => {
-  //   if (session) {
-  //     localStorage.setItem("session", JSON.stringify(session));
-  //   } else {
-  //     localStorage.removeItem("session");
-  //   }
-  // }, [session]);
-
-  // const handleSetSession = (newSession: AuthSession | null) => {
-  //   setSession(newSession);
-  // };
-
-  // async function getUser() {
-  //   const cognitoSession = await fetchAuthSession();
-  //   handleSetSession(cognitoSession);
-  // }
-
-  // getUser();
-
   const [cookies] = useCookies(["session"]);
   const session = cookies.session || null;
 
