@@ -169,9 +169,14 @@ function CreateForm() {
   const handleClauseSubmit = (cancel: boolean) => {
     if (cancel) {
       setClause(null);
+      setClauseName(null);
     } else if (clause == "") {
       setClause(null);
     }
+    if (clauseName == "") {
+      setClauseName(null);
+    }
+
     setMode("create");
   };
 
