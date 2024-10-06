@@ -152,7 +152,7 @@ function CreateForm() {
   };
 
   const renderClauses = (data: any[]) => {
-    return data.map((item, i) => {
+    return data.map((item) => {
       return (
         <button className="button-list" onClick={() => selectClause(item)}>
           {item.name}
