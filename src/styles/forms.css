@@ -276,6 +276,28 @@
     color: #959393;
   }
 
+  .clause-section {
+    width: 300px;
+    height: 300px;
+    padding: 8px;
+    overflow-y: auto;
+  }
+  
+  .clause-section p {
+    width: auto !important;
+    margin: 0;
+    padding: 0;
+  }
+
+  .button-list {
+    text-align: center;
+    margin: 10px auto;
+    justify-self: center;
+    justify-content: center;
+    display: flex;
+    width: 200px;
+  }
+
   @media screen and (max-width: 950px) {
     .area-input, .name-input {
       margin-right: 130px !important;
@@ -314,6 +336,10 @@
       width: 80vw;
       margin-right: auto;
       margin-left: auto;
+    }
+
+    .clause-section {
+      width: 100%;
     }
   }
 
