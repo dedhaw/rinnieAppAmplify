@@ -40,6 +40,7 @@ function CreateForm() {
   const [email] = useCookies(["email"]);
 
   const [loading, isLoading] = useState(false);
+  const [loadingSection, isLoadingSection] = useState(false);
 
   const [name, setName] = useState("");
   const [exclusive, setExclusive] = useState("Exclusive");
@@ -50,8 +51,10 @@ function CreateForm() {
   const [price, setPrice] = useState<any>(4999);
   const [perOrPri, setPerOrPri] = useState("percent");
   const [period, setPeriod] = useState<any>(60);
-  const [clause, SetClause] = useState<any>(null);
+  const [clause, setClause] = useState<any>(null);
+  const [clauseName, setClauseName] = useState<any>(null);
   const [mode, setMode] = useState("create");
+  const [data, setData] = useState<any>(null);
 
   const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
     if (e.key === "Enter") {
@@ -86,11 +89,95 @@ function CreateForm() {
     }
   };
 
+  const fetchClauses = async () => {
+    isLoadingSection(true);
+    try {
+      const response = await fetch(
+        `${import.meta.env.VITE_APP_HOST}/docs/clause/`,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            "Authorization": "Bearer " + session.session, // prettier-ignore
+          },
+          body: JSON.stringify({
+            email: email.email,
+          }),
+        }
+      );
+
+      if (response.ok) {
+        const data = await response.json();
+        setData(data);
+      } else {
+        console.error("Failed to fetch clause");
+      }
+    } catch (error) {
+      console.error("Error fetching clause data:", error);
+    }
+    isLoadingSection(false);
+  };
+
+  const saveClause = async () => {
+    isLoadingSection(true);
+    try {
+      const response = await fetch(
+        `${import.meta.env.VITE_APP_HOST}/docs/clause/save/`,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            "Authorization": "Bearer " + session.session, // prettier-ignore
+          },
+          body: JSON.stringify({
+            email: email.email,
+            name: clauseName,
+            clause: clause,
+          }),
+        }
+      );
+
+      if (response.ok) {
+        console.log("Clause saved");
+        alert("Clause was saved successfully");
+        const data = await response.json();
+        setData(data);
+      } else {
+        console.error("Failed to save clause");
+      }
+    } catch (error) {
+      console.error("Error saving clause:", error);
+    }
+    isLoadingSection(false);
+  };
+
+  const renderClauses = (data: any[]) => {
+    return data.map((item, i) => {
+      return (
+        <button className="button-list" onClick={() => selectClause(item)}>
+          {item.name}
+        </button>
+      );
+    });
+  };
+
+  const selectClause = (item: any) => {
+    setClause(item.clause);
+    setClauseName(item.name);
+  };
+
   const handleClauseSubmit = (cancel: boolean) => {
     if (cancel) {
-      SetClause(null);
+      setClause(null);
+    } else if (clause == "") {
+      setClause(null);
     }
     setMode("create");
+  };
+
+  const handleClauseEditor = () => {
+    fetchClauses();
+    setMode("clause");
   };
 
   const handleCommisionChange = (
@@ -347,7 +434,13 @@ function CreateForm() {
                     Days
                   </p>
                 </div>
-                <br />
+                {clause === null && <br />}
+                {clause != null && (
+                  <>
+                    <p>Clause:</p>
+                    <p>{clause}</p>
+                  </>
+                )}
 
                 <div
                   className="no-border create-sub"
@@ -355,7 +448,7 @@ function CreateForm() {
                 >
                   <button
                     className="cancel-button"
-                    onClick={() => setMode("clause")}
+                    onClick={handleClauseEditor}
                   >
                     Add Clauses
                   </button>
@@ -373,13 +466,55 @@ function CreateForm() {
                 "other" section of the document.
               </p>
               <div className="form-group">
+                <input
+                  className="name-input"
+                  type="text"
+                  id="name"
+                  value={clauseName}
+                  onChange={(e) => setClauseName(e.target.value)}
+                  placeholder="Name your clause (Optional for saving)"
+                  style={{
+                    marginLeft: "auto",
+                    marginRight: "auto",
+                    textAlign: "center",
+                  }}
+                />
+              </div>
+              <div className="form-group two-fields">
                 <textarea
                   name="clause"
                   id="clause"
                   value={clause}
-                  onChange={(e) => SetClause(e.target.value)}
+                  onChange={(e) => setClause(e.target.value)}
                   placeholder="Add clause here..."
                 ></textarea>
+                <section className="clause-section">
+                  {loadingSection === false && (
+                    <>
+                      {data.length <= 0 && <p>There are no saved clauses.</p>}
+                      {data.length > 0 && (
+                        <>
+                          <p>Saved Clause:</p>
+                          {renderClauses(data)}
+                        </>
+                      )}
+                    </>
+                  )}
+                  {loadingSection === true && (
+                    <div
+                      style={{
+                        textAlign: "center",
+                      }}
+                      className="no-border"
+                    >
+                      <img
+                        className="loading"
+                        src="/loading.gif"
+                        alt="loading..."
+                      />
+                    </div>
+                  )}
+                </section>
               </div>
               <div
                 className="no-border create-sub"
@@ -391,7 +526,13 @@ function CreateForm() {
                 >
                   Cancel
                 </button>
-                {/* <button className="cancel-button">Save</button> */}
+                {clauseName != null && clauseName != "" && (
+                  <>
+                    <button className="cancel-button" onClick={saveClause}>
+                      Save
+                    </button>
+                  </>
+                )}
                 <button
                   className="submit-button"
                   onClick={() => handleClauseSubmit(false)}
