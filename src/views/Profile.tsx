@@ -1,12 +1,43 @@
 import { useEffect, useState } from "react";
 import Navbar from "../components/Navbar";
 import { useCookies } from "react-cookie";
+import { FaRegTrashAlt } from "react-icons/fa";
 
 function Profile() {
   const [session] = useCookies(["session"]);
   const [email] = useCookies(["email"]);
 
   const [user, setUserData] = useState<any>(null);
+  const [data, setData] = useState<any>(null);
+
+  const [loading, isLoading] = useState(false);
+
+  const deleteClause = async (id: string) => {
+    isLoading(true);
+    try {
+      const response = await fetch(
+        `${import.meta.env.VITE_APP_HOST}/docs/clause/delete/`,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            "Authorization": "Bearer " + session.session, // prettier-ignore
+          },
+          body: JSON.stringify({ email: email.email, id: id }),
+        }
+      );
+
+      if (response.ok) {
+        const data = await response.json();
+        setData(data);
+      } else {
+        console.error("Failed to delete clause");
+      }
+    } catch (error) {
+      console.error("Error fetching data:", error);
+    }
+    isLoading(false);
+  };
 
   useEffect(() => {
     const fetchUserData = async () => {
@@ -31,8 +62,57 @@ function Profile() {
       }
     };
 
+    const fetchClauses = async () => {
+      try {
+        const response = await fetch(
+          `${import.meta.env.VITE_APP_HOST}/docs/clause/`,
+          {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+              "Authorization": "Bearer " + session.session, // prettier-ignore
+            },
+            body: JSON.stringify({
+              email: email.email,
+            }),
+          }
+        );
+
+        if (response.ok) {
+          const data = await response.json();
+          setData(data);
+        } else {
+          console.error("Failed to fetch clause");
+        }
+      } catch (error) {
+        console.error("Error fetching clause data:", error);
+      }
+    };
+
+    fetchClauses();
     fetchUserData();
-  }, [session]);
+  }, [session, email]);
+
+  const renderClauses = (data: any[]) => {
+    return data.map((item) => {
+      return (
+        <>
+          <h3>{item.name}</h3>
+          <div className="no-border center-text">
+            <section className="interior">
+              <p style={{ margin: "0px", padding: "0px" }}>{item.clause}</p>
+            </section>
+            <button
+              className="icon_button_delete"
+              onClick={() => deleteClause(item.id)}
+            >
+              <FaRegTrashAlt size={30} />
+            </button>
+          </div>
+        </>
+      );
+    });
+  };
 
   return (
     <>
@@ -40,7 +120,7 @@ function Profile() {
       <h1>Profile</h1>
       <div style={{ height: "100vh" }}>
         <section>
-          {user != null && (
+          {user != null && data != null && loading != true && (
             <>
               <h2>
                 {user.first_name} {user.last_name}
@@ -66,9 +146,15 @@ function Profile() {
               <div className="no-border" style={{ justifyContent: "center" }}>
                 <button>Edit</button>
               </div>
+
+              <section style={{ width: "100%" }}>
+                <h2>Clause Settings</h2>
+                {data.length > 0 && <>{renderClauses(data)}</>}
+                {data.length <= 0 && <p>You have no saved clauses!</p>}
+              </section>
             </>
           )}
-          {user == null && (
+          {((user == null && data == null) || loading == true) && (
             <div className="no-border" style={{ justifyContent: "center" }}>
               <img className="loading" src="/loading.gif" alt="loading..." />
             </div>

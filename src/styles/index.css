@@ -72,8 +72,8 @@ section div button {
 }
 
 section div button:hover {
-  color: #ff914c;
-  border: solid 2px #ff914c;
+  color: #fe9052;
+  border: solid 2px #fe9052;
 }
 
 section div p {
@@ -195,6 +195,10 @@ div p {
     margin: 0;
     padding: 0;
     overflow-x: hidden;
+    width: 100%;
+  }
+
+  .interior {
     width: 100%;
   }
 

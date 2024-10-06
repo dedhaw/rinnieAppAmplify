@@ -8,7 +8,7 @@
   
   .login-form {
     background: #fff;
-    border: 2px solid #ff914b;
+    border: 2px solid #fe9052;
     border-radius: 8px;
     padding: 30px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
@@ -46,7 +46,7 @@
   }
   
   .form-group input:focus, .area-input:focus {
-    border-color: #ff914b;
+    border-color: #fe9052;
     box-shadow: 0 0 4px rgba(255, 145, 75, 0.5);
     outline: none;
   }
@@ -69,15 +69,15 @@
   }
   
   .form-group textarea:focus, .area-textarea:focus {
-    border-color: #ff914b;
+    border-color: #fe9052;
     box-shadow: 0 0 4px rgba(255, 145, 75, 0.5);
     outline: none;
   }
   
   .submit-button {
-    background-color: #ff914b;
+    background-color: #fe9052;
     color: white;
-    border: 2px solid #ff914b;
+    border: 2px solid #fe9052;
     border-radius: 8px;
     padding: 12px 24px;
     font-size: 18px;
@@ -93,8 +93,8 @@
   
   .cancel-button {
     background-color: #fff;
-    color: #ff914b;
-    border: 2px solid #ff914b;
+    color: #fe9052;
+    border: 2px solid #fe9052;
     border-radius: 8px;
     padding: 12px 24px;
     font-size: 18px;
@@ -136,7 +136,7 @@
     width: 20px;
     height: 20px;
     background-color: #fff;
-    border: 2px solid #ff914b;
+    border: 2px solid #fe9052;
     border-radius: 4px;
     margin-right: 10px;
     cursor: pointer;
@@ -144,7 +144,7 @@
   }
   
   .radio-input:checked {
-    background-color: #ff914b;
+    background-color: #fe9052;
   }
   
   .radio-input:checked::after {
@@ -201,7 +201,7 @@
   
   .percent-bar-filled {
     height: 100%;
-    background-color: #ff914b; /* Orange color */
+    background-color: #fe9052; /* Orange color */
     border-radius: 10px;
   }
   
@@ -221,9 +221,9 @@
   }
 
   .next-button {
-    background-color: #ff914b;
+    background-color: #fe9052;
     color: white;
-    border: 2px solid #ff914b;
+    border: 2px solid #fe9052;
     border-radius: 8px;
     padding: 12px 24px;
     font-size: 18px;
@@ -276,6 +276,28 @@
     color: #959393;
   }
 
+  .clause-section {
+    width: 300px;
+    height: 300px;
+    padding: 8px;
+    overflow-y: auto;
+  }
+  
+  .clause-section p {
+    width: auto !important;
+    margin: 0;
+    padding: 0;
+  }
+
+  .button-list {
+    text-align: center;
+    margin: 10px auto;
+    justify-self: center;
+    justify-content: center;
+    display: flex;
+    width: 200px;
+  }
+
   @media screen and (max-width: 950px) {
     .area-input, .name-input {
       margin-right: 130px !important;
@@ -314,6 +336,10 @@
       width: 80vw;
       margin-right: auto;
       margin-left: auto;
+    }
+
+    .clause-section {
+      width: 100%;
     }
   }
 
