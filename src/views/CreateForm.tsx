@@ -54,7 +54,7 @@ function CreateForm() {
   const [clause, setClause] = useState<any>(null);
   const [clauseName, setClauseName] = useState<any>(null);
   const [mode, setMode] = useState("create");
-  const [data, setData] = useState<any>(null);
+  const [data, setData] = useState<any>([]);
 
   const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
     if (e.key === "Enter") {
