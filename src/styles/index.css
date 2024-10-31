@@ -33,6 +33,18 @@ button {
   font-size: 18px;
 }
 
+.button-type {
+  background-color: #fe9052;
+  border: none;
+  transition: background-color 0.3s ease;
+}
+
+.button-type:hover {
+  background-color: #92cbf7;
+  border: none;
+  color: #333333;
+}
+
 p {
   font-size: 18px;
   color: #333333;
@@ -128,6 +140,13 @@ div p {
   justify-content: center;
 }
 
+.images {
+  max-width: 500px;
+  height: auto;
+  display: flex;
+  justify-self: center;
+}
+
 @media screen and (max-width: 767px) {
   h1 {
     font-size: 36px;
@@ -136,6 +155,7 @@ div p {
   h2 {
     max-width: 80vw;
     font-size: 20px;
+    margin: auto;
   }
 
   .center-text {

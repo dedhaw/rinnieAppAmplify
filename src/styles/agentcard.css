@@ -1,0 +1,53 @@
+.columns {
+    display: flex;
+    gap: 30px;
+}
+
+.testimonial {
+    width: 60%;
+    /* height: 300px; */
+    margin: 0px;
+    background-color: #ffd5ba;
+    border-bottom-right-radius: 10px;
+    border-top-right-radius: 10px;
+    display: flex;
+    align-items: center;
+}
+
+.testimonial h2 {
+    font-size: 20px;
+    padding-right: 25px;
+    margin: auto 25px;
+    padding-top: 30px;
+    padding-bottom: 0px;
+}
+
+.agent {
+    margin-left: 60px;
+}
+
+.agent h2 {
+    margin-top: 0px;
+}
+
+.agent img {
+    width: 260px;
+    height: auto;
+    border-radius: 10px;
+}
+
+@media screen and (max-width: 767px) {
+    .agent {
+        display: inline;
+    }
+
+    .agent h2 {
+        margin-top: 0px;
+    }
+
+    .agent img {
+        display: flex;
+        justify-self: center;
+    }
+}
+

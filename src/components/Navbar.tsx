@@ -7,12 +7,17 @@ import { GiHamburgerMenu } from "react-icons/gi";
 
 interface NavbarProps {
   pageType: "land" | "protected" | "login" | "signup" | "none";
+  isHomePage?: boolean;
 }
 
-const Navbar: React.FC<NavbarProps> = ({ pageType }) => {
+const Navbar: React.FC<NavbarProps> = ({ pageType, isHomePage }) => {
   const navigate = useNavigate();
   const [isOpen, setIsOpen] = useState(false);
   const sidebarRef = useRef<any>(null);
+  var homepage = false;
+  if (isHomePage) {
+    homepage = true;
+  }
 
   const goHome = () => {
     if (pageType == "none") {
@@ -37,6 +42,14 @@ const Navbar: React.FC<NavbarProps> = ({ pageType }) => {
     }
   };
 
+  const handlePricing = () => {
+    if (homepage == true) {
+      scrollToSection("pricing");
+    } else {
+      navigate("/");
+    }
+  };
+
   useEffect(() => {
     if (isOpen) {
       document.addEventListener("mousedown", handleClickOutside);
@@ -55,8 +68,8 @@ const Navbar: React.FC<NavbarProps> = ({ pageType }) => {
       <div className="nav-links">
         {pageType === "land" && (
           <>
-            <a href="http://dev-dhawan.com/">About</a>
-            <p onClick={() => scrollToSection("pricing")}>Pricing</p>
+            <Link to="/about/">About</Link>
+            <p onClick={handlePricing}>Pricing</p>
             <Link to="/contact/">Contact</Link>
           </>
         )}
@@ -123,10 +136,10 @@ const Navbar: React.FC<NavbarProps> = ({ pageType }) => {
           {pageType === "land" && (
             <>
               <li>
-                <a href="http://dev-dhawan.com/">About</a>
+                <Link to="/about/">About</Link>
               </li>
               <li>
-                <a onClick={() => scrollToSection("pricing")}>Pricing</a>
+                <a onClick={handlePricing}>Pricing</a>
               </li>
               <li>
                 <Link to="/contact/">Contact</Link>
