@@ -2,24 +2,9 @@ import "../../styles/agentcard.css";
 import "../../styles/about.css";
 import "../../styles/hero.css";
 import { useNavigate } from "react-router-dom";
-import { useState, useEffect } from "react";
 
 function AboutMe() {
   const navigate = useNavigate();
-
-  const [viewportWidth, setViewportWidth] = useState(window.innerWidth);
-
-  useEffect(() => {
-    const handleResize = () => {
-      setViewportWidth(window.innerWidth);
-    };
-
-    window.addEventListener("resize", handleResize);
-
-    return () => {
-      window.removeEventListener("resize", handleResize);
-    };
-  }, []);
 
   return (
     <section style={{ margin: "40px auto" }} className="columns">
