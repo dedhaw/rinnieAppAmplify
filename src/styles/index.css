@@ -222,4 +222,8 @@ div p {
     width: 100%;
   }
 
+  .images {
+    max-width: 400px;
+  }
+
 }
