@@ -42,7 +42,7 @@ function AboutMe() {
         <br />
         <button
           className="button-type"
-          style={{ justifySelf: "center", display: "flex" }}
+          style={{ justifySelf: "center", display: "flex", margin: "auto" }}
           onClick={() => navigate("/contact/")}
         >
           Contact me!

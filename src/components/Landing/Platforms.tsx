@@ -1,4 +1,5 @@
 import { useNavigate } from "react-router-dom";
+import "../../styles/index.css";
 
 function Platforms() {
   const navigate = useNavigate();
