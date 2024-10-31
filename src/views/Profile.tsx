@@ -100,7 +100,16 @@ function Profile() {
           <h3>{item.name}</h3>
           <div className="no-border center-text">
             <section className="interior">
-              <p style={{ margin: "0px", padding: "0px" }}>{item.clause}</p>
+              <p
+                style={{
+                  margin: "0px",
+                  padding: "0px",
+                  width: "100%",
+                  textAlign: "left",
+                }}
+              >
+                {item.clause}
+              </p>
             </section>
             <button
               className="icon_button_delete"
