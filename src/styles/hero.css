@@ -18,14 +18,18 @@
 
 .main-button {
   background-color: #fe9052;
+  border: none;
 }
 
 .main-button:hover {
   background-color: #b4b4b4;
+  border: none;
 }
 
 .alt-button:hover {
   background-color: #92cbf7;
+  border: none;
+  color: #333;
 }
 
 @keyframes typewriter {

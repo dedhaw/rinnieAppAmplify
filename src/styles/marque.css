@@ -16,6 +16,34 @@
     margin: -30px;
 }
 
+.marque-image {
+    width: 200px;
+    height: auto;
+    margin-right: 20px;
+}
+
+.marque-images img {
+    width: auto;
+    height: 80px;
+    margin-right: 150px;
+    margin-bottom: 25px;
+}
+
+.marque-images {
+    width: 80%;
+    margin: 0px auto;
+}
+  
+
+@keyframes marque {
+    0% {
+      transform: translateX(100%);
+    }
+    100% {
+      transform: translateX(-100%);
+    }
+}
+
 @media screen and (max-width: 767px) {
     .logo {
         width: 250px;
@@ -27,4 +55,17 @@
         margin: auto;
         font-size: 10px;
     }
+    
+    .marque-images img {
+        width: auto;
+        height: 40px;
+        margin-right: 40px;
+        margin-bottom: 25px;
+    }
+
+    .marque-images {
+        width: 100%;
+        margin: 0px auto;
+    }
 }
+

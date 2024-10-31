@@ -25,6 +25,7 @@ import Loggout from "./components/HandleLogout";
 import SignupForm from "./views/Signup";
 import Contact from "./views/Calendar";
 import FPP from "./views/ForgotPasswordPage";
+import AboutPage from "./views/AboutPage";
 
 async function configureAmplify() {
   let awsExports: any;
@@ -100,6 +101,7 @@ function App() {
       <Route path="/signup/" element={<SignupForm />} />
       <Route path="/login/forgot-password/" element={<FPP />} />
 
+      <Route path="/about/" element={<AboutPage />} />
       <Route path="/contact/" element={<Contact />} />
       <Route path="/fill-form/" element={<GenerateForm />} />
       <Route path="/form-completed/" element={<FormSent />} />
