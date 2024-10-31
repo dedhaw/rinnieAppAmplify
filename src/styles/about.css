@@ -103,7 +103,6 @@
   }
 
   .columns div img {
-    display: block;
-    margin: auto;
+    justify-self: center;
   }
 }
