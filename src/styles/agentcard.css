@@ -34,9 +34,11 @@
     width: 260px;
     height: auto;
     border-radius: 10px;
+    display: flex;
+    margin: auto;
 }
 
-@media screen and (max-width: 767px) {
+@media screen and (max-width: 921px) {
     .agent {
         display: inline;
     }
@@ -48,6 +50,10 @@
     .agent img {
         display: flex;
         justify-self: center;
+    }
+
+    .testimonial h2 {
+        padding: 0px 5px;
     }
 }
 
