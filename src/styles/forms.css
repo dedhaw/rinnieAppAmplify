@@ -136,16 +136,15 @@
     width: 20px;
     height: 20px;
     background-color: #fff;
-    border: 2px solid #fe9052;
     border-radius: 4px;
     margin-right: 10px;
     cursor: pointer;
     position: relative;
   }
   
-  .radio-input:checked {
-    background-color: #fe9052;
-  }
+  /* .radio-input:checked {
+    background-color: #e6853e;
+  } */
   
   .radio-input:checked::after {
     content: "";
