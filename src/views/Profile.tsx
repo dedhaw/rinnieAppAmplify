@@ -12,6 +12,7 @@ function Profile() {
   const [data, setData] = useState<any>(null);
 
   const [loading, isLoading] = useState(false);
+  const [brandingLoading, isBLoading] = useState(false);
 
   const [section, setSection] = useState("profile");
 
@@ -144,6 +145,7 @@ function Profile() {
   };
 
   const resetBrandingImage = async () => {
+    isBLoading(true);
     try {
       const response = await fetch(
         `${import.meta.env.VITE_APP_HOST}/branding/reset/`,
@@ -158,11 +160,14 @@ function Profile() {
       );
 
       if (response.ok) {
+        isBLoading(false);
         alert("Successfully reset images");
       } else {
+        isBLoading(false);
         console.error("Failed to fetch");
       }
     } catch (error) {
+      isBLoading(false);
       console.error("Error fetching data:", error);
     }
   };
@@ -224,7 +229,7 @@ function Profile() {
 
   const handleLogoUpload = async () => {
     if (!logo) return;
-    console.log(logo);
+    isBLoading(true);
     const formData = new FormData();
     formData.append("email", email.email);
     formData.append("image", logo);
@@ -242,18 +247,22 @@ function Profile() {
       );
 
       if (response.ok) {
+        isBLoading(false);
         alert("Image was uploaded successfully");
       } else {
         console.error("Failed to fetch user");
+        isBLoading(false);
       }
     } catch (error) {
       console.error("Error fetching user data:", error);
+      isBLoading(false);
     }
   };
 
   const handleBannerUpload = async () => {
     console.log(banner);
     if (!banner) return;
+    isBLoading(true);
     const formData = new FormData();
     formData.append("email", email.email);
     formData.append("image", banner);
@@ -271,12 +280,15 @@ function Profile() {
       );
 
       if (response.ok) {
+        isBLoading(false);
         alert("Image was uploaded successfully");
       } else {
         console.error("Failed to fetch user");
+        isBLoading(false);
       }
     } catch (error) {
       console.error("Error fetching user data:", error);
+      isBLoading(false);
     }
   };
 
@@ -432,7 +444,7 @@ function Profile() {
               </div>
             </div>
             <br />
-
+            {brandingLoading && alert("loading...")}
             <section
               style={{
                 margin: "auto",
@@ -454,7 +466,7 @@ function Profile() {
                   style={{ margin: "auto", display: "flex" }}
                   onClick={handleLogoUpload}
                 >
-                  Upload Logo
+                  Save Logo
                 </button>
               </div>
 
@@ -472,7 +484,7 @@ function Profile() {
                   style={{ margin: "auto", display: "flex" }}
                   onClick={handleBannerUpload}
                 >
-                  Upload Banner
+                  Save Banner
                 </button>
               </div>
             </section>
@@ -485,7 +497,6 @@ function Profile() {
                 Reset Images
               </button>
             </div>
-
             <br />
           </>
         )}
