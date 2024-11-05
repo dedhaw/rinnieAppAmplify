@@ -3,7 +3,7 @@ import { useNavigate } from "react-router-dom";
 interface NavbarProps {
   backgroundColor: string;
   secondaryColor: string;
-  logo?: Blob | null;
+  logo?: string | null;
 }
 
 const Navbar: React.FC<NavbarProps> = ({
@@ -22,6 +22,7 @@ const Navbar: React.FC<NavbarProps> = ({
       {!logo && (
         <img src="/logo.png" alt="Logo" onClick={() => navigate("/landing/")} />
       )}
+      {logo && <img src={logo} onClick={() => navigate("/landing/")} />}
     </nav>
   );
 };

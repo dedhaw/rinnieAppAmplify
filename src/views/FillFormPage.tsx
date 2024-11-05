@@ -387,16 +387,18 @@ function GenerateForm() {
   var secondaryColor = "#ebebeb";
   var backgroundColor = "#fff";
   var textColor = "#333";
+  var logo = null;
+  var banner = null;
 
   if (branding != false) {
     var primaryColor = String(branding.primary_color);
     var secondaryColor = String(branding.secondary_color);
     var backgroundColor = String(branding.background_color);
     var textColor = String(branding.text_color);
+    console.log(branding.logo);
+    var logo = branding.logo;
+    var banner = branding.banner;
   }
-
-  var logo = null;
-  var banner = null;
 
   return (
     <>

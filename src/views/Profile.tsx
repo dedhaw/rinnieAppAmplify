@@ -19,6 +19,7 @@ function Profile() {
   const [secondaryColor, setSC] = useState("#ebebeb");
   const [textColor, setTC] = useState("#333");
   const [bgColor, setBC] = useState("#fff");
+  const [logo, setLogo] = useState(null);
 
   const handlePCChange = (newColor: any) => {
     setPC(newColor.hex);
@@ -31,6 +32,9 @@ function Profile() {
   };
   const handleBCChange = (newColor: any) => {
     setBC(newColor.hex);
+  };
+  const handleFileChange = (e) => {
+    setLogo(e.target.files[0]);
   };
 
   const reset = () => {
@@ -190,6 +194,35 @@ function Profile() {
     branding();
   }, [session, email]);
 
+  const handleUpload = async () => {
+    if (!logo) return;
+    console.log(logo);
+    const formData = new FormData();
+    formData.append("email", email.email);
+    formData.append("image", logo);
+
+    try {
+      const response = await fetch(
+        `${import.meta.env.VITE_APP_HOST}/branding/save-logo/`,
+        {
+          method: "POST",
+          headers: {
+            "Authorization": "Bearer " + session.session, // prettier-ignore
+          },
+          body: formData,
+        }
+      );
+
+      if (response.ok) {
+        console.log("SENT");
+      } else {
+        console.error("Failed to fetch user");
+      }
+    } catch (error) {
+      console.error("Error fetching user data:", error);
+    }
+  };
+
   const renderClauses = (data: any[]) => {
     return data.map((item) => {
       return (
@@ -340,6 +373,18 @@ function Profile() {
                 <p>Background Color</p>
                 <ChromePicker color={bgColor} onChange={handleBCChange} />
               </div>
+            </div>
+            <br />
+            <div
+              style={{
+                margin: "auto",
+                display: "flex",
+                justifyContent: "center",
+                gap: "35px",
+              }}
+            >
+              <input type="file" onChange={handleFileChange} />
+              <button onClick={handleUpload}>Upload</button>
             </div>
             <br />
           </>
