@@ -43,6 +43,8 @@
 
 .headshot {
   width: 250px;
+  display: flex;
+  margin: auto;
 }
 
 .about-me-col div {

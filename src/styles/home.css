@@ -20,3 +20,10 @@
 .completed {
     margin-bottom: 0;
 }
+
+.delete {
+    background-color: red;
+    color: white !important;
+    margin: 0px;
+    width: 130px;
+}

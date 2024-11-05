@@ -28,7 +28,7 @@ const AgentCard: React.FC<Agent> = ({ name, imageSrc, testimonial, right }) => {
 
   return (
     <>
-      {viewportWidth >= 767 && (
+      {viewportWidth >= 921 && (
         <>
           {right === true && (
             <div className="columns">
@@ -78,7 +78,7 @@ const AgentCard: React.FC<Agent> = ({ name, imageSrc, testimonial, right }) => {
           )}
         </>
       )}
-      {viewportWidth < 767 && (
+      {viewportWidth < 921 && (
         <div>
           <div className="agent">
             <h2>{name}</h2>

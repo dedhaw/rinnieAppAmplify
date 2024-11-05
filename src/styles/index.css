@@ -145,6 +145,7 @@ div p {
   height: auto;
   display: flex;
   justify-self: center;
+  margin: auto;
 }
 
 @media screen and (max-width: 767px) {
