@@ -73,6 +73,33 @@ function Archive() {
     isLoading(!loading);
   };
 
+  const removeAll = async () => {
+    isLoading(!loading);
+    try {
+      const response = await fetch(
+        `${import.meta.env.VITE_APP_HOST}/docs/delete-all/`,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            "Authorization": "Bearer " + session.session, // prettier-ignore
+          },
+          body: JSON.stringify({ email: email.email }),
+        }
+      );
+
+      if (response.ok) {
+        console.log("Form unarchived");
+        window.location.reload();
+      } else {
+        console.error("Failed to unarchive form");
+      }
+    } catch (error) {
+      console.error("Error fetching data:", error);
+    }
+    isLoading(!loading);
+  };
+
   const sortData = () => {
     return data.sort((a: any, b: any) => {
       const dateA = new Date(a[5]);
@@ -154,7 +181,20 @@ function Archive() {
       </h1>
       {data !== null && loading === false && (
         <>
-          {data.length > 0 && <section>{renderData()}</section>}
+          {data.length > 0 && (
+            <section>
+              <div className="buttons no-border">
+                <button
+                  className="delete"
+                  style={{ margin: "auto" }}
+                  onClick={() => removeAll()}
+                >
+                  Delete All
+                </button>
+              </div>
+              {renderData()}
+            </section>
+          )}
           {data.length <= 0 && (
             <section>
               <p style={{ textAlign: "center" }}>No Forms Created</p>
