@@ -20,6 +20,7 @@ function Profile() {
   const [textColor, setTC] = useState("#333");
   const [bgColor, setBC] = useState("#fff");
   const [logo, setLogo] = useState(null);
+  const [banner, setBanner] = useState(null);
 
   const handlePCChange = (newColor: any) => {
     setPC(newColor.hex);
@@ -33,8 +34,11 @@ function Profile() {
   const handleBCChange = (newColor: any) => {
     setBC(newColor.hex);
   };
-  const handleFileChange = (e) => {
+  const handleLogoChange = (e) => {
     setLogo(e.target.files[0]);
+  };
+  const handleBannerChange = (e) => {
+    setBanner(e.target.files[0]);
   };
 
   const reset = () => {
@@ -139,6 +143,30 @@ function Profile() {
     isLoading(false);
   };
 
+  const resetBrandingImage = async () => {
+    try {
+      const response = await fetch(
+        `${import.meta.env.VITE_APP_HOST}/branding/reset/`,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            "Authorization": "Bearer " + session.session, // prettier-ignore
+          },
+          body: JSON.stringify({ email: email.email }),
+        }
+      );
+
+      if (response.ok) {
+        alert("Successfully reset images");
+      } else {
+        console.error("Failed to fetch");
+      }
+    } catch (error) {
+      console.error("Error fetching data:", error);
+    }
+  };
+
   useEffect(() => {
     const fetchUserData = async () => {
       try {
@@ -194,7 +222,7 @@ function Profile() {
     branding();
   }, [session, email]);
 
-  const handleUpload = async () => {
+  const handleLogoUpload = async () => {
     if (!logo) return;
     console.log(logo);
     const formData = new FormData();
@@ -214,7 +242,36 @@ function Profile() {
       );
 
       if (response.ok) {
-        console.log("SENT");
+        alert("Image was uploaded successfully");
+      } else {
+        console.error("Failed to fetch user");
+      }
+    } catch (error) {
+      console.error("Error fetching user data:", error);
+    }
+  };
+
+  const handleBannerUpload = async () => {
+    console.log(banner);
+    if (!banner) return;
+    const formData = new FormData();
+    formData.append("email", email.email);
+    formData.append("image", banner);
+
+    try {
+      const response = await fetch(
+        `${import.meta.env.VITE_APP_HOST}/branding/save-banner/`,
+        {
+          method: "POST",
+          headers: {
+            "Authorization": "Bearer " + session.session, // prettier-ignore
+          },
+          body: formData,
+        }
+      );
+
+      if (response.ok) {
+        alert("Image was uploaded successfully");
       } else {
         console.error("Failed to fetch user");
       }
@@ -375,7 +432,8 @@ function Profile() {
               </div>
             </div>
             <br />
-            <div
+
+            <section
               style={{
                 margin: "auto",
                 display: "flex",
@@ -383,9 +441,51 @@ function Profile() {
                 gap: "35px",
               }}
             >
-              <input type="file" onChange={handleFileChange} />
-              <button onClick={handleUpload}>Upload</button>
+              <div
+                style={{
+                  display: "inline",
+                }}
+              >
+                <h2>Logo Upload</h2>
+                <input type="file" onChange={handleLogoChange} />
+                <br />
+                <br />
+                <button
+                  style={{ margin: "auto", display: "flex" }}
+                  onClick={handleLogoUpload}
+                >
+                  Upload Logo
+                </button>
+              </div>
+
+              <div
+                style={{
+                  display: "inline",
+                  justifyContent: "center",
+                }}
+              >
+                <h2>Banner Upload</h2>
+                <input type="file" onChange={handleBannerChange} />
+                <br />
+                <br />
+                <button
+                  style={{ margin: "auto", display: "flex" }}
+                  onClick={handleBannerUpload}
+                >
+                  Upload Banner
+                </button>
+              </div>
+            </section>
+            <div className="buttons">
+              <button
+                className="delete"
+                style={{ width: "auto" }}
+                onClick={resetBrandingImage}
+              >
+                Reset Images
+              </button>
             </div>
+
             <br />
           </>
         )}
