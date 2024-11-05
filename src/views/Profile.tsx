@@ -67,6 +67,74 @@ function Profile() {
     isLoading(false);
   };
 
+  const branding = async () => {
+    try {
+      const response = await fetch(
+        `${import.meta.env.VITE_APP_HOST}/branding/`,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            "Authorization": "Bearer " + session.session, // prettier-ignore
+          },
+          body: JSON.stringify({ email: email.email }),
+        }
+      );
+
+      if (response.ok) {
+        const data = await response.json();
+        console.log("Branding Data " + data);
+        if (data == false) {
+          setPC("#fe9052");
+          setSC("#ebebeb");
+          setTC("#333");
+          setBC("#fff");
+        } else {
+          setPC(data.primary_color);
+          setSC(data.secondary_color);
+          setTC(data.text_color);
+          setBC(data.background_color);
+        }
+      } else {
+        console.error("Failed to fetch data");
+      }
+    } catch (error) {
+      console.error("Error fetching data:", error);
+    }
+  };
+
+  const saveBranding = async () => {
+    isLoading(true);
+    try {
+      const response = await fetch(
+        `${import.meta.env.VITE_APP_HOST}/branding/save/`,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            "Authorization": "Bearer " + session.session, // prettier-ignore
+          },
+          body: JSON.stringify({
+            email: email.email,
+            primaryColor: primaryColor,
+            secondaryColor: secondaryColor,
+            textColor: textColor,
+            backgroundColor: bgColor,
+          }),
+        }
+      );
+
+      if (response.ok) {
+        alert("Your settings have been saved!");
+      } else {
+        console.error("Failed to fetch data");
+      }
+    } catch (error) {
+      console.error("Error fetching data:", error);
+    }
+    isLoading(false);
+  };
+
   useEffect(() => {
     const fetchUserData = async () => {
       try {
@@ -119,6 +187,7 @@ function Profile() {
 
     fetchClauses();
     fetchUserData();
+    branding();
   }, [session, email]);
 
   const renderClauses = (data: any[]) => {
@@ -220,7 +289,9 @@ function Profile() {
               <button className="cancel-button" onClick={reset}>
                 Reset
               </button>
-              <button className="submit-button">Save</button>
+              <button className="submit-button" onClick={saveBranding}>
+                Save
+              </button>
             </div>
             <br />
             <section style={{ backgroundColor: bgColor }}>
