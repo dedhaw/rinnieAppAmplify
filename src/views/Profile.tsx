@@ -486,7 +486,11 @@ function Profile() {
                     }}
                   >
                     <h2>Logo Upload</h2>
-                    <input type="file" onChange={handleLogoChange} />
+                    <input
+                      type="file"
+                      accept="image/*"
+                      onChange={handleLogoChange}
+                    />
                     <br />
                     <br />
                     <button
@@ -504,7 +508,11 @@ function Profile() {
                     }}
                   >
                     <h2>Banner Upload</h2>
-                    <input type="file" onChange={handleBannerChange} />
+                    <input
+                      type="file"
+                      accept="image/*"
+                      onChange={handleBannerChange}
+                    />
                     <br />
                     <br />
                     <button
@@ -579,7 +587,11 @@ function Profile() {
                       }}
                     >
                       <h2>Logo Upload</h2>
-                      <input type="file" onChange={handleLogoChange} />
+                      <input
+                        type="file"
+                        accept="image/*"
+                        onChange={handleLogoChange}
+                      />
                       <br />
                       <br />
                       <button
@@ -597,7 +609,11 @@ function Profile() {
                       }}
                     >
                       <h2>Banner Upload</h2>
-                      <input type="file" onChange={handleBannerChange} />
+                      <input
+                        type="file"
+                        accept="image/*"
+                        onChange={handleBannerChange}
+                      />
                       <br />
                       <br />
                       <button
@@ -660,7 +676,11 @@ function Profile() {
                 }}
               >
                 <h2>Logo Upload</h2>
-                <input type="file" onChange={handleLogoChange} />
+                <input
+                  type="file"
+                  accept="image/*"
+                  onChange={handleLogoChange}
+                />
                 <br />
                 <br />
                 <button
@@ -678,7 +698,11 @@ function Profile() {
                 }}
               >
                 <h2>Banner Upload</h2>
-                <input type="file" onChange={handleBannerChange} />
+                <input
+                  type="file"
+                  accept="image/*"
+                  onChange={handleBannerChange}
+                />
                 <br />
                 <br />
                 <button
