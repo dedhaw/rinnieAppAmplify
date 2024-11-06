@@ -1,7 +1,8 @@
 import React, { useState, useEffect, useRef } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 
-import Navbar from "../components/Navbar";
+import Navbar from "../components/FillForm/Navbar";
+import { default as NB } from "../components/Navbar";
 import Modal from "../components/Modal";
 import SignatureBox from "../components/SignatureBox";
 import InitialBox from "../components/InitialsBox";
@@ -19,6 +20,8 @@ function GenerateForm() {
   const navigate = useNavigate();
   const location = useLocation();
   const queryParams = new URLSearchParams(location.search);
+  const [branding, setBranding] = useState<any>(false);
+  const [starting, isStarting] = useState(true);
 
   const id = queryParams.get("id") || "";
   if (id == "") {
@@ -73,6 +76,37 @@ function GenerateForm() {
     };
 
     check();
+
+    const getBranding = async () => {
+      try {
+        const response = await fetch(
+          `${import.meta.env.VITE_APP_HOST_OPEN}/branding/get/`,
+          {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+              "Authorization": "Bearer " + session.session, // prettier-ignore
+            },
+            body: JSON.stringify({ id: id }),
+          }
+        );
+
+        if (response.ok) {
+          const data = await response.json();
+          console.log("Branding Data " + data);
+          setBranding(data);
+          isStarting(false);
+        } else {
+          console.error("Failed to fetch data");
+          isStarting(false);
+        }
+      } catch (error) {
+        console.error("Error fetching data:", error);
+        isStarting(false);
+      }
+    };
+
+    getBranding();
 
     const handleResize = () => {
       setViewportWidth(window.innerWidth);
@@ -349,363 +383,490 @@ function GenerateForm() {
     return () => clearInterval(interval);
   }, []);
 
+  var primaryColor = "#fe9052";
+  var secondaryColor = "#ebebeb";
+  var backgroundColor = "#fff";
+  var textColor = "#333";
+  var logo = null;
+  var banner = null;
+
+  if (branding != false) {
+    var primaryColor = String(branding.primary_color);
+    var secondaryColor = String(branding.secondary_color);
+    var backgroundColor = String(branding.background_color);
+    var textColor = String(branding.text_color);
+    console.log(branding.logo);
+    var logo = branding.logo;
+    var banner = branding.banner;
+  }
+
   return (
     <>
-      <Navbar pageType="none" />
-      <h1>Buyer Brokerage Agreement</h1>
-      <section style={{ margin: "0px, auto", textAlign: "center" }}>
-        {step === "info" && (
-          <>
-            <p>How Many Buyers?</p>
-            <div className="radio-group">
-              <label className="radio-label">
-                <input
-                  type="radio"
-                  name="option"
-                  value="One"
-                  checked={buyerCount === 1}
-                  onChange={handleBuyerCount}
-                  className="radio-input"
-                />
-                <span className="radio-label-text">One</span>
-              </label>
-              <label className="radio-label">
-                <input
-                  type="radio"
-                  name="option"
-                  value="Two"
-                  checked={buyerCount === 2}
-                  onChange={handleBuyerCount}
-                  className="radio-input"
-                />
-                <span className="radio-label-text">Two</span>
-              </label>
-            </div>
-            <br />
-            <p>Buyer One</p>
-            <div className="form-group two-fields">
-              <input
-                type="text"
-                id="first-name1"
-                value={firstName1}
-                onChange={(e) => set1FirstName(e.target.value)}
-                placeholder="First Name"
-                required
-              />
-              <input
-                type="text"
-                id="last-name1"
-                value={lastName1}
-                onChange={(e) => set1LastName(e.target.value)}
-                placeholder="Last Name"
-                required
-              />
-            </div>
-            <div className="form-group">
-              <input
-                type="email"
-                id="email1"
-                value={email1}
-                onChange={(e) => set1Email(e.target.value)}
-                placeholder="Email"
-                required
-              />
-            </div>
-            <div className="form-group">
-              <input
-                type="tel"
-                id="phone1"
-                value={phone1}
-                onChange={(e) => set1Phone(e.target.value)}
-                placeholder="Phone"
-                pattern="[0-9]{10}"
-                inputMode="numeric"
-                required
-              />
-            </div>
-            {buyerCount === 2 && (
-              <>
-                <p>Buyer Two</p>
-                <div className="form-group two-fields">
-                  <input
-                    type="text"
-                    id="first-name2"
-                    value={firstName2}
-                    onChange={(e) => set2FirstName(e.target.value)}
-                    placeholder="First Name"
-                    required
-                  />
-                  <input
-                    type="text"
-                    id="last-name2"
-                    value={lastName2}
-                    onChange={(e) => set2LastName(e.target.value)}
-                    placeholder="Last Name"
-                    required
-                  />
-                </div>
-                <div className="form-group">
-                  <input
-                    type="email"
-                    id="email2"
-                    value={email2}
-                    onChange={(e) => set2Email(e.target.value)}
-                    placeholder="Email"
-                    required
-                  />
-                </div>
-                <div className="form-group">
-                  <input
-                    type="tel"
-                    id="phone2"
-                    value={phone2}
-                    onChange={(e) => set2Phone(e.target.value)}
-                    placeholder="Phone"
-                    pattern="[0-9]{10}"
-                    inputMode="numeric"
-                    required
-                  />
-                </div>
-                {firstName1.length > 0 &&
-                  lastName1.length > 0 &&
-                  email1.length > 0 &&
-                  phone1.length > 0 &&
-                  firstName2.length > 0 &&
-                  lastName2.length > 0 &&
-                  email2.length > 0 &&
-                  phone2.length > 0 && (
-                    <button
-                      className="next-button"
-                      onClick={() => fillForm(id)}
-                    >
-                      Next
-                    </button>
-                  )}
-              </>
-            )}
-            {buyerCount === 1 && (
-              <>
-                {firstName1.length > 0 &&
-                  lastName1.length > 0 &&
-                  email1.length > 0 &&
-                  phone1.length > 0 && (
-                    <button
-                      className="next-button"
-                      onClick={() => fillForm(id)}
-                    >
-                      Next
-                    </button>
-                  )}
-              </>
-            )}
-            {viewportWidth > 800 && (
-              <Modal isOpen={isModalOpen} onClose={closeModal}>
-                {loading === false && (
-                  <>
-                    <p>
-                      Please navigate to the last page of the document to
-                      proceed.
-                    </p>
-                    {!isIpad() && (
-                      <>
-                        <div className="doc-container no-border fill ">
-                          <DocViewer
-                            documents={docs}
-                            pluginRenderers={DocViewerRenderers}
-                            theme={{
-                              primary: "#ffd5bb",
-                              secondary: "#ffd5bb",
-                              tertiary: "#fff",
-                              textPrimary: "#333333",
-                              textSecondary: "#333333",
-                              textTertiary: "#333333",
-                              disableThemeScrollbar: false,
-                            }}
-                            style={{ width: 1000 }}
-                          />
-                        </div>
-                        <p>
-                          I acknowledge that I have read and understand the
-                          terms of this contract.
-                        </p>
-                        {currentPage === 3 && (
-                          <button
-                            className="accept-button"
-                            onClick={handleAccept}
-                          >
-                            Accept
-                          </button>
-                        )}
-                      </>
-                    )}
-                    {isIpad() && (
-                      <>
-                        {images.map((img, index) => (
-                          <img
-                            key={index}
-                            src={`data:image/png;base64,${img}`}
-                            alt={`Page ${index + 1}`}
-                            style={{ display: "block", marginBottom: "10px" }}
-                          />
-                        ))}
-                        <p>
-                          I acknowledge that I have read and understand the
-                          terms of this contract.
-                        </p>
-                        <br />
-                        <button
-                          className="accept-button"
-                          onClick={handleAccept}
-                        >
-                          Accept
-                        </button>
-                        <br />
-                      </>
-                    )}
-                  </>
-                )}
-                {loading === true && (
-                  <div style={{ margin: "10px auto", textAlign: "center" }}>
-                    <img
-                      className="loading"
-                      src="/loading.gif"
-                      alt="loading..."
-                    />
-                  </div>
-                )}
-              </Modal>
-            )}
-          </>
-        )}
-
-        {step === "signature" && (
-          <>
-            {loading === false && (
-              <>
-                <h2>
-                  {firstName1} {lastName1} Initials:
-                </h2>
-                <InitialBox ref={initialRef1} />
-                <h2>
-                  {firstName1} {lastName1} Signature:
-                </h2>
-                <SignatureBox ref={signatureRef1} />
-                {buyerCount === 2 && (
-                  <>
-                    <h2>
-                      {firstName2} {lastName2} Initials:
-                    </h2>
-                    <InitialBox ref={initialRef2} />
-                    <h2>
-                      {firstName2} {lastName2} Signature:
-                    </h2>
-                    <SignatureBox ref={signatureRef2} />
-                  </>
-                )}
-                <button
-                  type="submit"
-                  className="submit-button"
-                  onClick={() => handleSubmit(id)}
-                >
-                  Submit
-                </button>
-              </>
-            )}
-            {loading === true && (
-              <div style={{ margin: "10px auto", textAlign: "center" }}>
-                <img className="loading" src="/loading.gif" alt="loading..." />
-              </div>
-            )}
-          </>
-        )}
-      </section>
-      {viewportWidth <= 800 && isModalOpen && step === "info" && (
+      {starting === false && (
         <>
           <div
-            id="document-review"
-            style={{ margin: "10px auto", textAlign: "center" }}
-          >
-            <p>Please navigate to the last page of the document to proceed.</p>
-          </div>
-          <div
             style={{
-              justifyContent: "center",
-              display: "flex",
-              marginTop: "20px",
-              borderRadius: "8px",
+              color: textColor + " !important",
+              backgroundColor: backgroundColor,
             }}
           >
-            {!isIpad() && (
-              <>
-                {loading == false && (
-                  <DocViewer
-                    documents={docs}
-                    pluginRenderers={DocViewerRenderers}
-                    className="fill"
-                    theme={{
-                      primary: "#ffd5bb",
-                      secondary: "#ffd5bb",
-                      tertiary: "#fff",
-                      textPrimary: "#333333",
-                      textSecondary: "#333333",
-                      textTertiary: "#333333",
-                      disableThemeScrollbar: false,
-                    }}
-                    style={{ width: 1000 }}
-                  />
-                )}
-              </>
-            )}
-            {isIpad() && (
-              <>
-                {loading == false && (
-                  <>
-                    {images.map((img, index) => (
-                      <img
-                        key={index}
-                        src={`data:image/png;base64,${img}`}
-                        alt={`Page ${index + 1}`}
-                        style={{ display: "block", marginBottom: "10px" }}
+            <Navbar
+              backgroundColor={backgroundColor}
+              secondaryColor={secondaryColor}
+              logo={logo}
+            />
+
+            {banner && <img className="banner" src={banner} />}
+            <h1 style={{ color: textColor }}>Buyer Brokerage Agreement</h1>
+            <section
+              style={{
+                border: "2px solid" + secondaryColor,
+                margin: "0px, auto",
+                textAlign: "center",
+              }}
+            >
+              {step === "info" && (
+                <>
+                  <p style={{ color: textColor }}>How Many Buyers?</p>
+                  <div className="radio-group">
+                    <label className="radio-label">
+                      <input
+                        type="radio"
+                        name="option"
+                        value="One"
+                        checked={buyerCount === 1}
+                        onChange={handleBuyerCount}
+                        className="radio-input"
+                        style={{
+                          backgroundColor:
+                            buyerCount === 1 ? primaryColor : "#fff",
+                          border:
+                            buyerCount === 1
+                              ? "11px solid" + primaryColor
+                              : "1px solid" + primaryColor,
+                        }}
                       />
-                    ))}
+                      <span
+                        className="radio-label-text"
+                        style={{ color: textColor }}
+                      >
+                        One
+                      </span>
+                    </label>
+                    <label className="radio-label">
+                      <input
+                        type="radio"
+                        name="option"
+                        value="Two"
+                        checked={buyerCount === 2}
+                        onChange={handleBuyerCount}
+                        className="radio-input"
+                        style={{
+                          backgroundColor:
+                            buyerCount === 2 ? primaryColor : "#fff",
+                          border:
+                            buyerCount === 2
+                              ? "11px solid" + primaryColor
+                              : "1px solid" + primaryColor,
+                        }}
+                      />
+                      <span
+                        className="radio-label-text"
+                        style={{ color: textColor }}
+                      >
+                        Two
+                      </span>
+                    </label>
+                  </div>
+                  <br />
+                  <p style={{ color: textColor }}>Buyer One</p>
+                  <div className="form-group two-fields">
+                    <input
+                      type="text"
+                      id="first-name1"
+                      value={firstName1}
+                      onChange={(e) => set1FirstName(e.target.value)}
+                      placeholder="First Name"
+                      required
+                    />
+                    <input
+                      type="text"
+                      id="last-name1"
+                      value={lastName1}
+                      onChange={(e) => set1LastName(e.target.value)}
+                      placeholder="Last Name"
+                      required
+                    />
+                  </div>
+                  <div className="form-group">
+                    <input
+                      type="email"
+                      id="email1"
+                      value={email1}
+                      onChange={(e) => set1Email(e.target.value)}
+                      placeholder="Email"
+                      required
+                    />
+                  </div>
+                  <div className="form-group">
+                    <input
+                      type="tel"
+                      id="phone1"
+                      value={phone1}
+                      onChange={(e) => set1Phone(e.target.value)}
+                      placeholder="Phone"
+                      pattern="[0-9]{10}"
+                      inputMode="numeric"
+                      required
+                    />
+                  </div>
+                  {buyerCount === 2 && (
+                    <>
+                      <p style={{ color: textColor }}>Buyer Two</p>
+                      <div className="form-group two-fields">
+                        <input
+                          type="text"
+                          id="first-name2"
+                          value={firstName2}
+                          onChange={(e) => set2FirstName(e.target.value)}
+                          placeholder="First Name"
+                          required
+                        />
+                        <input
+                          type="text"
+                          id="last-name2"
+                          value={lastName2}
+                          onChange={(e) => set2LastName(e.target.value)}
+                          placeholder="Last Name"
+                          required
+                        />
+                      </div>
+                      <div className="form-group">
+                        <input
+                          type="email"
+                          id="email2"
+                          value={email2}
+                          onChange={(e) => set2Email(e.target.value)}
+                          placeholder="Email"
+                          required
+                        />
+                      </div>
+                      <div className="form-group">
+                        <input
+                          type="tel"
+                          id="phone2"
+                          value={phone2}
+                          onChange={(e) => set2Phone(e.target.value)}
+                          placeholder="Phone"
+                          pattern="[0-9]{10}"
+                          inputMode="numeric"
+                          required
+                        />
+                      </div>
+                      {firstName1.length > 0 &&
+                        lastName1.length > 0 &&
+                        email1.length > 0 &&
+                        phone1.length > 0 &&
+                        firstName2.length > 0 &&
+                        lastName2.length > 0 &&
+                        email2.length > 0 &&
+                        phone2.length > 0 && (
+                          <button
+                            className="next-button"
+                            onClick={() => fillForm(id)}
+                          >
+                            Next
+                          </button>
+                        )}
+                    </>
+                  )}
+                  {buyerCount === 1 && (
+                    <>
+                      {firstName1.length > 0 &&
+                        lastName1.length > 0 &&
+                        email1.length > 0 &&
+                        phone1.length > 0 && (
+                          <button
+                            className="next-button"
+                            style={{
+                              backgroundColor: primaryColor,
+                              borderColor: primaryColor,
+                            }}
+                            onClick={() => fillForm(id)}
+                          >
+                            Next
+                          </button>
+                        )}
+                    </>
+                  )}
+                  {viewportWidth > 800 && (
+                    <Modal isOpen={isModalOpen} onClose={closeModal}>
+                      {loading === false && (
+                        <>
+                          <p style={{ color: textColor }}>
+                            Please navigate to the last page of the document to
+                            proceed.
+                          </p>
+                          {!isIpad() && (
+                            <>
+                              <div className="doc-container no-border fill ">
+                                <DocViewer
+                                  documents={docs}
+                                  pluginRenderers={DocViewerRenderers}
+                                  theme={{
+                                    primary: primaryColor,
+                                    secondary: secondaryColor,
+                                    tertiary: "#fff",
+                                    textPrimary: "#333333",
+                                    textSecondary: "#333333",
+                                    textTertiary: "#333333",
+                                    disableThemeScrollbar: false,
+                                  }}
+                                  style={{ width: 1000 }}
+                                />
+                              </div>
+                              <p style={{ color: textColor }}>
+                                I acknowledge that I have read and understand
+                                the terms of this contract.
+                              </p>
+                              {currentPage === 3 && (
+                                <button
+                                  className="accept-button"
+                                  onClick={handleAccept}
+                                >
+                                  Accept
+                                </button>
+                              )}
+                            </>
+                          )}
+                          {isIpad() && (
+                            <>
+                              {images.map((img, index) => (
+                                <img
+                                  key={index}
+                                  src={`data:image/png;base64,${img}`}
+                                  alt={`Page ${index + 1}`}
+                                  style={{
+                                    display: "block",
+                                    marginBottom: "10px",
+                                  }}
+                                />
+                              ))}
+                              <p style={{ color: textColor }}>
+                                I acknowledge that I have read and understand
+                                the terms of this contract.
+                              </p>
+                              <br />
+                              <button
+                                className="accept-button"
+                                onClick={handleAccept}
+                              >
+                                Accept
+                              </button>
+                              <br />
+                            </>
+                          )}
+                        </>
+                      )}
+                      {loading === true && (
+                        <div
+                          style={{ margin: "10px auto", textAlign: "center" }}
+                        >
+                          <img
+                            className="loading"
+                            src="/loading.gif"
+                            alt="loading..."
+                          />
+                        </div>
+                      )}
+                    </Modal>
+                  )}
+                </>
+              )}
+
+              {step === "signature" && (
+                <>
+                  {loading === false && (
+                    <>
+                      <h2 style={{ color: textColor }}>
+                        {firstName1} {lastName1} Initials:
+                      </h2>
+                      <InitialBox ref={initialRef1} />
+                      <h2 style={{ color: textColor }}>
+                        {firstName1} {lastName1} Signature:
+                      </h2>
+                      <SignatureBox ref={signatureRef1} />
+                      {buyerCount === 2 && (
+                        <>
+                          <h2 style={{ color: textColor }}>
+                            {firstName2} {lastName2} Initials:
+                          </h2>
+                          <InitialBox ref={initialRef2} />
+                          <h2 style={{ color: textColor }}>
+                            {firstName2} {lastName2} Signature:
+                          </h2>
+                          <SignatureBox ref={signatureRef2} />
+                        </>
+                      )}
+                      <button
+                        type="submit"
+                        className="submit-button"
+                        style={{
+                          backgroundColor: primaryColor,
+                          borderColor: primaryColor,
+                        }}
+                        onClick={() => handleSubmit(id)}
+                      >
+                        Submit
+                      </button>
+                    </>
+                  )}
+                  {loading === true && (
+                    <div style={{ margin: "10px auto", textAlign: "center" }}>
+                      <img
+                        className="loading"
+                        src="/loading.gif"
+                        alt="loading..."
+                      />
+                    </div>
+                  )}
+                </>
+              )}
+            </section>
+            {viewportWidth <= 800 && isModalOpen && step === "info" && (
+              <>
+                <div
+                  id="document-review"
+                  style={{ margin: "10px auto", textAlign: "center" }}
+                >
+                  <p style={{ color: textColor }}>
+                    Please navigate to the last page of the document to proceed.
+                  </p>
+                </div>
+                <div
+                  style={{
+                    justifyContent: "center",
+                    display: "flex",
+                    marginTop: "20px",
+                    borderRadius: "8px",
+                  }}
+                >
+                  {!isIpad() && (
+                    <>
+                      {loading == false && (
+                        <DocViewer
+                          documents={docs}
+                          pluginRenderers={DocViewerRenderers}
+                          className="fill"
+                          theme={{
+                            primary: primaryColor,
+                            secondary: secondaryColor,
+                            tertiary: "#fff",
+                            textPrimary: "#333333",
+                            textSecondary: "#333333",
+                            textTertiary: "#333333",
+                            disableThemeScrollbar: false,
+                          }}
+                          style={{ width: 1000 }}
+                        />
+                      )}
+                    </>
+                  )}
+                  {isIpad() && (
+                    <>
+                      {loading == false && (
+                        <>
+                          {images.map((img, index) => (
+                            <img
+                              key={index}
+                              src={`data:image/png;base64,${img}`}
+                              alt={`Page ${index + 1}`}
+                              style={{ display: "block", marginBottom: "10px" }}
+                            />
+                          ))}
+                          <div
+                            className="no-border"
+                            style={{ justifyContent: "center" }}
+                          >
+                            <button
+                              className="next-button"
+                              onClick={handleAccept}
+                            >
+                              Accept
+                            </button>
+                          </div>
+                        </>
+                      )}
+                    </>
+                  )}
+                  {loading === true && (
+                    <>
+                      <div style={{ margin: "10px auto", textAlign: "center" }}>
+                        <img
+                          className="loading"
+                          src="/loading.gif"
+                          alt="loading..."
+                        />
+                      </div>
+                    </>
+                  )}
+                </div>
+                <section style={{ border: "2px solid" + secondaryColor }}>
+                  <p style={{ color: textColor }}>
+                    I acknowledge that I have read and understand the terms of
+                    this contract.
+                  </p>
+                  <br />
+                  {currentPage === 3 && (
                     <div
                       className="no-border"
                       style={{ justifyContent: "center" }}
                     >
-                      <button className="next-button" onClick={handleAccept}>
+                      <button
+                        className="next-button"
+                        style={{
+                          backgroundColor: primaryColor,
+                          borderColor: primaryColor,
+                        }}
+                        onClick={handleAccept}
+                      >
                         Accept
                       </button>
                     </div>
-                  </>
-                )}
+                  )}
+                </section>
               </>
             )}
-            {loading === true && (
-              <>
-                <div style={{ margin: "10px auto", textAlign: "center" }}>
-                  <img
-                    className="loading"
-                    src="/loading.gif"
-                    alt="loading..."
-                  />
-                </div>
-              </>
-            )}
-          </div>
-          <section>
-            <p>
-              I acknowledge that I have read and understand the terms of this
-              contract.
-            </p>
             <br />
-            {currentPage === 3 && (
-              <div className="no-border" style={{ justifyContent: "center" }}>
-                <button className="next-button" onClick={handleAccept}>
-                  Accept
-                </button>
-              </div>
-            )}
-          </section>
+          </div>
+        </>
+      )}
+      {starting === true && (
+        <>
+          <NB pageType="none" />
+          <div>
+            <img
+              src="/pu.png"
+              style={{
+                height: "250px",
+                width: "auto",
+                display: "flex",
+                margin: "100px auto auto auto",
+              }}
+              alt=""
+            />
+            <h2>Powered by Rinnie</h2>
+            <div
+              className="no-border"
+              style={{
+                justifyContent: "center",
+                margin: "auto",
+                display: "flex",
+              }}
+            >
+              <img className="loading" src="/loading.gif" alt="loading..." />
+            </div>
+          </div>
         </>
       )}
     </>

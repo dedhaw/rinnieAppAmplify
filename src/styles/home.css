@@ -27,3 +27,8 @@
     margin: 0px;
     width: 130px;
 }
+
+.delete:hover {
+    background-color: white;
+    color: red !important;
+}

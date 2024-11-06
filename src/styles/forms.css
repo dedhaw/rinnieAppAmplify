@@ -136,15 +136,16 @@
     width: 20px;
     height: 20px;
     background-color: #fff;
-    border: 2px solid #fe9052;
     border-radius: 4px;
     margin-right: 10px;
     cursor: pointer;
     position: relative;
+    border: 1px solid #fe9052;
   }
   
   .radio-input:checked {
     background-color: #fe9052;
+    border: 11px solid #fe9052;
   }
   
   .radio-input:checked::after {
@@ -296,6 +297,13 @@
     justify-content: center;
     display: flex;
     width: 200px;
+  }
+  
+  .banner {
+    max-height: 250px;
+    margin: auto;
+    display: flex;
+    justify-self: center;
   }
 
   @media screen and (max-width: 950px) {
