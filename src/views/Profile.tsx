@@ -3,6 +3,7 @@ import Navbar from "../components/Navbar";
 import { useCookies } from "react-cookie";
 import { FaRegTrashAlt } from "react-icons/fa";
 import { ChromePicker } from "react-color";
+import "../styles/profile.css";
 
 function Profile() {
   const [session] = useCookies(["session"]);
@@ -35,11 +36,15 @@ function Profile() {
   const handleBCChange = (newColor: any) => {
     setBC(newColor.hex);
   };
-  const handleLogoChange = (e) => {
-    setLogo(e.target.files[0]);
+  const handleLogoChange = (e: any) => {
+    if (e) {
+      setLogo(e.target.files[0]);
+    }
   };
-  const handleBannerChange = (e) => {
-    setBanner(e.target.files[0]);
+  const handleBannerChange = (e: any) => {
+    if (e) {
+      setBanner(e.target.files[0]);
+    }
   };
 
   const reset = () => {
@@ -92,7 +97,6 @@ function Profile() {
 
       if (response.ok) {
         const data = await response.json();
-        console.log("Branding Data " + data);
         if (data == false) {
           setPC("#fe9052");
           setSC("#ebebeb");
@@ -113,7 +117,7 @@ function Profile() {
   };
 
   const saveBranding = async () => {
-    isLoading(true);
+    isBLoading(true);
     try {
       const response = await fetch(
         `${import.meta.env.VITE_APP_HOST}/branding/save/`,
@@ -135,13 +139,15 @@ function Profile() {
 
       if (response.ok) {
         alert("Your settings have been saved!");
+        isBLoading(false);
       } else {
         console.error("Failed to fetch data");
+        isBLoading(false);
       }
     } catch (error) {
       console.error("Error fetching data:", error);
+      isBLoading(false);
     }
-    isLoading(false);
   };
 
   const resetBrandingImage = async () => {
@@ -227,6 +233,11 @@ function Profile() {
     branding();
   }, [session, email]);
 
+  const handleBLoading = () => {
+    alert("Loading...");
+    isBLoading(false);
+  };
+
   const handleLogoUpload = async () => {
     if (!logo) return;
     isBLoading(true);
@@ -260,7 +271,6 @@ function Profile() {
   };
 
   const handleBannerUpload = async () => {
-    console.log(banner);
     if (!banner) return;
     isBLoading(true);
     const formData = new FormData();
@@ -321,6 +331,26 @@ function Profile() {
       );
     });
   };
+
+  const [viewportWidth, setViewportWidth] = useState(window.innerWidth);
+
+  useEffect(() => {
+    const handleResize = () => {
+      setViewportWidth(window.innerWidth);
+    };
+
+    window.addEventListener("resize", handleResize);
+
+    return () => {
+      window.removeEventListener("resize", handleResize);
+    };
+  }, []);
+
+  useEffect(() => {
+    if (brandingLoading) {
+      handleBLoading();
+    }
+  }, [brandingLoading]);
 
   return (
     <>
@@ -415,44 +445,215 @@ function Profile() {
                 {/* </div> */}
               </section>
             </section>
+            {viewportWidth > 1001 && (
+              <>
+                <div className="color-picker">
+                  <div>
+                    <p>Primary Color</p>
+                    <ChromePicker
+                      color={primaryColor}
+                      onChange={handlePCChange}
+                    />
+                  </div>
+                  <div>
+                    <p>Secondary Color</p>
+                    <ChromePicker
+                      color={secondaryColor}
+                      onChange={handleSCChange}
+                    />
+                  </div>
+                  <div>
+                    <p>Text Color</p>
+                    <ChromePicker color={textColor} onChange={handleTCChange} />
+                  </div>
+                  <div>
+                    <p>Background Color</p>
+                    <ChromePicker color={bgColor} onChange={handleBCChange} />
+                  </div>
+                </div>
+                <br />
+                <section
+                  style={{
+                    margin: "auto",
+                    display: "flex",
+                    justifyContent: "center",
+                    gap: "35px",
+                  }}
+                >
+                  <div
+                    style={{
+                      display: "inline",
+                    }}
+                  >
+                    <h2>Logo Upload</h2>
+                    <input type="file" onChange={handleLogoChange} />
+                    <br />
+                    <br />
+                    <button
+                      style={{ margin: "auto", display: "flex" }}
+                      onClick={handleLogoUpload}
+                    >
+                      Save Logo
+                    </button>
+                  </div>
+
+                  <div
+                    style={{
+                      display: "inline",
+                      justifyContent: "center",
+                    }}
+                  >
+                    <h2>Banner Upload</h2>
+                    <input type="file" onChange={handleBannerChange} />
+                    <br />
+                    <br />
+                    <button
+                      style={{ margin: "auto", display: "flex" }}
+                      onClick={handleBannerUpload}
+                    >
+                      Save Banner
+                    </button>
+                  </div>
+                </section>
+                <div className="buttons">
+                  <button
+                    className="delete"
+                    style={{ width: "auto" }}
+                    onClick={resetBrandingImage}
+                  >
+                    Reset Images
+                  </button>
+                </div>
+                <br />
+              </>
+            )}
+            {viewportWidth < 1000 && viewportWidth > 500 && (
+              <>
+                <div
+                  style={{
+                    display: "flex",
+                    alignItems: "baseline",
+                    margin: "auto",
+                  }}
+                >
+                  <div
+                    style={{
+                      width: "50%",
+                      margin: "auto",
+                      display: "grid",
+                      justifyContent: "center",
+                    }}
+                  >
+                    <div>
+                      <p> Primary Color</p>
+                      <ChromePicker
+                        color={primaryColor}
+                        onChange={handlePCChange}
+                      />
+                      <p>Secondary Color</p>
+                      <ChromePicker
+                        color={secondaryColor}
+                        onChange={handleSCChange}
+                      />
+                      <div></div>
+                      <div>
+                        <p>Text Color</p>
+                        <ChromePicker
+                          color={textColor}
+                          onChange={handleTCChange}
+                        />
+                      </div>
+                      <div>
+                        <p>Background Color</p>
+                        <ChromePicker
+                          color={bgColor}
+                          onChange={handleBCChange}
+                        />
+                      </div>
+                    </div>
+                  </div>
+                  <div style={{ width: "50%" }}>
+                    <div
+                      style={{
+                        display: "inline",
+                      }}
+                    >
+                      <h2>Logo Upload</h2>
+                      <input type="file" onChange={handleLogoChange} />
+                      <br />
+                      <br />
+                      <button
+                        style={{ margin: "auto", display: "flex" }}
+                        onClick={handleLogoUpload}
+                      >
+                        Save Logo
+                      </button>
+                    </div>
+
+                    <div
+                      style={{
+                        display: "inline",
+                        justifyContent: "center",
+                      }}
+                    >
+                      <h2>Banner Upload</h2>
+                      <input type="file" onChange={handleBannerChange} />
+                      <br />
+                      <br />
+                      <button
+                        style={{ margin: "auto", display: "flex" }}
+                        onClick={handleBannerUpload}
+                      >
+                        Save Banner
+                      </button>
+                      <div className="buttons">
+                        <button
+                          className="delete"
+                          style={{ width: "auto" }}
+                          onClick={resetBrandingImage}
+                        >
+                          Reset Images
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </>
+            )}
+          </>
+        )}
+
+        {viewportWidth <= 500 && (
+          <>
             <div
               style={{
+                width: "50%",
                 margin: "auto",
-                display: "flex",
+                display: "grid",
                 justifyContent: "center",
-                gap: "35px",
               }}
             >
               <div>
-                <p>Primary Color</p>
+                <p> Primary Color</p>
                 <ChromePicker color={primaryColor} onChange={handlePCChange} />
-              </div>
-              <div>
                 <p>Secondary Color</p>
                 <ChromePicker
                   color={secondaryColor}
                   onChange={handleSCChange}
                 />
-              </div>
-              <div>
-                <p>Text Color</p>
-                <ChromePicker color={textColor} onChange={handleTCChange} />
-              </div>
-              <div>
-                <p>Background Color</p>
-                <ChromePicker color={bgColor} onChange={handleBCChange} />
+                <div></div>
+                <div>
+                  <p>Text Color</p>
+                  <ChromePicker color={textColor} onChange={handleTCChange} />
+                </div>
+                <div>
+                  <p>Background Color</p>
+                  <ChromePicker color={bgColor} onChange={handleBCChange} />
+                </div>
               </div>
             </div>
             <br />
-            {brandingLoading && alert("loading...")}
-            <section
-              style={{
-                margin: "auto",
-                display: "flex",
-                justifyContent: "center",
-                gap: "35px",
-              }}
-            >
+            <div style={{ width: "50%", margin: "auto" }}>
               <div
                 style={{
                   display: "inline",
@@ -486,18 +687,17 @@ function Profile() {
                 >
                   Save Banner
                 </button>
+                <div className="buttons">
+                  <button
+                    className="delete"
+                    style={{ width: "auto" }}
+                    onClick={resetBrandingImage}
+                  >
+                    Reset Images
+                  </button>
+                </div>
               </div>
-            </section>
-            <div className="buttons">
-              <button
-                className="delete"
-                style={{ width: "auto" }}
-                onClick={resetBrandingImage}
-              >
-                Reset Images
-              </button>
             </div>
-            <br />
           </>
         )}
       </div>
