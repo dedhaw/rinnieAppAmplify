@@ -1,0 +1,10 @@
+.color-picker {
+    margin: auto;
+    display: flex;
+    justify-content: center;
+    gap: 35px;
+}
+
+@media screen and (max-width: 1000px) {
+
+}
