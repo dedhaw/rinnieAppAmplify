@@ -608,7 +608,7 @@ function GenerateForm() {
                     <Modal isOpen={isModalOpen} onClose={closeModal}>
                       {loading === false && (
                         <>
-                          <p style={{ color: textColor }}>
+                          <p>
                             Please navigate to the last page of the document to
                             proceed.
                           </p>
@@ -630,7 +630,7 @@ function GenerateForm() {
                                   style={{ width: 1000 }}
                                 />
                               </div>
-                              <p style={{ color: textColor }}>
+                              <p>
                                 I acknowledge that I have read and understand
                                 the terms of this contract.
                               </p>
@@ -657,7 +657,7 @@ function GenerateForm() {
                                   }}
                                 />
                               ))}
-                              <p style={{ color: textColor }}>
+                              <p>
                                 I acknowledge that I have read and understand
                                 the terms of this contract.
                               </p>
@@ -675,7 +675,12 @@ function GenerateForm() {
                       )}
                       {loading === true && (
                         <div
-                          style={{ margin: "10px auto", textAlign: "center" }}
+                          style={{
+                            margin: "10px auto",
+                            textAlign: "center",
+                            display: "flex",
+                            justifyContent: "center",
+                          }}
                         >
                           <img
                             className="loading"
