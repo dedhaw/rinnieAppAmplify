@@ -416,7 +416,12 @@ function GenerateForm() {
               logo={logo}
             />
 
-            {banner && <img className="banner" src={banner} />}
+            {banner && (
+              <>
+                <br />
+                <img className="banner" src={banner} />
+              </>
+            )}
             <h1 style={{ color: textColor }}>Buyer Brokerage Agreement</h1>
             <section
               style={{
