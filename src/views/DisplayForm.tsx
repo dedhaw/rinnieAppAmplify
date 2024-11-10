@@ -65,7 +65,7 @@ function DisplayForm() {
     const check = async () => {
       const data = await checkUserDocAccess(email.email, id);
       if (data == false) {
-        navigate("/page-not-found");
+        navigate("/page-not-found/");
       }
     };
 

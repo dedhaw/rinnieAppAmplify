@@ -17,6 +17,7 @@ nav {
     position: absolute;
     left: 200px;
     margin-top: -6px;
+    cursor: pointer;
   }
   
   .nav-links {

@@ -17,7 +17,7 @@ function Landing() {
       <Agents />
       <Pricing />
       <Platforms />
-      <Footer />
+      <Footer isHomePage={true} />
     </>
   );
 }
