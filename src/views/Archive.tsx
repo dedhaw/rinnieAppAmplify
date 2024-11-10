@@ -5,6 +5,7 @@ import { FaCheck } from "react-icons/fa6";
 import { FaRegTrashAlt } from "react-icons/fa";
 import { useCookies } from "react-cookie";
 import { useNavigate } from "react-router-dom";
+import LoadingScreen from "../components/LoadingScreen";
 
 function Archive() {
   const navigate = useNavigate();
@@ -202,11 +203,7 @@ function Archive() {
           )}
         </>
       )}
-      {(data === null || loading === true) && (
-        <div style={{ margin: "10px auto", textAlign: "center" }}>
-          <img className="loading" src="/loading.gif" alt="loading..." />
-        </div>
-      )}
+      {(data === null || loading === true) && <LoadingScreen />}
     </>
   );
 }
