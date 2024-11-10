@@ -1,10 +1,12 @@
+import "../styles/index.css";
+
 function LoadingScreen() {
   return (
     <div
       className="no-border"
       style={{
         justifyContent: "center",
-        margin: "auto",
+        margin: "auto !important",
         display: "flex",
       }}
     >
