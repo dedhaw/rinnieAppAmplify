@@ -18,15 +18,15 @@ function Home() {
   const [loading, isLoading] = useState(false);
 
   const fillForm = (id: string) => {
-    window.open(`/fill-form?id=${id}`, "_blank");
+    window.open(`/fill-form?id=${id}/`, "_blank");
   };
 
   const emailForm = (id: string) => {
-    navigate(`/email-form?id=${id}`);
+    navigate(`/email-form?id=${id}/`);
   };
 
   const displayForm = (id: string) => {
-    navigate(`/form?id=${id}`);
+    navigate(`/form?id=${id}/`);
   };
 
   const archive = async (id: string) => {
