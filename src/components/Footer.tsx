@@ -1,9 +1,13 @@
 import { Link, useNavigate } from "react-router-dom";
-import { useState, useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import { scrollToSection } from "../utils/ScrollToSection";
 import "../styles/footer.css";
 
-function Footer() {
+interface FooterProps {
+  isHomePage?: boolean;
+}
+
+const Footer: React.FC<FooterProps> = ({ isHomePage }) => {
   const navigate = useNavigate();
   const [viewportWidth, setViewportWidth] = useState(window.innerWidth);
 
@@ -18,6 +22,14 @@ function Footer() {
       window.removeEventListener("resize", handleResize);
     };
   }, []);
+
+  const handlePricing = () => {
+    if (isHomePage) {
+      scrollToSection("pricing");
+    } else {
+      navigate("/");
+    }
+  };
 
   return (
     <footer className="footer">
@@ -36,8 +48,8 @@ function Footer() {
         </div>
         <div className="content">
           <h2>Links</h2>
-          <a href="http://dev-dhawan.com/">About</a>
-          <p onClick={() => scrollToSection("pricing")}>Pricing</p>
+          <Link to="/about/">About</Link>
+          <p onClick={handlePricing}>Pricing</p>
           <Link to="/contact/">Contact</Link>
         </div>
         <div className="content">
@@ -88,6 +100,6 @@ function Footer() {
       </div>
     </footer>
   );
-}
+};
 
 export default Footer;
