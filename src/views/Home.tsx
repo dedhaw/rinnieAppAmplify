@@ -5,6 +5,7 @@ import "../styles/home.css";
 import { PiHandWavingBold } from "react-icons/pi";
 import { IoClose } from "react-icons/io5";
 import { useCookies } from "react-cookie";
+import LoadingScreen from "../components/LoadingScreen";
 
 function Home() {
   const navigate = useNavigate();
@@ -211,9 +212,7 @@ function Home() {
       )}
 
       {(userData === null || data === null || loading === true) && (
-        <div style={{ margin: "10px auto", textAlign: "center" }}>
-          <img className="loading" src="/loading.gif" alt="loading..." />
-        </div>
+        <LoadingScreen />
       )}
       <br />
     </>
