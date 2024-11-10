@@ -306,6 +306,23 @@
     justify-self: center;
   }
 
+  .form-group select {
+    width: 100%;
+    padding: 12px;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    font-size: 16px;
+    box-sizing: border-box;
+    background-color: #fff;
+    transition: border-color 0.3s ease, box-shadow 0.3s ease;
+    text-align: center;
+    color: #333;
+  }
+
+  .form-group select:hover {
+    border: 2px solid #fe9052;
+  }
+
   @media screen and (max-width: 950px) {
     .area-input, .name-input {
       margin-right: 130px !important;
