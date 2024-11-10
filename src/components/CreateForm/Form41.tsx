@@ -388,7 +388,27 @@ const Form41: React.FC<FormProps> = ({ isLoading }) => {
                     onChange={(e) => setPercent(e.target.value)}
                     className="slider"
                   />
-                  <p>{percent}%</p>
+                  <div
+                    className="no-border form-group"
+                    style={{ marginBottom: "0px", paddingBottom: "0px" }}
+                  >
+                    <p>
+                      <input
+                        type="text"
+                        style={{
+                          width: "100px",
+                          height: "30px",
+                          margin: "auto",
+                        }}
+                        id="percent"
+                        value={percent}
+                        onChange={(e) => setPercent(e.target.value)}
+                        inputMode="numeric"
+                        required
+                      />
+                      %
+                    </p>
+                  </div>
                 </>
               )}
               {perOrPri === "price" && (
