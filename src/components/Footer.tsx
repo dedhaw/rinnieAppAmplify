@@ -49,7 +49,9 @@ const Footer: React.FC<FooterProps> = ({ isHomePage }) => {
         <div className="content">
           <h2>Links</h2>
           <Link to="/about/">About</Link>
-          <p onClick={handlePricing}>Pricing</p>
+          <p style={{ cursor: "pointer" }} onClick={handlePricing}>
+            Pricing
+          </p>
           <Link to="/contact/">Contact</Link>
         </div>
         <div className="content">
