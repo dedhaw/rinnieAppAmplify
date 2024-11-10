@@ -422,6 +422,84 @@ const Branding: React.FC<BrandingProps> = ({
           </div>
         </>
       )}
+      {viewportWidth <= 500 && (
+        <>
+          <div
+            style={{
+              width: "50%",
+              margin: "auto",
+              display: "grid",
+              justifyContent: "center",
+            }}
+          >
+            <div>
+              <p> Primary Color</p>
+              <ChromePicker color={primaryColor} onChange={handlePCChange} />
+              <p>Secondary Color</p>
+              <ChromePicker color={secondaryColor} onChange={handleSCChange} />
+              <div></div>
+              <div>
+                <p>Text Color</p>
+                <ChromePicker color={textColor} onChange={handleTCChange} />
+              </div>
+              <div>
+                <p>Background Color</p>
+                <ChromePicker color={bgColor} onChange={handleBCChange} />
+              </div>
+            </div>
+          </div>
+          <br />
+          <div style={{ width: "50%", margin: "auto" }}>
+            <div
+              style={{
+                display: "inline",
+              }}
+            >
+              <h2>Logo Upload</h2>
+              <input type="file" accept="image/*" onChange={handleLogoChange} />
+              <br />
+              <br />
+              <button
+                style={{ margin: "auto", display: "flex" }}
+                onClick={handleLogoUpload}
+              >
+                Save Logo
+              </button>
+            </div>
+
+            <div
+              style={{
+                display: "inline",
+                justifyContent: "center",
+              }}
+            >
+              <h2>Banner Upload</h2>
+              <input
+                type="file"
+                accept="image/*"
+                onChange={handleBannerChange}
+              />
+              <br />
+              <br />
+              <button
+                style={{ margin: "auto", display: "flex" }}
+                onClick={handleBannerUpload}
+              >
+                Save Banner
+              </button>
+              <div className="buttons">
+                <button
+                  className="delete"
+                  style={{ width: "auto" }}
+                  onClick={resetBrandingImage}
+                >
+                  Reset Images
+                </button>
+              </div>
+            </div>
+          </div>
+        </>
+      )}
     </>
   );
 };
