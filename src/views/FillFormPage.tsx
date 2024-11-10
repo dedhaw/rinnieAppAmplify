@@ -15,6 +15,7 @@ import "../styles/pdf.css";
 import DocViewer, { DocViewerRenderers } from "@cyntler/react-doc-viewer";
 
 import { useCookies } from "react-cookie";
+import LoadingScreen from "../components/LoadingScreen";
 function GenerateForm() {
   const [session] = useCookies(["session"]);
   const navigate = useNavigate();
@@ -866,16 +867,7 @@ function GenerateForm() {
               alt=""
             />
             <h2>Powered by Rinnie</h2>
-            <div
-              className="no-border"
-              style={{
-                justifyContent: "center",
-                margin: "auto",
-                display: "flex",
-              }}
-            >
-              <img className="loading" src="/loading.gif" alt="loading..." />
-            </div>
+            <LoadingScreen />
           </div>
         </>
       )}
