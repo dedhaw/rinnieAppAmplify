@@ -301,6 +301,7 @@
   
   .banner {
     max-height: 250px;
+    max-width: 90%;
     margin: auto;
     display: flex;
     justify-self: center;
