@@ -236,7 +236,7 @@ const Branding: React.FC<BrandingProps> = ({
         <section style={{ width: "100%", borderColor: secondaryColor }}>
           <p style={{ color: textColor }}>
             See what your changes look like on the clients screen by clicking
-            the button below!
+            the button below! (Make sure to save first!)
           </p>
           <button
             className="next-button"
