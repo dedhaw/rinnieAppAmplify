@@ -6,6 +6,7 @@ import LoadingScreen from "../components/LoadingScreen";
 import Clause from "../components/Profile/Clause";
 import "../styles/profile.css";
 import UserInfo from "../components/Profile/UserInfo";
+import PreviewPage from "../components/Profile/Preview";
 
 function Profile() {
   const [session] = useCookies(["session"]);
@@ -115,45 +116,50 @@ function Profile() {
 
   return (
     <>
-      <Navbar pageType="protected" />
-      <h1>Profile</h1>
-      <div style={{ height: "100vh" }}>
-        {section === "profile" && (
-          <section>
-            {user != null && data != null && loading != true && (
-              <>
-                <UserInfo user={user} setSection={setSection} />
+      {section !== "preview" && (
+        <>
+          <Navbar pageType="protected" />
+          <h1>Profile</h1>
+          <div style={{ height: "100vh" }}>
+            {section === "profile" && (
+              <section>
+                {user != null && data != null && loading != true && (
+                  <>
+                    <UserInfo user={user} setSection={setSection} />
 
-                <Clause
-                  data={data}
-                  setData={setData}
-                  session={session}
-                  email={email}
-                  isLoading={isLoading}
-                />
-              </>
+                    <Clause
+                      data={data}
+                      setData={setData}
+                      session={session}
+                      email={email}
+                      isLoading={isLoading}
+                    />
+                  </>
+                )}
+                {((user == null && data == null) || loading == true) && (
+                  <LoadingScreen />
+                )}
+              </section>
             )}
-            {((user == null && data == null) || loading == true) && (
-              <LoadingScreen />
+            {section === "branding" && (
+              <Branding
+                primaryColor={primaryColor}
+                secondaryColor={secondaryColor}
+                textColor={textColor}
+                bgColor={bgColor}
+                session={session}
+                email={email}
+                setPC={setPC}
+                setBC={setBC}
+                setSC={setSC}
+                setTC={setTC}
+                setSection={setSection}
+              />
             )}
-          </section>
-        )}
-        {section === "branding" && (
-          <Branding
-            primaryColor={primaryColor}
-            secondaryColor={secondaryColor}
-            textColor={textColor}
-            bgColor={bgColor}
-            session={session}
-            email={email}
-            setPC={setPC}
-            setBC={setBC}
-            setSC={setSC}
-            setTC={setTC}
-            setSection={setSection}
-          />
-        )}
-      </div>
+          </div>
+        </>
+      )}
+      {section === "preview" && <PreviewPage setSection={setSection} />}
     </>
   );
 }

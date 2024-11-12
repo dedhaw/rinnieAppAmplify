@@ -234,7 +234,10 @@ const Branding: React.FC<BrandingProps> = ({
       <section style={{ backgroundColor: bgColor }}>
         <h2 style={{ color: textColor }}>Branding Settings</h2>
         <section style={{ width: "100%", borderColor: secondaryColor }}>
-          {/* <div className="buttons no-border"> */}
+          <p style={{ color: textColor }}>
+            See what your changes look like on the clients screen by clicking
+            the button below! (Make sure to save first!)
+          </p>
           <button
             className="next-button"
             style={{
@@ -244,10 +247,10 @@ const Branding: React.FC<BrandingProps> = ({
               backgroundColor: primaryColor,
               border: primaryColor,
             }}
+            onClick={() => setSection("preview")}
           >
-            Hello
+            Click here to preview
           </button>
-          {/* </div> */}
         </section>
       </section>
       {viewportWidth > 1001 && (
