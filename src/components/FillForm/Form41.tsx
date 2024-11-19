@@ -587,6 +587,7 @@ const Form41: React.FC<FormProps> = ({ branding, session, id }) => {
                           {currentPage === 3 && (
                             <button
                               className="accept-button"
+                              style={{ zIndex: "10000" }}
                               onClick={handleAccept}
                             >
                               Accept
@@ -614,6 +615,7 @@ const Form41: React.FC<FormProps> = ({ branding, session, id }) => {
                           <br />
                           <button
                             className="accept-button"
+                            style={{ zIndex: "10000" }}
                             onClick={handleAccept}
                           >
                             Accept

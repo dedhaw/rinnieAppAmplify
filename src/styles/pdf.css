@@ -11,6 +11,10 @@
     position: sticky;
 }
 
+.react-pdf__Page__textContent {
+    z-index: -10;
+}
+
 
   @media screen and (min-width: 800px) {
     .fill #pdf-download, .fill #pdf-zoom-out, .fill #pdf-zoom-in, .fill #pdf-zoom-reset, .fill #pdf-toggle-pagination, .fill #header-bar{
